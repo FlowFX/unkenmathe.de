@@ -32,6 +32,10 @@ of the system, please check out http://getkirby.com/docs/advanced/options
 
 c::set('locale', 'de_DE.UTF8');
 
+// Enable Markdown Extra
+// cf. http://getkirby.com/docs/content/text#markdown-extra
+c::set('markdown.extra', true);
+
 
 // User roles
 c::set('roles', array(
