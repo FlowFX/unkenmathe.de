@@ -15,7 +15,7 @@ for more information: http://getkirby.com/license
 
 */
 
-c::set('license', 'put your license key here');
+c::set('license', 'K2-PERSONAL-2469c3172dc74f116c9cb6451127b49a');
 
 /*
 
@@ -28,3 +28,43 @@ make Kirby work. For more fine-grained configuration
 of the system, please check out http://getkirby.com/docs/advanced/options
 
 */
+
+
+c::set('locale', 'de_DE.UTF8');
+
+
+// User roles
+c::set('roles', array(
+	array(
+		'id'      => 'admin',
+		'name'    => 'Admin',
+		'panel'   => true
+	),
+	array(
+		'id'      => 'editor',
+		'name'    => 'Redakteur',
+		'panel'   => true
+	),
+	array(
+		'id'      => 'guest',
+		'name'    => 'Gast',
+		'panel'   => false,
+		'default' => true
+	)
+));
+
+
+
+// The logout
+// For the logout we don't need a real page. A simple URL to send logged in users to is enough.
+// This is a perfect example for Kirby's new router.
+
+c::set('routes', array(
+	array(
+		'pattern' => 'logout',
+		'action'  => function() {
+			if($user = site()->user()) $user->logout();
+			go('login');
+		}
+	)
+));
