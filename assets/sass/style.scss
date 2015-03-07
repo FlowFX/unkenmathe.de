@@ -1,0 +1,75 @@
+@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
+@import "../bower_components/bootswatch/cosmo/variables";
+@import "../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap";
+@import "../bower_components/bootswatch/cosmo/bootswatch";
+
+
+
+// style the logo
+.navbar-brand img {
+  height: 3.0em;
+}
+// reduce empty space between navbar and page-header
+.page-header {
+  margin-top: 22px;
+}
+
+
+// sticky footer with fixed navbar
+/* Sticky footer styles
+      -------------------------------------------------- */
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -60px;
+}
+
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+  height: 60px;
+}
+
+#footer p {
+  font-size: 80%;
+}
+// END sticky footer //
+
+
+
+
+
+// --- Overview of items. Search and filter buttons. --- //
+//button.btn.btn-default.btn-sm {
+button.um-keyword {
+  margin: 5px;
+}
+.item {
+  border: dotted 1px;
+}
+/*.item {
+  display: block;
+  float: left;
+  width: 240px;
+  height: auto;
+  margin: 0 20px 20px 0;
+  -webkit-transition: left .4s ease-in-out, top .4s ease-in-out .4s;
+  -moz-transition: left .4s ease-in-out, top .4s ease-in-out .4s;
+  -ms-transition: left .4s ease-in-out, top .4s ease-in-out .4s;
+  -o-transition: left .4s ease-in-out, top .4s ease-in-out .4s;
+  transition: left .4s ease-in-out, top .4s ease-in-out .4s;
+}*/
+
+
+.um-redaktion table td {
+  font-size: 90%;
+}
