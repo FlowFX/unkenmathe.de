@@ -1,4 +1,6 @@
-.DS_Store
-/site/accounts
-/assets/avatars
+/content
+/assets/bower_components
+/assets/sass/.sass-cache
+/assets/css/style.css
+/site/accounts/*
 /thumbs/*
