@@ -53,9 +53,6 @@ body {
 button.um-keyword {
   margin: 5px;
 }
-.item {
-  border: dotted 1px;
-}
 /*.item {
   display: block;
   float: left;
@@ -72,4 +69,19 @@ button.um-keyword {
 
 .um-redaktion table td {
   font-size: 90%;
+}
+
+
+
+// Topic overview items styling
+.item {
+	padding: 15px 20px;
+	border: solid white 10px;
+	background: linen;
+}
+.item ol {
+	list-style-type: lower-alpha;
+}
+.item ol li ol {
+	list-style-type: lower-roman;
 }
