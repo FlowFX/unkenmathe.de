@@ -36,6 +36,9 @@ c::set('locale', 'de_DE.UTF8');
 // cf. http://getkirby.com/docs/content/text#markdown-extra
 c::set('markdown.extra', true);
 
+// Suppress markdown linebreaks
+c::set('markdown.breaks', false);
+
 
 // User roles
 c::set('roles', array(
