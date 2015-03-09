@@ -40,7 +40,7 @@
 				<td><!-- Button trigger modal --><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal-<?php echo $item->hash() ?>">Vorschau</button>
 
 <!-- Modal -->
-<div class="modal fade" id="myModal-<?php echo $item->hash() ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal" id="myModal-<?php echo $item->hash() ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
