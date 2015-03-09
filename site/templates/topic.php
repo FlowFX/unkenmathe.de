@@ -27,7 +27,7 @@
 		<?php foreach($items as $item): ?>
 
 			<!-- add every keyword as class -->
-			<div class="item col-sm-6 col-md-4<?php echo ' '.$item->level() ?><?php foreach($item->tags()->split(',') as $single_tag): echo ' '.tagslug($single_tag); endforeach ?>">
+			<div class="item um-item-text col-sm-6 col-md-4<?php echo ' '.$item->level() ?><?php foreach($item->tags()->split(',') as $single_tag): echo ' '.tagslug($single_tag); endforeach ?>">
 
 
 				<!-- frontend tests of content items -->
