@@ -79,9 +79,11 @@ button.um-keyword {
 	border: solid white 10px;
 	background: linen;
 }
-.item ol {
+.item ol,
+.um-redaktion .modal-body ol {
 	list-style-type: lower-alpha;
 }
-.item ol li ol {
+.item ol li ol,
+.um-redaktion .modal-body ol li ol {
 	list-style-type: lower-roman;
 }
