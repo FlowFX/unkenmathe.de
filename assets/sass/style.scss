@@ -74,10 +74,13 @@ button.um-keyword {
 
 
 // Topic overview items styling
-.item {
+.um-item .um-item-text,
+.um-topic .um-item-text {
 	padding: 15px 20px;
-	border: solid white 10px;
 	background: linen;
+}
+.um-topic .um-item-text {
+	border: solid white 10px;
 }
 
 .um-item-text ol,
