@@ -44,8 +44,8 @@
 				<?php endif ?>
 
 
-				<!-- print the item's fist html file -->
-				<?php echo $item->files()->filterby('extension', 'html')->first()->read() ?>
+				<!-- Item text -->
+				<?php echo $item->text()->kirbytext() ?>
 
 				<p><a href="<?php echo $item->url() ?>" title="Zur Aufgabe">Mehr…</a></p>
 

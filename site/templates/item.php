@@ -14,7 +14,7 @@
 	<div class="row">
 
 		<div class="col-md-10">
-			<?php echo $file_html->read() ?>
+			<?php echo $page->text()->kirbytext() ?>
 		</div>
 
 
