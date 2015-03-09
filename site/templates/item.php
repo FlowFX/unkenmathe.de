@@ -21,8 +21,12 @@
 		<?php if( $site->user() ): // show download links only for logged in users, i.e. 'lehrer' ?>
 		<div class="col-md-2">
 			<p>
+				<?php if( $file_latex ) : // only show download button if file exists ?>
 				<a href="<?php echo $file_latex->url() ?>" title="LaTeX-Quellcode herunterladen"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-cloud-download"></span> \( \LaTeX \)</button></a>
+				<?php endif ?>
+				<?php if( $file_docx ) : ?>
 				<a href="<?php echo $file_docx->url() ?>" title="docx-Dokument herunterladen"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-cloud-download"></span> docx</button></a>
+				<?php endif ?>
 			</p>
 		</div>
 		<div class="col-xs-12 panel panel-default ">
