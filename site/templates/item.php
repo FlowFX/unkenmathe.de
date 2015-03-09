@@ -13,7 +13,7 @@
 
 	<div class="row">
 
-		<div class="col-md-10">
+		<div class="col-md-10 um-item-text">
 			<?php echo $page->text()->kirbytext() ?>
 		</div>
 
