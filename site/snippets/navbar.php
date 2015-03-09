@@ -25,13 +25,19 @@
 
 
 			<ul class="nav navbar-nav navbar-right">
-				<li>
-					<?php if($user = $site->user()): ?>
-						<a href="<?php echo url('logout') ?>">Hallo <?php echo $user->username() ?>, Abmelden?</a>
-					<?php else : ?>
-						<a href="<?php echo url('login') ?>" title="Anmelden">Anmelden</a>
-					<?php endif ?>
-				</li>
+				<?php if($user = $site->user()): ?>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hallo <?php echo $user->username() ?> <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="<?php echo $site->url() . "/panel/#/" ?>">Panel</a></li>
+							<li><a href="<?php echo $pages->find('redaktion')->url() ?>">Redaktion</a></li>
+							<li class="divider"></li>
+							<li><a href="<?php echo $site->url() . "/panel/#/users/edit/" . $user->username() ?>">Profil</a></li>
+							<li><a href="<?php echo url('logout') ?>">Abmelden</a><li>
+						</ul>
+				<?php else : ?>
+					<li><a href="<?php echo url('login') ?>" title="Anmelden">Anmelden</a></li>
+				<?php endif ?>
 			</ul>
 		</div><!--/.navbar-collapse -->
 	</div>

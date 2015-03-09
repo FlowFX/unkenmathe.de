@@ -27,14 +27,8 @@
 		<?php foreach($items as $item): ?>
 
 			<!-- add every keyword as class -->
-			<div class="item col-sm-6 col-md-4 col-lg-3<?php echo ' '.$item->level() ?><?php foreach($item->tags()->split(',') as $single_tag): echo ' '.tagslug($single_tag); endforeach ?>">
+			<div class="item col-sm-6 col-md-4<?php echo ' '.$item->level() ?><?php foreach($item->tags()->split(',') as $single_tag): echo ' '.tagslug($single_tag); endforeach ?>">
 
-
-				<h3><a href="<?php echo $item->url() ?>"><?php echo $item->title()->html() ?></a></h3>
-
-				<p>Lizenz: <?php echo $item->license()->html() ?></p>
-				<p>Quelle: <a href="<?php echo $item->link() ?>"><?php echo $item->source()->html() ?></a></p>
-				<p>Schlagworte: <?php echo $item->tags()->html() ?></a></p>
 
 				<!-- frontend tests of content items -->
 				<?php if( $user_is_editor ): ?>
@@ -50,8 +44,10 @@
 				<?php endif ?>
 
 
-				<!-- print the item's fist html file -->
-				<?php echo $item->files()->filterby('extension', 'html')->first()->read() ?>
+				<!-- Item text -->
+				<?php echo $item->text()->kirbytext() ?>
+
+				<p><a href="<?php echo $item->url() ?>" title="Zur Aufgabe">Mehr…</a></p>
 
 			</div>
 		<?php endforeach ?>

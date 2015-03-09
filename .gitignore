@@ -8,3 +8,4 @@
 deploy.sh
 deploy-exclude.txt
 update-kirby.sh
+.idea
