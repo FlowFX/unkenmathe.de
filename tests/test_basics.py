@@ -12,11 +12,25 @@ class TestBasicViews:
         # THEN it's there
         assert response.status_code == 200
 
-    def test_exercise_create_view(self, client):
+
+class TestExerciseCRUDViews:
+
+    def test_get_create_view(self, client):
         # GIVEN any state
         # WHEN calling the exercise create view
         url = reverse('exercises:create')
         response = client.get(url)
+
+        # THEN it's there
+        assert response.status_code == 200
+
+    def test_post_to_create_view_redirects_to_home_page(self, db, client):
+        # GIVEN an exercise text
+        data = {'text': 'What is 5 + 4?'}
+
+        # WHEN making a post request to the create view
+        url = reverse('exercises:create')
+        response = client.post(url, data)
 
 
 class TestExerciseModel:
