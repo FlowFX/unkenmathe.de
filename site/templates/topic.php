@@ -23,7 +23,7 @@
 		</div>
 	</div>
 
-	<div id="container">
+	<div id="container" class="um-topic">
 		<?php foreach($items as $item): ?>
 
 			<!-- add every keyword as class -->
