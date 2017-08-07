@@ -1,4 +1,5 @@
 """Fixtures for Selenium tests."""
+import re
 import time
 
 from selenium import webdriver
@@ -8,6 +9,15 @@ import pytest
 
 
 MAX_WAIT = 10
+
+
+def assert_regex(text: str, regex: str):
+    """Assert regular expression match."""
+    text = str(text)
+    p = re.compile(regex)
+    m = p.match(text)
+
+    assert m is not None, text + " does not match " + regex
 
 
 def wait_for(fn):
