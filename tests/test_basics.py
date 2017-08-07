@@ -1,16 +1,35 @@
 """Unit tests."""
 from django.urls import reverse
 
+from exercises import factories, views
+
 
 class TestBasicViews:
 
-    def test_home_page_GET(self, client):
+    def test_home_page_GET(self, client, mocker):
         # GIVEN any state
+        exercises = factories.ExerciseFactory.build_batch(3)
+        mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
+
         # WHEN calling the home page
-        response = client.get('/')
+        url = reverse('index')
+        response = client.get(url)
 
         # THEN it's there
         assert response.status_code == 200
+
+    def test_home_page_shows_all_exercises(self, db, client):
+        # GIVEN a number of exercises
+        ex1 = factories.ExerciseFactory.create()
+        ex2 = factories.ExerciseFactory.create()
+
+        # WHEN calling the home page
+        url = reverse('index')
+        response = client.get(url)
+
+        # THEN all exercises are displayed
+        assert ex1.text in response.content.decode()
+        assert ex2.text in response.content.decode()
 
 
 class TestExerciseCRUDViews:
@@ -31,6 +50,10 @@ class TestExerciseCRUDViews:
         # WHEN making a post request to the create view
         url = reverse('exercises:create')
         response = client.post(url, data)
+
+        # THEN it redirects back to the home page
+        assert response.status_code == 302
+        assert response.url == '/'
 
 
 class TestExerciseModel:

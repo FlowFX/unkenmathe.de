@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<a id="id_add_exercise" href="{% url 'exercises:create' %}">Add exercise</a>
+
+{% for exercise in exercises %}
+        
+    <p id="id_exercise_{{ exercise.id }}">{{ exercise.text }}</p>
+
+{% endfor %}
+
+{% endblock content %}
