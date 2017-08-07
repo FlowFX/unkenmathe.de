@@ -1,5 +1,8 @@
 <html>
     <body>
         <h1>Unkenmathe</h1>
+        {% block content %}
+        <a id="id_add_exercise" href="{% url 'exercises:create' %}">Add exercise</a>
+        {% endblock content %}
     </body>
 </html>
