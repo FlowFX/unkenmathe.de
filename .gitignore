@@ -104,4 +104,5 @@ ENV/
 .vscode/
 
 # Django
+db.sqlite3
 secrets.json
