@@ -1,5 +1,3 @@
 # Unkenmathe.de
 
-
-## License
-unkenmathe.de is built with the [Kirby CMS](http://getkirby.com/). Kirby is not Free Software. Licensing information can be found in the official repositories: [Kirby End User License Agreement](https://github.com/getkirby/plainkit/blob/master/license.md).
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
