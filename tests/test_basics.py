@@ -55,6 +55,33 @@ class TestExerciseCRUDViews:
         assert response.status_code == 302
         assert response.url == '/'
 
+    def test_get_update_view(self, client, mocker):
+        # GIVEN an existing exercise
+        ex = factories.ExerciseFactory.build()
+        mocker.patch.object(views.ExerciseUpdateView, 'get_object', return_value=ex)
+
+        # WHEN calling the exercise update view
+        url = reverse('exercises:update', kwargs={'pk': ex.id})
+        response = client.get(url)
+
+        # THEN it's there
+        assert response.status_code == 200
+
+    def test_post_to_update_view_redirects_to_home_page(self, db, client):
+        # GIVEN an existing exercise
+        ex = factories.ExerciseFactory.create()
+
+        # AND a new text
+        data = {'text': 'What is 5 + 4?'}
+
+        # WHEN making a post request to the create view
+        url = reverse('exercises:update', kwargs={'pk': ex.id})
+        response = client.post(url, data)
+
+        # THEN it redirects back to the home page
+        assert response.status_code == 302
+        assert response.url == '/'
+
 
 class TestExerciseModel:
 

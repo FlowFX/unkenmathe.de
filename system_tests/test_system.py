@@ -1,6 +1,8 @@
 """Selenium tests."""
 from .conftest import assert_regex, wait_for
 
+from exercises.factories import ExerciseFactory
+
 
 def test_florian_adds_a_new_exercise(browser, live_server):
     # Florian wants to add a new exercise.
@@ -29,3 +31,24 @@ def test_florian_adds_a_new_exercise(browser, live_server):
 
     # and the new exercise is displayed there.
     assert 'What is 5 + 4?' in browser.page_source
+
+
+def test_user_edits_an_exercise(browser, live_server):
+    # GIVEN an existing exercise
+    ex = ExerciseFactory.create()
+
+    # Florian goes to the home page and wants to edit this exercise
+    browser.get(live_server.url)
+
+    # and sees that it's there.
+    wait_for(lambda: browser.find_element_by_id(f'id_edit_{ex.id}'))
+
+    # He clicks the Edit button,
+    browser.find_element_by_id(f'id_edit_{ex.id}').click()
+
+    # and gets to the update form.
+    wait_for(lambda: browser.find_element_by_tag_name('form'))
+    assert_regex(browser.current_url, f'.+/{ex.id}/edit')
+
+    import pytest
+    pytest.fail('Finish the test!')
