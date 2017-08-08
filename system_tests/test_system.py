@@ -50,5 +50,17 @@ def test_user_edits_an_exercise(browser, live_server):
     wait_for(lambda: browser.find_element_by_tag_name('form'))
     assert_regex(browser.current_url, f'.+/{ex.id}/edit')
 
-    import pytest
-    pytest.fail('Finish the test!')
+    # He replaces the exercise text,
+    textarea = browser.find_element_by_id('id_text')
+    textarea.clear()
+    textarea.send_keys('This exercise isn\'t good enough. \( 5 + 4 = 9 \).')
+
+    # and clicks submit.
+    browser.find_element_by_id('id_submit').click()
+
+    # Then, he gets back to the home page,
+    wait_for(lambda: browser.find_element_by_id('id_add_exercise'))
+    assert_regex(browser.current_url, '.+/')
+
+    # and the new text is displayed.
+    assert 'This exercise ' in browser.page_source

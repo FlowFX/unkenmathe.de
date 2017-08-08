@@ -7,7 +7,7 @@
 {% for ex in exercises %}
         
     <p id="id_exercise_{{ exercise.id }}">
-        {{ ex.text }} | <a id="id_edit_{{ exercise.id }}" href="{% url 'exercises:update' ex.id %}">Edit</a>
+        {{ ex.text }} | <a id="id_edit_{{ ex.id }}" href="{% url 'exercises:update' ex.id %}">Edit</a>
     </p>
 
 {% endfor %}
