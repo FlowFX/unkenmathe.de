@@ -7,7 +7,8 @@
 Using [Pandoc](http://pandoc.org/) to convert Markdown/KaTeX entries to pure LaTeX works well.
 
 ```markdown
-Dies ist ein [Markdown](https://daringfireball.net/projects/markdown/)-Dokument mit der Möglichkeit, mathematische Ausdrücke einzugeben.
+Dies ist ein [Markdown](https://daringfireball.net/projects/markdown/)-Dokument
+mit der Möglichkeit, mathematische Ausdrücke einzugeben.
 
 ## Aufgabe 2
 Mathematische Ausdrücke wie $x=5$ können auch im Text stehen. Es geht aber auch komplizierter:
