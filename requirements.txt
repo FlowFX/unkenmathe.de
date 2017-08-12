@@ -3,6 +3,7 @@ django==1.11.4
 psycopg2==2.7.3
 requests==2.18.3
 urllib3==1.22
+django-crispy-forms==1.6.1
 
 # Testing
 factory_boy==2.9.2

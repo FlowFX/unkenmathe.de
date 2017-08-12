@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'um.exercises',
 ]
 
@@ -86,3 +87,7 @@ STATICFILES_DIRS = [
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'static'))
+
+
+# Crispy Forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
