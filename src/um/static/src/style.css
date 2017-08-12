@@ -1,0 +1,12 @@
+
+/* Exercise edit views */
+.editor-input {
+    background-color: #fafafa;
+    font-family: 'Monaco', courier, monospace;
+    padding: 20px;
+}
+.editor-preview {
+    border: 1pt solid;
+    padding: 20px;
+    margin-bottom: 20px;
+}
