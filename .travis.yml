@@ -7,8 +7,7 @@ script:
   - cd src/
   - echo "{}" > secrets.json
   # run unit tests only
-  - pytest
-after_success:
+  - pytest --cov
   - codecov
 notifications:
   email: false
