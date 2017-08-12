@@ -1,0 +1,12 @@
+language: python
+cache: pip
+python:
+- 3.6
+install: pip install -r requirements.txt
+script:
+  - cd src/
+  - echo "{}" > secrets.json
+  - pytest system_tests
+  - pytest
+notifications:
+  email: false
