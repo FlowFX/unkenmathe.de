@@ -81,12 +81,3 @@ class TestExerciseCRUDViews:
         # THEN it redirects back to the home page
         assert response.status_code == 302
         assert response.url == '/'
-
-
-class TestExerciseModel:
-
-    def test_exercise_can_be_saved(self, db):
-        # GIVEN any state
-        # WHEN adding a new exercise to the database
-        # THEN it works
-        pass

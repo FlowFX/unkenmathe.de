@@ -2,6 +2,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
 
+from .forms import ExerciseForm
 from .models import Exercise
 
 
@@ -17,13 +18,15 @@ class ExerciseCreateView(CreateView):
     """Create view for a new exercise."""
 
     model = Exercise
-    fields = ['text']
+    form_class = ExerciseForm
     success_url = reverse_lazy('index')
+    context_object_name = 'exercise'
 
 
 class ExerciseUpdateView(UpdateView):
     """Update view for an exercise."""
 
     model = Exercise
-    fields = ['text']
+    form_class = ExerciseForm
     success_url = reverse_lazy('index')
+    context_object_name = 'exercise'
