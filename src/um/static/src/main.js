@@ -1,3 +1,6 @@
+// load custom CSS
+import './style.css';
+
 // initialize markdown-it and katex
 let md = require('markdown-it')('commonmark');
 let mk = require('markdown-it-katex');
