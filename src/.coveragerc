@@ -1,0 +1,4 @@
+[run]
+source = exercises
+branch = True
+omit = */migrations/*
