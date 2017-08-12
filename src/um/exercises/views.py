@@ -20,6 +20,7 @@ class ExerciseCreateView(CreateView):
     model = Exercise
     form_class = ExerciseForm
     success_url = reverse_lazy('index')
+    context_object_name = 'exercise'
 
 
 class ExerciseUpdateView(UpdateView):
@@ -28,3 +29,4 @@ class ExerciseUpdateView(UpdateView):
     model = Exercise
     form_class = ExerciseForm
     success_url = reverse_lazy('index')
+    context_object_name = 'exercise'

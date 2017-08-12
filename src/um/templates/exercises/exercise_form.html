@@ -1,8 +1,26 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
 
+
 {% block content %}
+<div id="app">
 
-{% crispy form %}
+    {% crispy form %}
 
+</div>
 {% endblock content %}
+
+
+{% block scripts %}
+    <script>
+        var exercise_text = `{{ exercise.text }}`;
+    </script>
+
+    {{ block.super }}
+
+    <!-- VueJS, markdown-it, KaTeX, Custom JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js" integrity="sha256-+J5cSgDOPu6OT8mt+r5f7/cmvICoEmNdK2ZGz8ql8wc=" crossorigin="anonymous"></script>
+    <script src="{% static 'dist/bundle.js' %}"></script>
+
+{% endblock scripts %}
