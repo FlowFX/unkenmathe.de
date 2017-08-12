@@ -1,9 +1,8 @@
 """URL configuration."""
 from django.conf.urls import include, url
-from django.views.generic import TemplateView
 
-from exercises import urls as exercises_urls
-from exercises.views import ExcerciseListView
+from um.exercises import urls as exercises_urls
+from um.exercises.views import ExcerciseListView
 
 
 urlpatterns = [

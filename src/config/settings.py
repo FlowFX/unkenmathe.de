@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
-    'exercises',
+    'um.exercises',
 ]
 
 
@@ -59,7 +59,7 @@ DATABASES = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
+        'DIRS': [os.path.join(BASE_DIR, 'um/templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
