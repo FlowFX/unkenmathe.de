@@ -1,7 +1,7 @@
 """Unit tests."""
 from django.urls import reverse
 
-from exercises import factories, views
+from um.exercises import factories, views
 
 
 class TestBasicViews:
