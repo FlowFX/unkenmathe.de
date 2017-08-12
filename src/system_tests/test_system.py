@@ -1,7 +1,7 @@
 """Selenium tests."""
 from .conftest import assert_regex, wait_for
 
-from exercises.factories import ExerciseFactory
+from um.exercises.factories import ExerciseFactory
 
 
 def test_florian_adds_a_new_exercise(browser, live_server):
