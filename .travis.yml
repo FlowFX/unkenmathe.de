@@ -6,7 +6,9 @@ install: pip install -r requirements.txt
 script:
   - cd src/
   - echo "{}" > secrets.json
-  - pytest system_tests
+  # run unit tests only
   - pytest
+after_success:
+  - codecov
 notifications:
   email: false
