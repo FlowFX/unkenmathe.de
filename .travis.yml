@@ -2,7 +2,9 @@ language: python
 cache: pip
 python:
 - 3.6
-install: pip install -r requirements.txt
+install:
+  - npm install markdown-it markdown-it-katex katex
+  - pip install -r requirements.txt
 script:
   - cd src/
   - echo "{}" > secrets.json
