@@ -40,6 +40,7 @@ def browser():
     """
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
+    options.add_argument('disable-gpu')
 
     browser_ = webdriver.Chrome(chrome_options=options)
 
