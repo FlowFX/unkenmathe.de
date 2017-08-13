@@ -81,3 +81,15 @@ class TestExerciseCRUDViews:
         # THEN it redirects back to the home page
         assert response.status_code == 302
         assert response.url == '/'
+
+    def test_get_detail_view(self, client, mocker):
+        # GIVEN an existing exercise
+        ex = factories.ExerciseFactory.build()
+        mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
+
+        # WHEN calling the exercise detail view
+        url = reverse('exercises:detail', kwargs={'pk': ex.id})
+        response = client.get(url)
+
+        # THEN it's there
+        assert response.status_code == 200
