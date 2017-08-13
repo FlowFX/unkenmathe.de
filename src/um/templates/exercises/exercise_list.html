@@ -2,15 +2,19 @@
 
 {% block content %}
 
-<a id="id_add_exercise" href="{% url 'exercises:create' %}">Add exercise</a>
+<a href="{% url 'exercises:create' %}" id="id_add_exercise" class="btn btn-primary">Neue Aufgabe</a>
 
 {% for exercise in exercises %}
         
-    <p id="id_exercise_{{ exercise.id }}">
-        {{ exercise.text_html|safe }}
-        | <a id="id_detail_{{ exercise.id }}" href="{% url 'exercises:detail' exercise.id %}">Detail</a>
-        | <a id="id_edit_{{ exercise.id }}" href="{% url 'exercises:update' exercise.id %}">Edit</a>
-    </p>
+<div class="card" id="id_exercise_{{ exercise.id }}">
+  <div class="card-block">
+    <div class="card-text">
+      {{ exercise.text_html|safe }}
+    </div>
+    <a href="{% url 'exercises:detail' exercise.id %}" id="id_detail_{{ exercise.id }}" class="btn btn-primary btn-sm" role="button">Ansehen</a>
+    <a href="{% url 'exercises:update' exercise.id %}" id="id_edit_{{ exercise.id }}" class="btn btn-primary btn-sm" role="button">Bearbeiten</a>
+  </div>
+</div>
 
 {% endfor %}
 
