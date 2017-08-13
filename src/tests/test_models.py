@@ -21,3 +21,18 @@ class TestExerciseModel:
         # THEN there is the rendered HTML
         html = '''<h2>Header</h2>'''
         assert ex.text_html.startswith(html)
+
+    def test_render_html_renders_markdown(self):
+        # GIVEN an exercise and a string of markdown text
+        md = '''# Title
+                  This is some **bold** text.
+                  '''
+        ex = factories.ExerciseFactory.build(
+            text=md,
+        )
+        # WHEN calling the render_html method with this
+        ex.render_html()
+
+        # THEN the `text_html` model field is filled with HTML
+        html = '''<h1>Title</h1>'''
+        assert ex.text_html.startswith(html)
