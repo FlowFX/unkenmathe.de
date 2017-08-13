@@ -23,7 +23,7 @@ def test_florian_adds_a_new_exercise(browser, live_server):
     browser.find_element_by_id('id_text').send_keys('What is 5 + 4?')
 
     # and clicks the submit button.
-    browser.find_element_by_id('id_submit').click()
+    browser.find_element_by_id('submit-id-submit').click()
 
     # Then, he gets back to the home page,
     wait_for(lambda: browser.find_element_by_id('id_add_exercise'))
@@ -56,7 +56,7 @@ def test_user_edits_an_exercise(browser, live_server):
     textarea.send_keys('This exercise isn\'t good enough. \( 5 + 4 = 9 \).')
 
     # and clicks submit.
-    browser.find_element_by_id('id_submit').click()
+    browser.find_element_by_id('submit-id-submit').click()
 
     # Then, he gets back to the home page,
     wait_for(lambda: browser.find_element_by_id('id_add_exercise'))
