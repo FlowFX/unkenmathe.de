@@ -64,3 +64,28 @@ def test_user_edits_an_exercise(browser, live_server):
 
     # and the new text is displayed.
     assert 'This exercise ' in browser.page_source
+
+
+def test_user_views_an_exercise(browser, live_server):
+    # GIVEN an existing exercise
+    ex = ExerciseFactory.create()
+
+    # Florian goes to the home page and wants to inspect the exercise,
+    browser.get(live_server.url)
+
+    # sees that it's there.
+    wait_for(lambda: browser.find_element_by_id(f'id_detail_{ex.id}'))
+
+    # He clicks the Details button,
+    browser.find_element_by_id(f'id_detail_{ex.id}').click()
+
+    # and gets to the detail view.
+    wait_for(lambda: browser.find_element_by_id('id_text'))
+    assert_regex(browser.current_url, f'.+/{ex.id}/')
+
+    # He clicks the `back` button.
+    browser.find_element_by_id('back-id-back').click()
+
+    # Then, he gets back to the home page,
+    wait_for(lambda: browser.find_element_by_id('id_add_exercise'))
+    assert_regex(browser.current_url, '.+/')
