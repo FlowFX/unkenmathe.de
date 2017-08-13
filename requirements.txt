@@ -5,6 +5,9 @@ requests==2.18.3
 urllib3==1.22
 django-crispy-forms==1.6.1
 
+# Markdown & LaTeX
+Naked==0.1.31
+
 # Testing
 factory_boy==2.9.2
 Faker==0.7.18
