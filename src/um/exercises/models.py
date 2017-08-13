@@ -1,5 +1,19 @@
 """Exercise models."""
+import os
+
+# https://docs.python.org/3.6/library/shlex.html#shlex.quote
+from shlex import quote
+
 from django.db import models
+
+from Naked.toolshed.shell import muterun_js
+# >>> result = muterun_js('script.js', '"this is a string"')
+# >>> result.stdout
+# b'<p>this is a string</p>\n\n'
+# >>>	
+# scripth = './static/js/script.js'
+MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
+script = os.path.join(MODULE_DIR, 'static/js/script.js')
 
 
 class Exercise(models.Model):
@@ -10,8 +24,8 @@ class Exercise(models.Model):
 
     def render_html(self) -> None:
         """Render the raw Markdown/LaTeX `text` into HTML"""
-        self.text_html = self.text
-        self.text_html = '<h1>Title</h1>'
+        result = muterun_js(script, quote(self.text))
+        self.text_html = result.stdout.decode()
 
     def super_save(self, *args, **kwargs) -> None:
         """Call the 'real' save() method."""
@@ -19,6 +33,6 @@ class Exercise(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         """Do stuff when saving the Exercise."""
-        self.text_html = '<h2>Header</h2>'
+        self.render_html()
 
         self.super_save(*args, **kwargs)             # Call the "real" save() method.
