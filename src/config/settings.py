@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
+    'django_extensions',
     'crispy_forms',
     'um.exercises',
 ]

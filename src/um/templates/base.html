@@ -10,13 +10,20 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <!-- KaTeX CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+
+    <style>
+      .card {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .card-block {
+        padding: 1rem;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
-      <h1>Unkenmathe</h1>
-      <p>
-        <a href="{% url 'index' %}">Start</a>
-      </p>
+      <a href="{% url 'index' %}"><h1>Unkenmathe</h1></a>
 
       {% block content %}
       {% endblock content %}
