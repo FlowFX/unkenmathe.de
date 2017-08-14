@@ -13,7 +13,7 @@ before_install: # Install ChromeDriver
   - sudo chmod +x /usr/local/share/chromedriver
   - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
 install:
-  - sudo apt-get install pandoc
+  - sudo apt-get install texlive-latex-base pandoc
   - npm install markdown-it markdown-it-katex katex
   - pip install -q -r requirements.txt
 script:
