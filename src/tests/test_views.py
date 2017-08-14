@@ -1,7 +1,9 @@
 """Unit tests."""
 from django.urls import reverse
 
-from um.exercises import factories, views
+import magic
+
+from um.exercises import factories, models, views
 
 
 class TestBasicViews:
@@ -93,3 +95,22 @@ class TestExerciseCRUDViews:
 
         # THEN it's there
         assert response.status_code == 200
+
+
+class TestExercisePDFViews:
+
+    def test_pdf_view_returns_pdf(self, mocker, rf):
+        # GIVEN an exercise
+        ex = factories.ExerciseFactory.build(
+            text='''# A title\nAnd some text''',
+        )
+        mocker.patch.object(models.Exercise.objects, 'get', return_value=ex)
+
+        # WHEN calling the PDF view
+        url = reverse('exercises:pdf', kwargs={'pk': ex.id})
+        request = rf.get(url)
+        response = views.exercise_pdf_view(request, pk=ex.id)
+
+        # THEN the response is a PDF document
+        assert response.status_code == 200
+        assert magic.from_buffer(response.content, mime=True) == 'application/pdf'
