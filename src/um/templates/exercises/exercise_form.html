@@ -8,7 +8,15 @@
 
     {% crispy form %}
 
+    <div class="card">
+        <div class="card-block">
+            <div class="card-text" v-html="compiledMarkdown">
+            </div>
+        </div>
+    </div>
+
 </div>
+
 {% endblock content %}
 
 

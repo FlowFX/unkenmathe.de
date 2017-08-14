@@ -33,10 +33,5 @@ class ExerciseForm(forms.ModelForm):
                     v_model='input',
                     css_class='editor-input',
                 ),
-                Div(
-                    id='preview',
-                    v_html='compiledMarkdown',
-                    css_class='editor-preview',
-                ),
             ),
         )
