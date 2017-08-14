@@ -8,6 +8,7 @@ django-extensions==1.8.1
 
 # Markdown & LaTeX
 Naked==0.1.31
+pypandoc==1.4
 
 # Testing
 factory_boy==2.9.2

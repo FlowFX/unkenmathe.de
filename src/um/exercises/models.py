@@ -6,12 +6,10 @@ from shlex import quote
 
 from django.db import models
 
+import pypandoc
+
 from Naked.toolshed.shell import muterun_js
-# >>> result = muterun_js('script.js', '"this is a string"')
-# >>> result.stdout
-# b'<p>this is a string</p>\n\n'
-# >>>	
-# scripth = './static/js/script.js'
+
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
 script = os.path.join(MODULE_DIR, 'static/js/script.js')
 
@@ -21,11 +19,17 @@ class Exercise(models.Model):
 
     text = models.TextField(verbose_name='Exercise text, Markdown/LaTeX')
     text_html = models.TextField(verbose_name='Exercise text, rendered as HTML')
+    text_tex = models.TextField(verbose_name='Exercise text, rendered as LaTeX')
 
     def render_html(self) -> None:
-        """Render the raw Markdown/LaTeX `text` into HTML"""
+        """Render the raw Markdown/LaTeX `text` into HTML."""
         result = muterun_js(script, quote(self.text))
         self.text_html = result.stdout.decode()
+
+    def render_tex(self) -> None:
+        """Render the raw Markdown/LaTeX `text` into LaTeX code."""
+        result = pypandoc.convert_text(self.text, 'tex', 'md')
+        self.text_tex = result
 
     def super_save(self, *args, **kwargs) -> None:
         """Call the 'real' save() method."""
