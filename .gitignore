@@ -113,3 +113,6 @@ package-lock.json
 
 # webpack
 bundle.js
+
+# CI
+deploy_key

@@ -1,16 +1,6 @@
-# Base
-django==1.11.4
-psycopg2==2.7.3
-requests==2.18.3
-urllib3==1.22
-django-crispy-forms==1.6.1
-django-extensions==1.8.1
+# Testing and CI requirements
+-r common.txt
 
-# Markdown & LaTeX
-Naked==0.1.31
-pypandoc==1.4
-
-# Testing
 factory_boy==2.9.2
 Faker==0.7.18
 mock==2.0.0
@@ -34,3 +24,6 @@ pytest-flake8==0.8.1
 codecov==2.0.9
 coverage==4.4.1
 pytest-cov==2.5.1
+
+# Utils
+dj-inmemorystorage==1.4.1
