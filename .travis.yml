@@ -27,13 +27,10 @@ script:
   - pytest system_tests
   - pytest --cov
   - codecov
-after_success:
-  - cd ../
-  - eval "$(ssh-agent -s)"
-  - chmod 600 .travis/deploy_key
-  - ssh-add .travis/deploy_key
-  - git remote add pythonanywhere flowfx@ssh.pythonanywhere.com:/home/flowfx/bare-repos/unkenmathe.git
-  - git push -f pythonanywhere master
-  - python .travis/reload-webapp.py
+deploy:
+  provider: script
+  script: .travis/deploy.sh
+  on:
+    branch: master
 notifications:
   email: false
