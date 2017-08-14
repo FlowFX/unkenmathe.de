@@ -5,8 +5,14 @@ python:
 - 3.6
 addons:
   chrome: beta
-before_install: # Install ChromeDriver
-  - wget -N http://chromedriver.storage.googleapis.com/2.31/chromedriver_linux64.zip -P ~/
+  ssh_known_hosts: ssh.pythonanywhere.com
+before_install:
+  # decrypt private key
+  - openssl aes-256-cbc -K $encrypted_8feb27c682bd_key -iv $encrypted_8feb27c682bd_iv
+    -in deploy_key.enc -out deploy_key -d
+  # install chromedriver
+  - wget -N http://chromedriver.storage.googleapis.com/2.31/chromedriver_linux64.zip
+    -P ~/
   - unzip ~/chromedriver_linux64.zip -d ~/
   - rm ~/chromedriver_linux64.zip
   - sudo mv -f ~/chromedriver /usr/local/share/
@@ -15,14 +21,19 @@ before_install: # Install ChromeDriver
 install:
   - sudo apt-get install texlive-latex-base pandoc
   - npm install markdown-it markdown-it-katex katex
-  - pip install -q -r requirements.txt
+  - pip install -q -r requirements/testing.txt
 script:
   - cd src/
   - echo "{}" > secrets.json
-  # run Selenium tests
   - pytest system_tests
-  # run unit tests with coverage
   - pytest --cov
   - codecov
+after_success:
+  - eval "$(ssh-agent -s)"
+  - chmod 600 deploy_key
+  - ssh-add deploy_key
+  - git remote add pythonanywhere flowfx@ssh.pythonanywhere.com:/home/flowfx/bare-repos/unkenmathe.git
+  - git push -f pythonanywhere master
+  - python .travis/reload-webapp.py
 notifications:
   email: false
