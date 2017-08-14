@@ -13,3 +13,5 @@ class ExerciseFactory(DjangoModelFactory):
         model = Exercise
 
     text = faker('sentence')
+    text_html = ''
+    text_tex = ''
