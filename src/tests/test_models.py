@@ -30,6 +30,22 @@ class TestExerciseModel:
         html = '''<h1>Title</h1>'''
         assert ex.text_html.startswith(html)
 
+    def test_text_is_rendered_as_tex_on_save(self, mocker):
+        # GIVEN a new Exercise with given Markdown/LaTeX text and empty text_tex
+        ex = factories.ExerciseFactory.build(
+            text=MD,
+        )
+        assert ex.text_tex == ''
+
+        mocker.patch('um.exercises.models.Exercise.super_save', MagicMock(name="super_save"))
+
+        # WHEN saving the exercise
+        ex.save()
+
+        # THEN there is the rendered HTML
+        tex = '''\section{Title}'''
+        assert ex.text_tex.startswith(tex)
+
     def test_render_html_renders_markdown_to_html(self):
         # GIVEN an exercise and a string of markdown text
         ex = factories.ExerciseFactory.build(

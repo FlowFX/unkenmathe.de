@@ -38,5 +38,6 @@ class Exercise(models.Model):
     def save(self, *args, **kwargs) -> None:
         """Do stuff when saving the Exercise."""
         self.render_html()
+        self.render_tex()
 
         self.super_save(*args, **kwargs)             # Call the "real" save() method.
