@@ -16,11 +16,7 @@ class TestExerciseModel:
 
     def test_text_is_rendered_as_html_on_save(self, mocker):
         # GIVEN a new Exercise with given Markdown/LaTeX text and empty text_html
-        ex = factories.ExerciseFactory.build(
-            text=MD,
-        )
-        assert ex.text_html == ''
-
+        ex = factories.ExerciseFactory.build(text=MD)
         mocker.patch('um.exercises.models.Exercise.super_save', MagicMock(name="super_save"))
 
         # WHEN saving the exercise
@@ -32,11 +28,7 @@ class TestExerciseModel:
 
     def test_text_is_rendered_as_tex_on_save(self, mocker):
         # GIVEN a new Exercise with given Markdown/LaTeX text and empty text_tex
-        ex = factories.ExerciseFactory.build(
-            text=MD,
-        )
-        assert ex.text_tex == ''
-
+        ex = factories.ExerciseFactory.build(text=MD)
         mocker.patch('um.exercises.models.Exercise.super_save', MagicMock(name="super_save"))
 
         # WHEN saving the exercise
@@ -48,9 +40,8 @@ class TestExerciseModel:
 
     def test_render_html_renders_markdown_to_html(self):
         # GIVEN an exercise and a string of markdown text
-        ex = factories.ExerciseFactory.build(
-            text=MD,
-        )
+        ex = factories.ExerciseFactory.build(text=MD)
+
         # WHEN calling the render_html method with this
         ex.render_html()
 
@@ -60,9 +51,8 @@ class TestExerciseModel:
 
     def test_render_tex_renders_markdown_to_latex(self):
         # GIVEN an exercise and a string of markdown text
-        ex = factories.ExerciseFactory.build(
-            text=MD,
-        )
+        ex = factories.ExerciseFactory.build(text=MD)
+
         # WHEN calling the render_html method with this
         ex.render_tex()
 
