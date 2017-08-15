@@ -4,7 +4,7 @@ django==1.11.4
 django-crispy-forms==1.6.1
 django-extensions==1.8.1
 psycopg2==2.7.3
-requests==2.18.3
+requests==2.18.4
 urllib3==1.22
 
 # Markdown & LaTeX
