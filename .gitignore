@@ -109,10 +109,6 @@ secrets.json
 
 # node
 node_modules
-package-lock.json
-
-# webpack
-bundle.js
 
 # CI
 deploy_key
