@@ -15,6 +15,7 @@ script = os.path.join(MODULE_DIR, 'static/js/script.js')
 
 # get path to node binary
 node = os.path.expanduser('~/.nvm/versions/node/v6.11.2/bin/node')
+node_system = 'node'
 
 
 class Exercise(models.Model):
@@ -28,8 +29,12 @@ class Exercise(models.Model):
         """Render the raw Markdown/LaTeX `text` into HTML."""
 
         string = quote(self.text)
-        command = f'{node} {script} {string}'
-        result = subprocess.run(command, check=True, shell=True, stdout=subprocess.PIPE)
+        try:
+            command = f'{node} {script} {string}'
+            result = subprocess.run(command, check=True, shell=True, stdout=subprocess.PIPE)
+        except subprocess.CalledProcessError:
+            command = f'{node_system} {script} {string}'
+            result = subprocess.run(command, check=True, shell=True, stdout=subprocess.PIPE)
 
         self.text_html = result.stdout.decode()
 
