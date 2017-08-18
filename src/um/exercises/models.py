@@ -15,6 +15,9 @@ script = os.path.join(MODULE_DIR, 'static/js/script.js')
 
 # get path to node binary
 node = os.path.expanduser('~/.nvm/versions/node/v6.11.2/bin/node')
+if not os.path.exists(node):
+    # if nvm is not used, use system binary (i.e. on Travis CI)
+    node = 'node'
 
 
 class Exercise(models.Model):
@@ -26,12 +29,11 @@ class Exercise(models.Model):
 
     def render_html(self) -> None:
         """Render the raw Markdown/LaTeX `text` into HTML."""
-
         string = quote(self.text)
         command = f'{node} {script} {string}'
-        result = subprocess.run(command, check=True, shell=True, stdout=subprocess.PIPE)
+        result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
 
-        self.text_html = result.stdout.decode()
+        self.text_html = result.decode()
 
     def render_tex(self) -> None:
         """Render the raw Markdown/LaTeX `text` into LaTeX code."""
