@@ -1,5 +1,6 @@
 """Exercise models."""
 import os
+import subprocess
 
 # https://docs.python.org/3.6/library/shlex.html#shlex.quote
 from shlex import quote
@@ -8,10 +9,12 @@ from django.db import models
 
 import pypandoc
 
-from Naked.toolshed.shell import muterun_js
-
+# get path to node script
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
 script = os.path.join(MODULE_DIR, 'static/js/script.js')
+
+# get path to node binary
+node = os.path.expanduser('~/.nvm/versions/node/v6.11.2/bin/node')
 
 
 class Exercise(models.Model):
@@ -23,7 +26,11 @@ class Exercise(models.Model):
 
     def render_html(self) -> None:
         """Render the raw Markdown/LaTeX `text` into HTML."""
-        result = muterun_js(script, quote(self.text))
+
+        string = quote(self.text)
+        command = f'{node} {script} {string}'
+        result = subprocess.run(command, check=True, shell=True, stdout=subprocess.PIPE)
+
         self.text_html = result.stdout.decode()
 
     def render_tex(self) -> None:
