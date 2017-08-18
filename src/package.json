@@ -12,15 +12,14 @@
   "author": "Florian Posdziech <hallo@flowfx.de>",
   "license": "MIT",
   "devDependencies": {
-    "babel": "^6.23.0",
-    "babel-loader": "^7.1.1",
     "css-loader": "^0.28.4",
-    "katex": "^0.7.1",
-    "markdown-it": "^8.3.2",
-    "markdown-it-katex": "^2.0.3",
     "style-loader": "^0.18.2",
     "webpack": "^3.5.2",
     "webpack-bundle-tracker": "^0.2.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "katex": "^0.8.2",
+    "markdown-it": "^8.3.2",
+    "markdown-it-katex": "^2.0.3"
+  }
 }

@@ -19,8 +19,8 @@ before_install:
   - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
 install:
   - sudo apt-get install -y texlive-latex-base pandoc
-  - npm install markdown-it markdown-it-katex katex
   - pip install -q -r requirements/testing.txt
+  - (cd src/ && npm install)
 script:
   - cd src/
   - echo "{}" > secrets.json
