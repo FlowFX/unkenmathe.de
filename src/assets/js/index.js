@@ -1,6 +1,5 @@
 // load custom CSS
 import './style.css';
-import Vue from 'vue'
 
 // initialize markdown-it and katex
 let md = require('markdown-it')('commonmark');
@@ -10,7 +9,6 @@ md.use(mk);
 
 let app = new Vue({
   el: '#app',
-  delimiters: ['[', ']'],
   data: {
     input: exercise_text,
   },
