@@ -6,10 +6,19 @@ from mock import MagicMock
 
 # Some markdown text
 MD = '''# Title
-This is some **bold** text.
+Dies ist ein [Markdown](https://daringfireball.net/projects/markdown/)-Dokument mit der Möglichkeit, mathematische Ausdrücke einzugeben.
 
-$$ 5 + x = 5 $$
-'''
+Die Vorschau folgt der CommonMark-Spezifikation. Alle mathematischen Ausdrücke nutzen die LaTeX-Syntax.
+
+### Aufgabe 1
+Hier ist eine Gleichung:
+
+$$ 2 - x = 5 $$
+
+### Aufgabe 2
+Mathematische Ausdrücke wie $x=5$ können auch im Text stehen. Es geht aber auch komplizierter:
+
+$$ \\int_\{0\}^{\infty} dx x^2 = 99 $$'''
 
 
 class TestExerciseModel:
@@ -59,4 +68,4 @@ class TestExerciseModel:
         # THEN the `text_tex` model field is filled with LaTeX
         tex = '''\section{Title}'''
         assert ex.text_tex.startswith(tex)
-        assert '\[ 5 + x = 5 \]' in ex.text_tex
+        assert '\[ 2 - x = 5 \]' in ex.text_tex
