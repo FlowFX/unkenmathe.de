@@ -1,6 +1,6 @@
 """Form definitions."""
 from crispy_forms.helper import FormHelper, Layout
-from crispy_forms.layout import Div, Field, Fieldset, Submit
+from crispy_forms.layout import Field, Fieldset, Submit
 
 from django import forms
 

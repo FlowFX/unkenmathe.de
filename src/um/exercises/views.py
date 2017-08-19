@@ -10,6 +10,8 @@ from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from .forms import ExerciseForm
 from .models import Exercise
 
+from ..core.jinja2 import jinja2_latex_env
+
 from django.http import HttpResponse
 
 
@@ -21,9 +23,13 @@ def exercise_pdf_view(request, pk):
         obj.render_tex()
 
     # Create PDF
-    template = '\\documentclass{article}\n\\begin{document}\n' + obj.text_tex + '\n\\end{document}'
+    env = jinja2_latex_env
+    template = env.get_template('exercise_detail.j2.tex')
+    context = {'exercise': obj, }
 
-    encoded_template = template.encode('utf-8')
+    rendered_template = template.render(context)
+
+    encoded_template = rendered_template.encode('utf-8')
 
     with tempfile.TemporaryDirectory() as tempdir:
         for _ in range(2):  # noqa: F402

@@ -6,7 +6,8 @@ from mock import MagicMock
 
 # Some markdown text
 MD = '''# Title
-Dies ist ein [Markdown](https://daringfireball.net/projects/markdown/)-Dokument mit der Möglichkeit, mathematische Ausdrücke einzugeben.
+Dies ist ein [Markdown](https://daringfireball.net/projects/markdown/)-Dokument mit der Möglichkeit,
+mathematische Ausdrücke einzugeben.
 
 Die Vorschau folgt der CommonMark-Spezifikation. Alle mathematischen Ausdrücke nutzen die LaTeX-Syntax.
 
