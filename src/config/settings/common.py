@@ -32,7 +32,7 @@ def get_secret(setting, secrets=secrets):
 
 # Core
 ALLOWED_HOSTS = []
-DEBUG = True
+DEBUG = False
 ROOT_URLCONF = 'config.urls'
 SECRET_KEY = get_secret('DJANGO_SECRET_KEY'),
 

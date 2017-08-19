@@ -1,0 +1,52 @@
+\documentclass{article}
+
+%# Encodings
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+%# Language
+\usepackage[german]{babel}
+
+%# Margins
+\usepackage{geometry}
+\geometry{
+  paper=a4paper,
+  width=6.5in,    %# .content {width: 7.0in, margin-left: auto, margin-right: auto}
+  top=0.9in,      %# .content {margin-top: 0.9in}
+  bottom=0.7in,   %# .content {margin-bottom: 0.9in}
+  footskip=0.7in, %# footer {margin-top: 50px}
+  includefoot,    %# include the footer into calculation of total text height
+}
+
+%# Paragraph indentation
+\setlength{\parindent}{0em}
+%# Paragraph spacing
+\setlength{\parskip}{1.0em}
+%# line spacing
+%#\linespread{0.7}
+
+%# Font families
+%#\usepackage[sfdefault]{roboto}  % default font
+
+
+%# Headers and footers
+%# cf. https://www.sharelatex.com/learn/Headers_and_footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}  %# clear all headers and footers
+
+\renewcommand{\headrule}{}  %# header {border: none}
+\renewcommand{\footrulewidth}{.5pt}  %# footer {border-top: 0.5px solid}
+\renewcommand{\footruleskip}{12pt}  %# footer {padding-top: 20px}
+
+\usepackage{lastpage}
+%# \lfoot{\footerstyle \thepage \hspace{1pt} von \pageref{LastPage}}  %# footer left
+\rfoot{CC-BY, \href{https://www.unkenmathe.de}{unkenmathe.de}}  %# footer right
+
+%# Cross-references
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    pdftitle={Aufgabe},
+    pdfauthor={Unkenmathe}
+}

@@ -112,3 +112,12 @@ node_modules
 
 # CI
 deploy_key
+
+# LaTeX
+*.j2.aux
+*.j2.fdb_latexmk
+*.j2.fls
+*.j2.log
+*.j2.out
+*.j2.pdf
+*.j2.synctex.gz
