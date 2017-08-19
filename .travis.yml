@@ -18,7 +18,7 @@ before_install:
   - sudo chmod +x /usr/local/share/chromedriver
   - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
 install:
-  - sudo apt-get install -y texlive-latex-base pandoc
+  - sudo apt-get install -y texlive-latex-recommended texlive-fonts-recommended pandoc
   - pip install -q -r requirements/testing.txt
   - (cd src/ && npm install --production)
 script:
