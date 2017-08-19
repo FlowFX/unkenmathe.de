@@ -19,7 +19,7 @@ def exercise_pdf_view(request, pk):
     """Return PDF version of the single exercise."""
     obj = Exercise.objects.get(pk=pk)
 
-    if not obj.text_tex:  # pragma: no
+    if not obj.text_tex:  # pragma: no cover
         obj.render_tex()
 
     # Create PDF

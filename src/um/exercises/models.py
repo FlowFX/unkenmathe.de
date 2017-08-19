@@ -15,7 +15,7 @@ script = os.path.join(MODULE_DIR, 'static/js/script.js')
 
 # get path to node binary
 node = os.path.expanduser('~/.nvm/versions/node/v6.11.2/bin/node')
-if not os.path.exists(node):
+if not os.path.exists(node):  # pragma: no cover
     # if nvm is not used, use system binary (i.e. on Travis CI)
     node = 'node'
 
