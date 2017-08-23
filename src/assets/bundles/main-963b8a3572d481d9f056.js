@@ -3117,7 +3117,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 // initialize markdown-it and katex
-let md = __webpack_require__(27)();
+let md = __webpack_require__(27)({
+  html: true,           // Enable HTML tags in source
+  typographer:  true,   // Enable German quotes
+  quotes: '„“‚‘'
+});
 let mk = __webpack_require__(84);
 
 md.use(mk);

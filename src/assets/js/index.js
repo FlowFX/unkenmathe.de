@@ -2,7 +2,11 @@
 import './style.css';
 
 // initialize markdown-it and katex
-let md = require('markdown-it')();
+let md = require('markdown-it')({
+  html: true,           // Enable HTML tags in source
+  typographer:  true,   // Enable German quotes
+  quotes: '„“‚‘'
+});
 let mk = require('markdown-it-katex');
 
 md.use(mk);
