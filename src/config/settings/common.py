@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
 
 # Database
@@ -112,3 +113,52 @@ WEBPACK_LOADER = {
 
 # Crispy Forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# Error tracking
+ROLLBAR = {
+    'access_token': get_secret("ROLLBAR_ACCESS_TOKEN"),
+    'environment': get_secret("ENVIRONMENT"),
+    'branch': 'master',
+    'root': BASE_DIR,
+}
+
+
+# Logging
+# cf. https://www.miximum.fr/blog/an-effective-logging-strategy-with-django/
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'formatters': {
+        'verbose': {
+            'format': '[contactor] %(levelname)s %(asctime)s %(message)s'
+        },
+    },
+    'handlers': {
+        # Send all messages to console
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+        'rollbar': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'access_token': ROLLBAR['access_token'],
+            'environment': ROLLBAR['environment'],
+            'class': 'rollbar.logger.RollbarHandler'
+        },
+    },
+    'loggers': {
+        # This is the "catch all" logger
+        '': {
+            'handlers': ['console'],
+            'level': DEBUG,
+            'propagate': False,
+        },
+    }
+}

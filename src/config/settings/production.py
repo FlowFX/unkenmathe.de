@@ -10,3 +10,6 @@ SECURE_SSL_REDIRECT = True
 # Configure location of static files
 STATIC_ROOT = os.path.abspath('/var/www/static/unkenmathe.de')
 MEDIA_ROOT = os.path.abspath('/var/www/media/unkenmathe.de')
+
+# Use Rollbar in production
+LOGGING['loggers']['']['handlers'].append('rollbar')
