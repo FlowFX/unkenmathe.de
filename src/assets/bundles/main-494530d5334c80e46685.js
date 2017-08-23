@@ -3117,7 +3117,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 // initialize markdown-it and katex
-let md = __webpack_require__(27)('commonmark');
+let md = __webpack_require__(27)();
 let mk = __webpack_require__(84);
 
 md.use(mk);
