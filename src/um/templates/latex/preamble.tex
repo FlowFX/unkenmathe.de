@@ -23,11 +23,10 @@
 %# Paragraph spacing
 \setlength{\parskip}{1.0em}
 %# line spacing
-%#\linespread{0.7}
+\onehalfspacing
 
-%# Font families
-%#\usepackage[sfdefault]{roboto}  % default font
-
+%# Font
+\renewcommand{\familydefault}{\sfdefault}
 
 %# Headers and footers
 %# cf. https://www.sharelatex.com/learn/Headers_and_footers
@@ -39,8 +38,6 @@
 \renewcommand{\footrulewidth}{.5pt}  %# footer {border-top: 0.5px solid}
 \renewcommand{\footruleskip}{12pt}  %# footer {padding-top: 20px}
 
-\usepackage{lastpage}
-%# \lfoot{\footerstyle \thepage \hspace{1pt} von \pageref{LastPage}}  %# footer left
 \rfoot{CC-BY, \href{https://www.unkenmathe.de}{unkenmathe.de}}  %# footer right
 
 %# Cross-references
