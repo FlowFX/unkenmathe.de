@@ -1,9 +1,11 @@
 """ModelFactory for Exercises."""
 from factory.django import DjangoModelFactory
 
+from um.core.factories import UserFactory
 from .models import Exercise
 
 from factory import Faker as faker
+from factory import SubFactory
 
 
 class ExerciseFactory(DjangoModelFactory):
@@ -12,6 +14,7 @@ class ExerciseFactory(DjangoModelFactory):
     class Meta:
         model = Exercise
 
+    author = SubFactory(UserFactory)
     text = faker('sentence')
     text_html = ''
     text_tex = ''

@@ -23,6 +23,11 @@ if not os.path.exists(node):  # pragma: no cover
 class Exercise(models.Model):
     """The main exercise model."""
 
+    author = models.ForeignKey(
+        'authtools.User',
+        on_delete=models.SET_NULL,
+        null=True,
+    )
     text = models.TextField(verbose_name='Exercise text, Markdown/LaTeX')
     text_html = models.TextField(verbose_name='Exercise text, rendered as HTML')
     text_tex = models.TextField(verbose_name='Exercise text, rendered as LaTeX')
