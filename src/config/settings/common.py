@@ -66,7 +66,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
 
 
@@ -176,13 +175,6 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-        },
-        'rollbar': {
-            'level': 'INFO',
-            'filters': ['require_debug_false'],
-            'access_token': ROLLBAR['access_token'],
-            'environment': ROLLBAR['environment'],
-            'class': 'rollbar.logger.RollbarHandler'
         },
     },
     'loggers': {
