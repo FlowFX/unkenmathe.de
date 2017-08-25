@@ -9,7 +9,7 @@ from factory import Faker as faker
 class UserFactory(DjangoModelFactory):
     """Model factory for the User model."""
 
-    class Meta:
+    class Meta:  # noqa: D101
         model = User
 
     email = faker('email')

@@ -1,3 +1,4 @@
+"""Utilities for Jinja2/LaTeX stuff."""
 from jinja2 import Environment, PackageLoader
 
 

@@ -11,7 +11,7 @@ from factory import SubFactory
 class ExerciseFactory(DjangoModelFactory):
     """Model factory for the Exercise model."""
 
-    class Meta:
+    class Meta:  # noqa: D101
         model = Exercise
 
     author = SubFactory(UserFactory)

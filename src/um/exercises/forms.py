@@ -8,7 +8,9 @@ from .models import Exercise
 
 
 class ExerciseForm(forms.ModelForm):
-    class Meta:
+    """ModelForm for the Exercise model."""
+
+    class Meta:  # noqa: D101
         model = Exercise
         fields = ['text']
 
@@ -20,6 +22,7 @@ class ExerciseForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        """Add crispy-forms helper and layout to form."""
         super(ExerciseForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = 'id-ExerciseForm'
