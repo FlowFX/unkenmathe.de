@@ -35,14 +35,18 @@ ALLOWED_HOSTS = []
 DEBUG = False
 ROOT_URLCONF = 'config.urls'
 SECRET_KEY = get_secret('DJANGO_SECRET_KEY'),
+SITE_ID = 1
 
 
 # Apps
 INSTALLED_APPS = [
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
     'django_extensions',
+    'allauth',
+    'allauth.account',
     'crispy_forms',
     'webpack_loader',
     'um.exercises',
@@ -91,6 +95,16 @@ TEMPLATES = [
         },
     },
 ]
+
+
+# User authentication
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 
 # Static files
