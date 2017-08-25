@@ -42,11 +42,14 @@ SITE_ID = 1
 INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.sites',
+    'django.contrib.sessions',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
     'django_extensions',
+    'authtools',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'crispy_forms',
     'webpack_loader',
     'um.exercises',
@@ -98,6 +101,13 @@ TEMPLATES = [
 
 
 # User authentication
+AUTH_USER_MODEL = 'authtools.User'
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
