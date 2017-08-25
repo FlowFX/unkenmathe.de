@@ -24,6 +24,13 @@ $$ \\int_\{0\}^{\infty} dx x^2 = 99 $$'''
 
 class TestExerciseModel:
 
+    def test_exercise_has_author(self):
+        # GIVEN an exercise
+        ex = factories.ExerciseFactory.build()
+
+        # THEN it has an associated author
+        assert ex.author
+
     def test_text_is_rendered_as_html_on_save(self, mocker):
         # GIVEN a new Exercise with given Markdown/LaTeX text and empty text_html
         ex = factories.ExerciseFactory.build(text=MD)
