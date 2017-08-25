@@ -3,10 +3,22 @@ language: python
 cache: pip
 python:
 - 3.6
+services:
+  - postgresql
 addons:
   chrome: beta
+  postgresql: "9.4"
   ssh_known_hosts: ssh.pythonanywhere.com
+env:
+  global:
+    - DB_NAME=travis_ci_test
+    - DB_USER=postgres
+    - DB_PASSWORD=""
+    - DB_HOST=localhost
+    - DB_PORT=5432
 before_install:
+  # create database
+  - psql -c 'create database travis_ci_test;' -U postgres
   # decrypt private deployment key
   - openssl aes-256-cbc -K $encrypted_8feb27c682bd_key -iv $encrypted_8feb27c682bd_iv -in .travis/deploy_key.enc -out .travis/deploy_key -d
   # install chromedriver
