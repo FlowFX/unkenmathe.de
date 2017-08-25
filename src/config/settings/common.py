@@ -41,10 +41,12 @@ SITE_ID = 1
 # Apps
 INSTALLED_APPS = [
     'django.contrib.auth',
-    'django.contrib.sites',
-    'django.contrib.sessions',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
+    'django.contrib.messages',
+    'django.contrib.sessions',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'django_extensions',
     'authtools',
     'allauth',
