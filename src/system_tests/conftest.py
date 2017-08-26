@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import make_password
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 
-from um.core.factories import UserFactory
+from um.core.factories import User, UserFactory
 
 import pytest
 
@@ -40,6 +40,18 @@ def wait_for(fn):
             time.sleep(0.5)
 
 
+def wait_for_true(expression):
+    """Explicit wait helper function for Selenium functional tests."""
+    start_time = time.time()
+    while True:
+        if expression:
+            break
+        else:
+            if time.time() - start_time > MAX_WAIT:
+                raise WebDriverException('this is taking too long')
+            time.sleep(0.5)
+
+
 @pytest.fixture(scope="session")
 def anon_browser():
     """Provide a selenium webdriver instance.
@@ -60,7 +72,7 @@ def anon_browser():
 @pytest.fixture()
 def user(db):
     """Add a test user to the database."""
-    user_ = UserFactory.create(
+    user_ = User.objects.get_or_create(
         name=TESTUSER,
         email=TESTEMAIL,
         password=make_password(TESTPASSWORD),
