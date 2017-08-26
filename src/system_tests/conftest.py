@@ -2,13 +2,21 @@
 import re
 import time
 
+from django.contrib.auth.hashers import make_password
+
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
+
+from um.core.factories import UserFactory
 
 import pytest
 
 
 MAX_WAIT = 10
+
+TESTUSER = 'Test User'
+TESTEMAIL = 'test@example.com'
+TESTPASSWORD = 'password'
 
 
 def assert_regex(text: str, regex: str):
@@ -33,7 +41,7 @@ def wait_for(fn):
 
 
 @pytest.fixture(scope="session")
-def browser():
+def anon_browser():
     """Provide a selenium webdriver instance.
 
     Use headless Chrome browser.
@@ -47,3 +55,29 @@ def browser():
     yield browser_
 
     browser_.quit()
+
+
+@pytest.fixture()
+def user(db):
+    """Add a test user to the database."""
+    user_ = UserFactory.create(
+        name=TESTUSER,
+        email=TESTEMAIL,
+        password=make_password(TESTPASSWORD),
+    )
+
+    return user_
+
+
+@pytest.fixture()
+def browser(anon_browser, client, live_server, user):  # pylint: disable=redefined-outer-name
+    """Return a browser instance with logged-in user session."""
+    browser = anon_browser
+    client.login(email=TESTEMAIL, password=TESTPASSWORD)
+    cookie = client.cookies['sessionid']
+
+    browser.get(live_server.url)  # selenium will set cookie domain based on current page domain
+    browser.add_cookie({'name': 'sessionid', 'value': cookie.value, 'secure': False, 'path': '/'})
+    browser.refresh()  # need to update page for logged in user
+
+    return browser

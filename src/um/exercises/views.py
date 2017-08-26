@@ -54,6 +54,20 @@ class ExerciseCreateView(CreateView):
     success_url = reverse_lazy('index')
     context_object_name = 'exercise'
 
+    def form_valid(self, form):
+        """Add the current user as the original author of the exercise."""
+        self.object = form.save(commit=False)
+        self.object.author = self.get_form_kwargs()['user']
+        self.object.save()
+
+        return super(ExerciseCreateView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        """Add user as keyword argument."""
+        kwargs = super(ExerciseCreateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
 
 class ExerciseUpdateView(UpdateView):
     """Update view for an exercise."""

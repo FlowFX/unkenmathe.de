@@ -13,4 +13,4 @@ MEDIA_ROOT = os.path.abspath('/var/www/media/unkenmathe.de')
 
 # Use Rollbar in production
 MIDDLEWARE += 'rollbar.contrib.django.middleware.RollbarNotifierMiddleware'
-LOGGING['loggers']['']['handlers'].append('rollbar')
+# LOGGING['loggers']['']['handlers'].append('rollbar')

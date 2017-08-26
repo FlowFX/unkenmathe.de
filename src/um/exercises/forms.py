@@ -1,4 +1,6 @@
 """Form definitions."""
+from braces.forms import UserKwargModelFormMixin
+
 from crispy_forms.helper import FormHelper, Layout
 from crispy_forms.layout import Field, Fieldset, Submit
 
@@ -7,7 +9,7 @@ from django import forms
 from .models import Exercise
 
 
-class ExerciseForm(forms.ModelForm):
+class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
     """ModelForm for the Exercise model."""
 
     class Meta:  # noqa: D101
@@ -24,6 +26,8 @@ class ExerciseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         """Add crispy-forms helper and layout to form."""
         super(ExerciseForm, self).__init__(*args, **kwargs)
+
+        # add Crispy Forms foo
         self.helper = FormHelper()
         self.helper.form_id = 'id-ExerciseForm'
 
