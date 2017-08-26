@@ -176,13 +176,13 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
         },
-        'rollbar': {
-            'level': 'INFO',
-            'filters': ['require_debug_false'],
-            'access_token': ROLLBAR['access_token'],
-            'environment': ROLLBAR['environment'],
-            'class': 'rollbar.logger.RollbarHandler'
-        },
+        # 'rollbar': {
+        #     'level': 'INFO',
+        #     'filters': ['require_debug_false'],
+        #     'access_token': ROLLBAR['access_token'],
+        #     'environment': ROLLBAR['environment'],
+        #     'class': 'rollbar.logger.RollbarHandler'
+        # },
     },
     'loggers': {
         # This is the "catch all" logger
