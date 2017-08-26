@@ -1,4 +1,5 @@
 """Unit tests for the forms."""
+from um.core import factories
 from um.exercises import forms
 
 import pytest
@@ -11,11 +12,12 @@ class TestExerciseForms:
     ]
 
     @pytest.mark.parametrize('text, validity', TESTPARAMS_EXERCISE)
-    def test_general_information_form(self, text, validity):
+    def test_exercise_form(self, text, validity):
         """Unit test the Exercise Form."""
         # WHEN submitting the form with data
         form = forms.ExerciseForm(
-            data={'text': text}
+            data={'text': text},
+            user=factories.UserFactory.build()
         )
 
         # THEN it validates -- or not

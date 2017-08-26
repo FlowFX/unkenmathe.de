@@ -25,8 +25,7 @@ class Exercise(models.Model):
 
     author = models.ForeignKey(
         'authtools.User',
-        on_delete=models.SET_NULL,
-        null=True,
+        on_delete=models.PROTECT,
     )
     text = models.TextField(verbose_name='Exercise text, Markdown/LaTeX')
     text_html = models.TextField(verbose_name='Exercise text, rendered as HTML')

@@ -1,6 +1,7 @@
 # Common requirements
 
 django==1.11.4
+django-braces==1.11.0
 django-crispy-forms==1.6.1
 django-extensions==1.9.0
 django-webpack-loader==0.5.0

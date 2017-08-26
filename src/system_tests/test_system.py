@@ -66,7 +66,9 @@ def test_user_edits_an_exercise(browser, live_server):
     assert 'This exercise ' in browser.page_source
 
 
-def test_user_views_an_exercise(browser, live_server):
+def test_anonymous_user_views_an_exercise(anon_browser, live_server):
+    browser = anon_browser
+
     # GIVEN an existing exercise
     ex = ExerciseFactory.create()
 
