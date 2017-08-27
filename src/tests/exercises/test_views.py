@@ -7,7 +7,10 @@ from um.core.factories import UserFactory
 from um.exercises import factories, models, views
 
 
-exercise_text = {'text': 'What is 5 + 4?'}
+exercise_data = {
+    'license': 'cc-by',
+    'text': 'What is 5 + 4?',
+}
 
 
 class TestBasicViews:
@@ -57,19 +60,19 @@ class TestExerciseCRUDViews:
 
         # WHEN making a post request to the create view
         url = reverse('exercises:create')
-        request = rf.post(url, data=exercise_text)
+        request = rf.post(url, data=exercise_data)
         request.user = user
         views.ExerciseCreateView.as_view()(request)
 
         # THEN the user gets attached to the exercise as the author
-        ex = models.Exercise.objects.first()
+        ex = models.Exercise.objects.last()
         assert ex.author == user
 
     def test_post_to_create_view_redirects_to_home_page(self, db, rf):
         # GIVEN any state
         # WHEN making a post request to the create view
         url = reverse('exercises:create')
-        request = rf.post(url, data=exercise_text)
+        request = rf.post(url, data=exercise_data)
         request.user = UserFactory.create()
         response = views.ExerciseCreateView.as_view()(request, url)
 
@@ -99,7 +102,7 @@ class TestExerciseCRUDViews:
 
         # WHEN making a post request to the create view
         url = reverse('exercises:update', kwargs={'pk': ex.id})
-        request = rf.post(url, data=exercise_text)
+        request = rf.post(url, data=exercise_data)
         request.user = UserFactory.create()
         views.ExerciseUpdateView.as_view()(request, pk=ex.id)
 
@@ -113,7 +116,7 @@ class TestExerciseCRUDViews:
 
         # WHEN making a post request to the create view
         url = reverse('exercises:update', kwargs={'pk': ex.id})
-        response = client.post(url, data=exercise_text)
+        response = client.post(url, data=exercise_data)
 
         # THEN it redirects back to the home page
         assert response.status_code == 302

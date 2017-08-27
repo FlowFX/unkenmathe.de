@@ -16,7 +16,7 @@ class TestExerciseForms:
         """Unit test the Exercise Form."""
         # WHEN submitting the form with data
         form = forms.ExerciseForm(
-            data={'text': text},
+            data={'text': text, 'license': 'cc-by'},
             user=factories.UserFactory.build()
         )
 

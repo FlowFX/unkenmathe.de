@@ -14,7 +14,7 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
 
     class Meta:  # noqa: D101
         model = Exercise
-        fields = ['text']
+        fields = ['text', 'license']
 
         labels = {
             'text': 'Aufgabentext',
