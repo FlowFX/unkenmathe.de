@@ -23,6 +23,19 @@ if not os.path.exists(node):  # pragma: no cover
 class Exercise(models.Model):
     """The main exercise model."""
 
+    CC_BY = 'cc-by'
+    CC_BY_SA = 'cc-by-sa'
+    CC_BY_ND = 'cc-by-nd'
+    LICENCE_CHOICES = (
+        (CC_BY, 'CC BY'),
+        (CC_BY_SA, 'CC BY-SA'),
+        (CC_BY_ND, 'CC BY-ND'),
+    )
+    license = models.CharField(
+        max_length=15,
+        choices=LICENCE_CHOICES,
+        default=CC_BY
+    )
     author = models.ForeignKey(
         'authtools.User',
         on_delete=models.PROTECT,
