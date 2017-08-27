@@ -16,6 +16,9 @@
             {{ exercise.text_html|safe }}
             </div>
         </div>
+        <div class="card-footer text-muted">
+          Aufgabe von {{ exercise.author.name }} / <a href="{{ exercise.license_url }}"> {{ exercise.get_license_display }}</a>
+        </div>
     </div>
 
 </div>

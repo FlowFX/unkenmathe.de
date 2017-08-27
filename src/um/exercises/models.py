@@ -2,6 +2,8 @@
 import os
 import subprocess
 
+from um.core.constants import LICENCE_CHOICES, LICENCE_URLS
+
 # https://docs.python.org/3.6/library/shlex.html#shlex.quote
 from shlex import quote
 
@@ -23,18 +25,10 @@ if not os.path.exists(node):  # pragma: no cover
 class Exercise(models.Model):
     """The main exercise model."""
 
-    CC_BY = 'cc-by'
-    CC_BY_SA = 'cc-by-sa'
-    CC_BY_ND = 'cc-by-nd'
-    LICENCE_CHOICES = (
-        (CC_BY, 'CC BY'),
-        (CC_BY_SA, 'CC BY-SA'),
-        (CC_BY_ND, 'CC BY-ND'),
-    )
     license = models.CharField(
         max_length=15,
         choices=LICENCE_CHOICES,
-        default=CC_BY
+        default='cc-by'
     )
     author = models.ForeignKey(
         'authtools.User',
@@ -43,6 +37,11 @@ class Exercise(models.Model):
     text = models.TextField(verbose_name='Exercise text, Markdown/LaTeX')
     text_html = models.TextField(verbose_name='Exercise text, rendered as HTML')
     text_tex = models.TextField(verbose_name='Exercise text, rendered as LaTeX')
+
+    @property
+    def license_url(self) -> str:
+        """Return the URL to the chosen license."""
+        return LICENCE_URLS[self.license]
 
     def render_html(self) -> None:
         """Render the raw Markdown/LaTeX `text` into HTML."""
