@@ -2,6 +2,8 @@
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
+from braces.views import LoginRequiredMixin
+
 from .forms import ExerciseForm
 from .models import Exercise
 
@@ -46,7 +48,7 @@ class ExcerciseListView(ListView):
     template_name = 'exercises/exercise_list.html'
 
 
-class ExerciseCreateView(CreateView):
+class ExerciseCreateView(LoginRequiredMixin, CreateView):
     """Create view for a new exercise."""
 
     model = Exercise

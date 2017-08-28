@@ -7,6 +7,8 @@ import magic
 from um.core.factories import UserFactory
 from um.exercises import factories, models, views
 
+import pytest
+
 
 exercise_data = {
     'license': 'cc-by',
@@ -42,18 +44,31 @@ class TestBasicViews:
         assert ex2.text in response.content.decode()
 
 
-class TestExerciseCRUDViews:
+class TestExerciseCreateView:
 
-    def test_get_create_view(self, client, rf):
-        # GIVEN any state
+    TESTPARAMS_CREATE_VIEW_GET = [
+        ('anonymous', 302),
+        ('authenticated', 200),
+        ('staff', 200)]
+
+    @pytest.mark.parametrize('user_status, status_code', TESTPARAMS_CREATE_VIEW_GET)
+    def test_create_view_doesnt_allow_anonymous_user(self, client, rf, user_status, status_code):
+        # GIVEN a user
+        if user_status == 'anonymous':
+            user = AnonymousUser()
+        elif user_status == 'authenticated':
+            user = UserFactory.build()
+        elif user_status == 'staff':
+            user = UserFactory.build(is_staff=True)
+
         # WHEN calling the exercise create view
         url = reverse('exercises:create')
         request = rf.get(url)
-        request.user = AnonymousUser()
+        request.user = user
         response = views.ExerciseCreateView.as_view()(request)
 
-        # THEN it's there
-        assert response.status_code == 200
+        # THEN it's there, or not
+        assert response.status_code == status_code
 
     def test_post_to_create_view_adds_author_to_object(self, db, rf):
         # GIVEN an empty database
@@ -82,6 +97,9 @@ class TestExerciseCRUDViews:
         # THEN it redirects back to the home page
         assert response.status_code == 302
         assert response.url == '/'
+
+
+class TestExerciseUpdateView:
 
     def test_get_update_view(self, rf, mocker):
         # GIVEN an existing exercise
@@ -127,6 +145,9 @@ class TestExerciseCRUDViews:
         assert response.status_code == 302
         assert response.url == '/'
 
+
+class TestExerciseDetailView:
+
     def test_get_detail_view(self, rf, mocker):
         # GIVEN an existing exercise
         ex = factories.ExerciseFactory.build()
@@ -141,7 +162,7 @@ class TestExerciseCRUDViews:
         assert response.status_code == 200
 
 
-class TestExercisePDFViews:
+class TestExercisePDFView:
 
     def test_pdf_view_returns_pdf(self, rf, mocker):
         # GIVEN an exercise
