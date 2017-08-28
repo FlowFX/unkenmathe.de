@@ -176,10 +176,42 @@ class TestExerciseDetailView:
         # WHEN calling the exercise detail view
         url = reverse('exercises:detail', kwargs={'pk': ex.id})
         request = rf.get(url)
+        request.user = AnonymousUser()
         response = views.ExerciseDetailView.as_view()(request, pk=ex.id)
 
         # THEN it's there
         assert response.status_code == 200
+
+    TESTPARAMS_CAN_EDIT = [
+        ('anonymous', False),
+        ('authenticated', False),
+        ('author', True),
+        ('staff', True)]
+
+    @pytest.mark.parametrize('user_status, can_edit', TESTPARAMS_CAN_EDIT)
+    def test_context_includes_variable_can_edit(self, rf, mocker, user_status, can_edit):
+        # GIVEN a user
+        if user_status == 'anonymous':
+            user = AnonymousUser()
+        elif user_status == 'staff':
+            user = UserFactory.build(is_staff=True)
+        else:
+            user = UserFactory.build()
+
+        # AND an existing exercise
+        ex = factories.ExerciseFactory.build()
+        if user_status == 'author':
+            ex.author = user
+        mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
+
+        # WHEN calling the exercise detail view
+        url = reverse('exercises:detail', kwargs={'pk': ex.id})
+        request = rf.get(url)
+        request.user = user
+        response = views.ExerciseDetailView.as_view()(request, pk=ex.id)
+
+        # THEN the response includes the context variable `can_edit`
+        assert response.context_data.get('can_edit') == can_edit
 
 
 class TestExercisePDFView:
