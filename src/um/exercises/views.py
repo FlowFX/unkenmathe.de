@@ -1,8 +1,7 @@
 """Views for exercise app."""
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
-
-from braces.views import LoginRequiredMixin
 
 from .forms import ExerciseForm
 from .models import Exercise
@@ -71,13 +70,18 @@ class ExerciseCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
-class ExerciseUpdateView(UpdateView):
+class ExerciseUpdateView(UserPassesTestMixin, UpdateView):
     """Update view for an exercise."""
 
     model = Exercise
     form_class = ExerciseForm
     success_url = reverse_lazy('index')
     context_object_name = 'exercise'
+
+    def test_func(self):
+        obj = self.get_object()
+
+        return self.request.user == obj.author or self.request.user.is_staff
 
 
 class ExerciseDetailView(DetailView):

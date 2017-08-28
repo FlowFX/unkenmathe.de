@@ -101,18 +101,36 @@ class TestExerciseCreateView:
 
 class TestExerciseUpdateView:
 
-    def test_get_update_view(self, rf, mocker):
-        # GIVEN an existing exercise
+    TESTPARAMS_UPDATE_VIEW_GET = [
+        ('anonymous', 302),
+        ('authenticated', 302),
+        ('author', 200),
+        ('staff', 200)]
+
+    @pytest.mark.parametrize('user_status, status_code', TESTPARAMS_UPDATE_VIEW_GET)
+    def test_update_view_requires_staff_or_author(self, rf, mocker, user_status, status_code):
+        # GIVEN a user
+        if user_status == 'anonymous':
+            user = AnonymousUser()
+        elif user_status == 'staff':
+            user = UserFactory.build(is_staff=True)
+        else:
+            user = UserFactory.build()
+
+        # AND an existing exercise
         ex = factories.ExerciseFactory.build()
+        if user_status == 'author':
+            ex.author = user
         mocker.patch.object(views.ExerciseUpdateView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise update view
         url = reverse('exercises:update', kwargs={'pk': ex.id})
         request = rf.get(url)
+        request.user = user
         response = views.ExerciseUpdateView.as_view()(request, pk=ex.id)
 
         # THEN it's there
-        assert response.status_code == 200
+        assert response.status_code == status_code
 
     def test_post_to_update_view_preserves_the_original_author(self, db, rf):
         # GIVEN an existing exercise
@@ -134,11 +152,13 @@ class TestExerciseUpdateView:
 
     def test_post_to_update_view_redirects_to_home_page(self, db, rf):
         # GIVEN an existing exercise
-        ex = factories.ExerciseFactory.create()
+        user = UserFactory.create()
+        ex = factories.ExerciseFactory.create(author=user)
 
         # WHEN making a post request to the create view
         url = reverse('exercises:update', kwargs={'pk': ex.id})
         request = rf.post(url, data=exercise_data)
+        request.user = user
         response = views.ExerciseUpdateView.as_view()(request, pk=ex.id)
 
         # THEN it redirects back to the home page
