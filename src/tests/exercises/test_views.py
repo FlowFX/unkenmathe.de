@@ -1,4 +1,5 @@
 """Unit tests."""
+from django.contrib.auth.models import AnonymousUser
 from django.urls import reverse
 
 import magic
@@ -43,11 +44,13 @@ class TestBasicViews:
 
 class TestExerciseCRUDViews:
 
-    def test_get_create_view(self, client):
+    def test_get_create_view(self, client, rf):
         # GIVEN any state
         # WHEN calling the exercise create view
         url = reverse('exercises:create')
-        response = client.get(url)
+        request = rf.get(url)
+        request.user = AnonymousUser()
+        response = views.ExerciseCreateView.as_view()(request)
 
         # THEN it's there
         assert response.status_code == 200
@@ -80,14 +83,15 @@ class TestExerciseCRUDViews:
         assert response.status_code == 302
         assert response.url == '/'
 
-    def test_get_update_view(self, client, mocker):
+    def test_get_update_view(self, rf, mocker):
         # GIVEN an existing exercise
         ex = factories.ExerciseFactory.build()
         mocker.patch.object(views.ExerciseUpdateView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise update view
         url = reverse('exercises:update', kwargs={'pk': ex.id})
-        response = client.get(url)
+        request = rf.get(url)
+        response = views.ExerciseUpdateView.as_view()(request, pk=ex.id)
 
         # THEN it's there
         assert response.status_code == 200
@@ -110,26 +114,28 @@ class TestExerciseCRUDViews:
         updated_ex = models.Exercise.objects.get(id=ex.id)
         assert updated_ex.author == original_author
 
-    def test_post_to_update_view_redirects_to_home_page(self, db, client):
+    def test_post_to_update_view_redirects_to_home_page(self, db, rf):
         # GIVEN an existing exercise
         ex = factories.ExerciseFactory.create()
 
         # WHEN making a post request to the create view
         url = reverse('exercises:update', kwargs={'pk': ex.id})
-        response = client.post(url, data=exercise_data)
+        request = rf.post(url, data=exercise_data)
+        response = views.ExerciseUpdateView.as_view()(request, pk=ex.id)
 
         # THEN it redirects back to the home page
         assert response.status_code == 302
         assert response.url == '/'
 
-    def test_get_detail_view(self, client, mocker):
+    def test_get_detail_view(self, rf, mocker):
         # GIVEN an existing exercise
         ex = factories.ExerciseFactory.build()
         mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise detail view
         url = reverse('exercises:detail', kwargs={'pk': ex.id})
-        response = client.get(url)
+        request = rf.get(url)
+        response = views.ExerciseDetailView.as_view()(request, pk=ex.id)
 
         # THEN it's there
         assert response.status_code == 200
@@ -137,7 +143,7 @@ class TestExerciseCRUDViews:
 
 class TestExercisePDFViews:
 
-    def test_pdf_view_returns_pdf(self, mocker, rf):
+    def test_pdf_view_returns_pdf(self, rf, mocker):
         # GIVEN an exercise
         ex = factories.ExerciseFactory.build(
             text='''# A title\nAnd some text''',
