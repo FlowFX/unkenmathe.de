@@ -20,7 +20,7 @@ def test_login_of_anonymous_user(live_server, anon_browser, user):
     # but no logout
     with pytest.raises(NoSuchElementException):
         browser.find_element_by_id('id_link_to_logout')
-    
+
     # go to the LOGIN page
     browser.find_element_by_id('id_link_to_login').click()
     wait_for(lambda: browser.find_element_by_id('id_login'))

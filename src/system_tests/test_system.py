@@ -33,9 +33,9 @@ def test_florian_adds_a_new_exercise(browser, live_server):
     assert 'What is 5 + 4?' in browser.page_source
 
 
-def test_user_edits_an_exercise(browser, live_server):
+def test_user_edits_an_exercise(browser, live_server, user):
     # GIVEN an existing exercise
-    ex = ExerciseFactory.create()
+    ex = ExerciseFactory.create(author=user)
 
     # Florian goes to the home page and wants to edit this exercise
     browser.get(live_server.url)
