@@ -41,6 +41,14 @@ class TestExerciseModel:
         # AND a license URL
         assert ex.license_url
 
+    def test_exercise_has_timestamps(self, mocker):
+        # GIVEN an exercise
+        ex = factories.ExerciseFactory.build()
+
+        # THEN it has time stamps
+        assert not ex.created
+        assert not ex.modified
+
     def test_text_is_rendered_as_html_on_save(self, mocker):
         # GIVEN a new Exercise with given Markdown/LaTeX text and empty text_html
         ex = factories.ExerciseFactory.build(text=MD)
