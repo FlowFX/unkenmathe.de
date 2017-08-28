@@ -79,6 +79,7 @@ class ExerciseUpdateView(UserPassesTestMixin, UpdateView):
     context_object_name = 'exercise'
 
     def test_func(self):
+        """Test if user is staff or author of the exercise."""
         obj = self.get_object()
 
         return self.request.user == obj.author or self.request.user.is_staff

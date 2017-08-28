@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import make_password
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 
-from um.core.factories import User, UserFactory
+from um.core.factories import UserFactory
 
 import pytest
 
@@ -69,10 +69,10 @@ def anon_browser():
     browser_.quit()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="function")
 def user(db):
     """Add a test user to the database."""
-    user_ = User.objects.get_or_create(
+    user_ = UserFactory.create(
         name=TESTUSER,
         email=TESTEMAIL,
         password=make_password(TESTPASSWORD),
@@ -81,7 +81,7 @@ def user(db):
     return user_
 
 
-@pytest.fixture()
+@pytest.fixture(scope="function")
 def browser(anon_browser, client, live_server, user):  # pylint: disable=redefined-outer-name
     """Return a browser instance with logged-in user session."""
     browser = anon_browser

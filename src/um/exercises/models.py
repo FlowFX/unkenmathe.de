@@ -2,6 +2,8 @@
 import os
 import subprocess
 
+from django.conf import settings
+
 from um.core.constants import LICENCE_CHOICES, LICENCE_URLS
 
 # https://docs.python.org/3.6/library/shlex.html#shlex.quote
@@ -31,7 +33,7 @@ class Exercise(models.Model):
         default='cc-by'
     )
     author = models.ForeignKey(
-        'authtools.User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.PROTECT,
     )
     text = models.TextField(verbose_name='Exercise text, Markdown/LaTeX')
