@@ -91,3 +91,14 @@ class ExerciseDetailView(DetailView):
     model = Exercise
     success_url = reverse_lazy('index')
     context_object_name = 'exercise'
+
+    def get_context_data(self, **kwargs):
+        """Add data to the template context."""
+        context = super(ExerciseDetailView, self).get_context_data(**kwargs)
+
+        # Determine whether or not the user gets shown the edit and delete buttons
+        obj = self.get_object()
+        user = self.request.user
+        context['can_edit'] = True if user == obj.author or user.is_staff else False
+
+        return context

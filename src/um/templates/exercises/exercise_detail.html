@@ -6,9 +6,11 @@
 <div id="app">
 
     <a href="{% url 'index' %}" id="back-id-back" class="btn btn-primary" role="button">Back</a>
+    {% if can_edit %}
     <a href="{% url 'exercises:update' exercise.id %}" id="id_edit_{{ exercise.id }}" class="btn btn-outline-primary btn-sm" role="button">Bearbeiten</a>
     <!-- <a href="{% url 'exercises:update' exercise.id %}" id="id_delete_{{ exercise.id }}" class="btn btn-outline-danger btn-sm" role="button">Delete</a> -->
     <a href="{% url 'exercises:pdf' exercise.id %}" class="btn btn-outline-info btn-sm" role="button">PDF</a>
+    {% endif %}
 
     <div class="card" id="id_text">
         <div class="card-block">
