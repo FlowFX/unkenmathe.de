@@ -5,6 +5,7 @@ import subprocess
 from django.conf import settings
 
 from um.core.constants import LICENCE_CHOICES, LICENCE_URLS
+from um.core.models import TimeStampedModel
 
 # https://docs.python.org/3.6/library/shlex.html#shlex.quote
 from shlex import quote
@@ -24,7 +25,7 @@ if not os.path.exists(node):  # pragma: no cover
     node = 'node'
 
 
-class Exercise(models.Model):
+class Exercise(TimeStampedModel):
     """The main exercise model."""
 
     license = models.CharField(
@@ -55,7 +56,7 @@ class Exercise(models.Model):
 
     def render_tex(self) -> None:
         """Render the raw Markdown/LaTeX `text` into LaTeX code."""
-        result = pypandoc.convert_text(self.text, 'tex', 'md')
+        result = pypandoc.convert_text(self.text, 'latex', 'markdown')
         self.text_tex = result
 
     def super_save(self, *args, **kwargs) -> None:
