@@ -20,11 +20,20 @@ exercise_data = {
 }
 
 
+@pytest.fixture(scope="module")
+def exercises():
+    exercises = factories.ExerciseFactory.build_batch(2)
+
+    for ex in exercises:
+        ex.render_html()
+
+    return exercises
+
+
 class TestBasicViews:
 
-    def test_home_page_GET(self, mocker, rf):
+    def test_home_page_GET(self, mocker, rf, exercises):
         # GIVEN any state
-        exercises = factories.ExerciseFactory.build_batch(3)
         mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
 
         # WHEN calling the home page
@@ -35,20 +44,17 @@ class TestBasicViews:
         # THEN it's there
         assert response.status_code == 200
 
-    def test_home_page_shows_all_exercises(self, db, client, mocker):
-        # TODO: mock the heck out of this!
-
+    def test_home_page_shows_all_exercises(self, db, client, mocker, exercises):
         # GIVEN a number of exercises
-        ex1 = factories.ExerciseFactory.create()
-        ex2 = factories.ExerciseFactory.create()
+        mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
 
         # WHEN calling the home page
         url = reverse('index')
         response = client.get(url)
 
-        # THEN all exercises are displayed
-        assert ex1.text in response.content.decode()
-        assert ex2.text in response.content.decode()
+        # # THEN all exercises are displayed with html text
+        for ex in exercises:
+            assert ex.text in response.content.decode()
 
 
 class TestExerciseCreateView:
@@ -59,14 +65,9 @@ class TestExerciseCreateView:
         ('staff', 200)]
 
     @pytest.mark.parametrize('user_status, status_code', TESTPARAMS_CREATE_VIEW_GET)
-    def test_create_view_doesnt_allow_anonymous_user(self, client, rf, user_status, status_code):
+    def test_create_view_doesnt_allow_anonymous_user(self, client, rf, users, user_status, status_code):
         # GIVEN a user
-        if user_status == 'anonymous':
-            user = AnonymousUser()
-        elif user_status == 'authenticated':
-            user = UserFactory.build()
-        elif user_status == 'staff':
-            user = UserFactory.build(is_staff=True)
+        user = users[user_status]
 
         # WHEN calling the exercise create view
         url = reverse('exercises:create')
@@ -77,7 +78,7 @@ class TestExerciseCreateView:
         # THEN it's there, or not
         assert response.status_code == status_code
 
-    def test_post_to_create_view_adds_author_to_object(self, db, rf, mocker):
+    def test_post_to_create_view_adds_author_to_object(self, db, rf, users, mocker):
         mocker.patch('um.exercises.views.Exercise.render_html')
         mocker.patch('um.exercises.views.Exercise.render_tex')
 
@@ -96,15 +97,17 @@ class TestExerciseCreateView:
         ex = models.Exercise.objects.last()
         assert ex.author == user
 
-    def test_post_to_create_view_redirects_to_home_page(self, db, rf, mocker):
+    def test_post_to_create_view_redirects_to_home_page(self, db, rf, users, mocker):
         mocker.patch('um.exercises.views.Exercise.render_html')
         mocker.patch('um.exercises.views.Exercise.render_tex')
 
-        # GIVEN any state
+        # GIVEN any state and a user
+        user = UserFactory.create()
+
         # WHEN making a post request to the create view
         url = reverse('exercises:create')
         request = rf.post(url, data=exercise_data)
-        request.user = UserFactory.create()
+        request.user = user
         response = views.ExerciseCreateView.as_view()(request, url)
 
         # THEN it redirects back to the home page
@@ -121,14 +124,9 @@ class TestExerciseUpdateView:
         ('staff', 200)]
 
     @pytest.mark.parametrize('user_status, status_code', TESTPARAMS_UPDATE_VIEW_GET)
-    def test_update_view_requires_staff_or_author(self, rf, mocker, user_status, status_code):
+    def test_update_view_requires_staff_or_author(self, rf, users, mocker, user_status, status_code):
         # GIVEN a user
-        if user_status == 'anonymous':
-            user = AnonymousUser()
-        elif user_status == 'staff':
-            user = UserFactory.build(is_staff=True)
-        else:
-            user = UserFactory.build()
+        user = users[user_status]
 
         # AND an existing exercise
         ex = factories.ExerciseFactory.build()
@@ -208,14 +206,9 @@ class TestExerciseDetailView:
         ('staff', True)]
 
     @pytest.mark.parametrize('user_status, can_edit', TESTPARAMS_CAN_EDIT)
-    def test_context_includes_variable_can_edit(self, rf, mocker, user_status, can_edit):
+    def test_context_includes_variable_can_edit(self, rf, users, mocker, user_status, can_edit):
         # GIVEN a user
-        if user_status == 'anonymous':
-            user = AnonymousUser()
-        elif user_status == 'staff':
-            user = UserFactory.build(is_staff=True)
-        else:
-            user = UserFactory.build()
+        user = users[user_status]
 
         # AND an existing exercise
         ex = factories.ExerciseFactory.build()
