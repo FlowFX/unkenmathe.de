@@ -50,6 +50,8 @@ class TestExerciseModel:
         assert not ex.modified
 
     def test_text_is_rendered_as_html_on_save(self, mocker):
+        mocker.patch('um.exercises.views.Exercise.render_tex')
+
         # GIVEN a new Exercise with given Markdown/LaTeX text and empty text_html
         ex = factories.ExerciseFactory.build(text=MD)
         mocker.patch('um.exercises.models.Exercise.super_save', MagicMock(name="super_save"))
@@ -62,6 +64,8 @@ class TestExerciseModel:
         assert ex.text_html.startswith(html)
 
     def test_text_is_rendered_as_tex_on_save(self, mocker):
+        mocker.patch('um.exercises.views.Exercise.render_html')
+
         # GIVEN a new Exercise with given Markdown/LaTeX text and empty text_tex
         ex = factories.ExerciseFactory.build(text=MD)
         mocker.patch('um.exercises.models.Exercise.super_save', MagicMock(name="super_save"))
