@@ -22,19 +22,22 @@ exercise_data = {
 
 class TestBasicViews:
 
-    def test_home_page_GET(self, client, mocker):
+    def test_home_page_GET(self, mocker, rf):
         # GIVEN any state
         exercises = factories.ExerciseFactory.build_batch(3)
         mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
 
         # WHEN calling the home page
         url = reverse('index')
-        response = client.get(url)
+        request = rf.get(url)
+        response = views.ExcerciseListView.as_view()(request)
 
         # THEN it's there
         assert response.status_code == 200
 
-    def test_home_page_shows_all_exercises(self, db, client):
+    def test_home_page_shows_all_exercises(self, db, client, mocker):
+        # TODO: mock the heck out of this!
+
         # GIVEN a number of exercises
         ex1 = factories.ExerciseFactory.create()
         ex2 = factories.ExerciseFactory.create()
@@ -74,7 +77,10 @@ class TestExerciseCreateView:
         # THEN it's there, or not
         assert response.status_code == status_code
 
-    def test_post_to_create_view_adds_author_to_object(self, db, rf):
+    def test_post_to_create_view_adds_author_to_object(self, db, rf, mocker):
+        mocker.patch('um.exercises.views.Exercise.render_html')
+        mocker.patch('um.exercises.views.Exercise.render_tex')
+
         # GIVEN an empty database
         assert models.Exercise.objects.count() == 0
         # AND a user
@@ -90,7 +96,10 @@ class TestExerciseCreateView:
         ex = models.Exercise.objects.last()
         assert ex.author == user
 
-    def test_post_to_create_view_redirects_to_home_page(self, db, rf):
+    def test_post_to_create_view_redirects_to_home_page(self, db, rf, mocker):
+        mocker.patch('um.exercises.views.Exercise.render_html')
+        mocker.patch('um.exercises.views.Exercise.render_tex')
+
         # GIVEN any state
         # WHEN making a post request to the create view
         url = reverse('exercises:create')
@@ -136,7 +145,10 @@ class TestExerciseUpdateView:
         # THEN it's there
         assert response.status_code == status_code
 
-    def test_post_to_update_view_preserves_the_original_author(self, db, rf):
+    def test_post_to_update_view_preserves_the_original_author(self, db, rf, mocker):
+        mocker.patch('um.exercises.views.Exercise.render_html')
+        mocker.patch('um.exercises.views.Exercise.render_tex')
+
         # GIVEN an existing exercise
         user = UserFactory.create()
         ex = factories.ExerciseFactory.create()
@@ -154,7 +166,10 @@ class TestExerciseUpdateView:
         updated_ex = models.Exercise.objects.get(id=ex.id)
         assert updated_ex.author == original_author
 
-    def test_post_to_update_view_redirects_to_home_page(self, db, rf):
+    def test_post_to_update_view_redirects_to_home_page(self, db, rf, mocker):
+        mocker.patch('um.exercises.views.Exercise.render_html')
+        mocker.patch('um.exercises.views.Exercise.render_tex')
+
         # GIVEN an existing exercise
         user = UserFactory.create()
         ex = factories.ExerciseFactory.create(author=user)
