@@ -4,8 +4,10 @@ import subprocess
 
 from django.conf import settings
 
+from model_utils.models import SoftDeletableModel
+
 from um.core.constants import LICENCE_CHOICES, LICENCE_URLS
-from um.core.models import SoftDeletableMixin, TimeStampedModel
+from um.core.models import TimeStampedMixin
 
 # https://docs.python.org/3.6/library/shlex.html#shlex.quote
 from shlex import quote
@@ -26,7 +28,7 @@ if not os.path.exists(node):  # pragma: no cover
 
 
 
-class Exercise(SoftDeletableMixin, TimeStampedModel):
+class Exercise(TimeStampedMixin, SoftDeletableModel):
     """The main exercise model."""
 
     license = models.CharField(

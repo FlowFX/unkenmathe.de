@@ -3,6 +3,8 @@ from um.exercises import factories, models
 
 from mock import MagicMock
 
+import pytest
+
 
 # Some markdown text
 MD = '''# Title
@@ -22,7 +24,7 @@ Mathematische Ausdrücke wie $x=5$ können auch im Text stehen. Es geht aber auc
 $$ \\int_\{0\}^{\infty} dx x^2 = 99 $$'''
 
 
-class TestExerciseModel:
+class TestExerciseAttributes:
 
     def test_exercise_has_author(self):
         # GIVEN an exercise
@@ -41,13 +43,16 @@ class TestExerciseModel:
         # AND a license URL
         assert ex.license_url
 
-    def test_exercise_has_timestamps(self, mocker):
+    def test_exercise_has_timestamps(self):
         # GIVEN an exercise
         ex = factories.ExerciseFactory.build()
 
         # THEN it has time stamps
-        assert not ex.created
-        assert not ex.modified
+        assert ex.created
+        assert ex.modified
+
+
+class TestExerciseSaveMethod:
 
     def test_text_is_rendered_as_html_on_save(self, mocker):
         mocker.patch('um.exercises.views.Exercise.render_tex')
@@ -77,6 +82,9 @@ class TestExerciseModel:
         tex = '''\section{Title}'''
         assert ex.text_tex.startswith(tex)
 
+
+class TestExerciseRenderMethods:
+
     def test_render_html_renders_markdown_to_html(self):
         # GIVEN an exercise and a string of markdown text
         ex = factories.ExerciseFactory.build(text=MD)
@@ -100,17 +108,24 @@ class TestExerciseModel:
         assert ex.text_tex.startswith(tex)
         assert '\[ 2 - x = 5 \]' in ex.text_tex
 
-    def test_delete_doesnt_remove_from_database(self, db):
-        assert models.Exercise.objects.count() == 0
 
+class TestExerciseDeleteMethod:
+
+    def test_delete_doesnt_remove_from_database(self, db):
         # GIVEN an exercise
         ex = factories.ExerciseFactory.create()
 
         # WHEN deleting the exercise
         ex.delete()
 
-        # THEN it is still there
-        assert models.Exercise.objects.count() == 1
+        with pytest.raises(models.Exercise.DoesNotExist):
+            models.Exercise.objects.get(id=ex.id)
 
-        # BUT it is removed
+        # THEN it is still there
         assert ex.is_removed == True
+
+        # AND can be restored
+        ex.is_removed = False
+        ex.save()
+
+        assert models.Exercise.objects.get(id=ex.id)
