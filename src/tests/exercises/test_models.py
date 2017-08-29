@@ -1,6 +1,8 @@
 """Testing the models."""
 from um.exercises import factories, models
 
+import datetime
+
 from mock import MagicMock
 
 import pytest
@@ -43,13 +45,13 @@ class TestExerciseAttributes:
         # AND a license URL
         assert ex.license_url
 
-    def test_exercise_has_timestamps(self):
+    def test_exercise_has_timestamps(self, db):
         # GIVEN an exercise
-        ex = factories.ExerciseFactory.build()
+        ex = factories.ExerciseFactory.create()
 
         # THEN it has time stamps
-        assert ex.created
-        assert ex.modified
+        assert ex.created.date() == datetime.date.today()
+        assert ex.modified.date() == datetime.date.today()
 
 
 class TestExerciseSaveMethod:

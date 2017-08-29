@@ -7,7 +7,6 @@ from django.conf import settings
 from model_utils.models import SoftDeletableModel
 
 from um.core.constants import LICENCE_CHOICES, LICENCE_URLS
-from um.core.models import TimeStampedMixin
 
 # https://docs.python.org/3.6/library/shlex.html#shlex.quote
 from shlex import quote
@@ -28,8 +27,12 @@ if not os.path.exists(node):  # pragma: no cover
 
 
 
-class Exercise(TimeStampedMixin, SoftDeletableModel):
+class Exercise(SoftDeletableModel):
     """The main exercise model."""
+
+    # TimeStampedModel
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     license = models.CharField(
         max_length=15,
