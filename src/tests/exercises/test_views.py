@@ -1,4 +1,5 @@
 """Unit tests."""
+import os
 from django.contrib.auth.models import AnonymousUser
 from django.urls import reverse
 
@@ -8,6 +9,9 @@ from um.core.factories import UserFactory
 from um.exercises import factories, models, views
 
 import pytest
+
+
+TEST_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 exercise_data = {
@@ -221,7 +225,13 @@ class TestExercisePDFView:
         ex = factories.ExerciseFactory.build(
             text='''# A title\nAnd some text''',
         )
+
+        # mock the exercise
         mocker.patch.object(models.Exercise.objects, 'get', return_value=ex)
+
+        # mock results of pdflatex running
+        f = open(os.path.join(TEST_BASE_DIR, 'data/example.pdf'), 'rb')
+        mocker.patch('um.exercises.views.pdflatex', return_value=f)
 
         # WHEN calling the PDF view
         url = reverse('exercises:pdf', kwargs={'pk': ex.id})
