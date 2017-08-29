@@ -12,8 +12,10 @@ This is a document.\n
 '''
 
 
-def test_pdflatex_creates_pdf_from_latex_template():
+class TestPDFUtilities:
 
-    result = pdflatex(template)
+    def test_pdflatex_creates_pdf_from_latex_template(self):
 
-    assert magic.from_buffer(result.read(1024)).startswith('PDF document')
+        result = pdflatex(template)
+
+        assert magic.from_buffer(result.read()).startswith('PDF document')

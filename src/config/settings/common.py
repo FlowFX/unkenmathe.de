@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'crispy_forms',
     'webpack_loader',
+    'um.core',
     'um.exercises',
 ]
 

@@ -115,6 +115,49 @@ class TestExerciseCreateView:
         assert response.url == '/'
 
 
+class TestExerciseDetailView:
+
+    def test_get_detail_view(self, rf, mocker):
+        # GIVEN an existing exercise
+        ex = factories.ExerciseFactory.build()
+        mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
+
+        # WHEN calling the exercise detail view
+        url = reverse('exercises:detail', kwargs={'pk': ex.id})
+        request = rf.get(url)
+        request.user = AnonymousUser()
+        response = views.ExerciseDetailView.as_view()(request, pk=ex.id)
+
+        # THEN it's there
+        assert response.status_code == 200
+
+    TESTPARAMS_CAN_EDIT = [
+        ('anonymous', False),
+        ('authenticated', False),
+        ('author', True),
+        ('staff', True)]
+
+    @pytest.mark.parametrize('user_status, can_edit', TESTPARAMS_CAN_EDIT)
+    def test_context_includes_variable_can_edit(self, rf, users, mocker, user_status, can_edit):
+        # GIVEN a user
+        user = users[user_status]
+
+        # AND an existing exercise
+        ex = factories.ExerciseFactory.build()
+        if user_status == 'author':
+            ex.author = user
+        mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
+
+        # WHEN calling the exercise detail view
+        url = reverse('exercises:detail', kwargs={'pk': ex.id})
+        request = rf.get(url)
+        request.user = user
+        response = views.ExerciseDetailView.as_view()(request, pk=ex.id)
+
+        # THEN the response includes the context variable `can_edit`
+        assert response.context_data.get('can_edit') == can_edit
+
+
 class TestExerciseUpdateView:
 
     TESTPARAMS_UPDATE_VIEW_GET = [
@@ -183,30 +226,16 @@ class TestExerciseUpdateView:
         assert response.url == '/'
 
 
-class TestExerciseDetailView:
+class TestExerciseDeleteView:
 
-    def test_get_detail_view(self, rf, mocker):
-        # GIVEN an existing exercise
-        ex = factories.ExerciseFactory.build()
-        mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
+    TESTPARAMS_UPDATE_VIEW_GET = [
+        ('anonymous', 302),
+        ('authenticated', 302),
+        ('author', 200),
+        ('staff', 200)]
 
-        # WHEN calling the exercise detail view
-        url = reverse('exercises:detail', kwargs={'pk': ex.id})
-        request = rf.get(url)
-        request.user = AnonymousUser()
-        response = views.ExerciseDetailView.as_view()(request, pk=ex.id)
-
-        # THEN it's there
-        assert response.status_code == 200
-
-    TESTPARAMS_CAN_EDIT = [
-        ('anonymous', False),
-        ('authenticated', False),
-        ('author', True),
-        ('staff', True)]
-
-    @pytest.mark.parametrize('user_status, can_edit', TESTPARAMS_CAN_EDIT)
-    def test_context_includes_variable_can_edit(self, rf, users, mocker, user_status, can_edit):
+    @pytest.mark.parametrize('user_status, status_code', TESTPARAMS_UPDATE_VIEW_GET)
+    def test_delete_view_requires_staff_or_author(self, rf, users, mocker, user_status, status_code):
         # GIVEN a user
         user = users[user_status]
 
@@ -214,16 +243,18 @@ class TestExerciseDetailView:
         ex = factories.ExerciseFactory.build()
         if user_status == 'author':
             ex.author = user
-        mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
+        mocker.patch.object(views.ExerciseDeleteView, 'get_object', return_value=ex)
 
-        # WHEN calling the exercise detail view
-        url = reverse('exercises:detail', kwargs={'pk': ex.id})
+        # WHEN calling the exercise delete view
+        url = reverse('exercises:delete', kwargs={'pk': ex.id})
         request = rf.get(url)
         request.user = user
-        response = views.ExerciseDetailView.as_view()(request, pk=ex.id)
+        response = views.ExerciseDeleteView.as_view()(request, pk=ex.id)
 
-        # THEN the response includes the context variable `can_edit`
-        assert response.context_data.get('can_edit') == can_edit
+        # THEN it's there
+        assert response.status_code == status_code
+        if status_code == 200:
+            assert response.template_name[0] == 'exercises/exercise_confirm_delete.html'
 
 
 class TestExercisePDFView:
