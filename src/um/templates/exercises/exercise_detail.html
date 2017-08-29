@@ -8,8 +8,8 @@
     <a href="{% url 'index' %}" id="back-id-back" class="btn btn-primary" role="button">Back</a>
     {% if can_edit %}
     <a href="{% url 'exercises:update' exercise.id %}" id="id_edit_{{ exercise.id }}" class="btn btn-outline-primary btn-sm" role="button">Bearbeiten</a>
-    <!-- <a href="{% url 'exercises:update' exercise.id %}" id="id_delete_{{ exercise.id }}" class="btn btn-outline-danger btn-sm" role="button">Delete</a> -->
-    <a href="{% url 'exercises:pdf' exercise.id %}" class="btn btn-outline-info btn-sm" role="button">PDF</a>
+    <button id="id_delete_{{ exercise.id }}" type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal">Löschen</button>
+    <a href="{% url 'exercises:pdf' exercise.id %}" class="btn btn-outline-info btn-sm" role="button">Vorschau als PDF</a>
     {% endif %}
 
     <div class="card" id="id_text">
@@ -24,18 +24,30 @@
     </div>
 
 </div>
+
+
+<!-- Confirm Delete Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sicher??</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'exercises:delete' exercise.id %}" method="post">{% csrf_token %}
+                <div class="modal-body">
+                    <p>Bist du sicher, dass du die Aufgabe löschen möchtest?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nein, bloß nicht!</button>
+                    <input id="submit-id-submit" class="btn btn-primary" type="submit" value="Ja, ich bin mir sicher." />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 {% endblock content %}
-
-
-{% block scripts %}
-    <script>
-        var exercise_text = `{{ exercise.text }}`;
-    </script>
-
-    {{ block.super }}
-
-    <!-- VueJS, markdown-it, KaTeX, Custom JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js" integrity="sha256-+J5cSgDOPu6OT8mt+r5f7/cmvICoEmNdK2ZGz8ql8wc=" crossorigin="anonymous"></script>
-    <script src="{% static 'dist/bundle.js' %}"></script>
-
-{% endblock scripts %}

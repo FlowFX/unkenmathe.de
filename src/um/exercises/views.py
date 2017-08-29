@@ -1,7 +1,7 @@
 """Views for exercise app."""
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from .forms import ExerciseForm
 from .models import Exercise
@@ -70,21 +70,6 @@ class ExerciseCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
-class ExerciseUpdateView(UserPassesTestMixin, UpdateView):
-    """Update view for an exercise."""
-
-    model = Exercise
-    form_class = ExerciseForm
-    success_url = reverse_lazy('index')
-    context_object_name = 'exercise'
-
-    def test_func(self):
-        """Test if user is staff or author of the exercise."""
-        obj = self.get_object()
-
-        return self.request.user == obj.author or self.request.user.is_staff
-
-
 class ExerciseDetailView(DetailView):
     """Detail view for an exercise."""
 
@@ -102,3 +87,31 @@ class ExerciseDetailView(DetailView):
         context['can_edit'] = True if user == obj.author or user.is_staff else False
 
         return context
+
+
+class ExerciseUpdateView(UserPassesTestMixin, UpdateView):
+    """Update view for an exercise."""
+
+    model = Exercise
+    form_class = ExerciseForm
+    success_url = reverse_lazy('index')
+    context_object_name = 'exercise'
+
+    def test_func(self):
+        """Test if user is staff or author of the exercise."""
+        obj = self.get_object()
+
+        return self.request.user == obj.author or self.request.user.is_staff
+
+
+class ExerciseDeleteView(UserPassesTestMixin, DeleteView):
+    """Delete view for an exercise."""
+
+    model = Exercise
+    success_url = reverse_lazy('index')
+
+    def test_func(self):
+        """Test if user is staff or author of the exercise."""
+        obj = self.get_object()
+
+        return self.request.user == obj.author or self.request.user.is_staff

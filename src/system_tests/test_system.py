@@ -1,7 +1,13 @@
 """Selenium tests."""
-from .conftest import assert_regex, wait_for
+from .conftest import assert_regex, wait_for, wait_for_true
+
+from selenium.common.exceptions import NoSuchElementException
 
 from um.exercises.factories import ExerciseFactory
+
+import pytest
+
+import time
 
 
 def test_florian_adds_a_new_exercise(browser, live_server):
@@ -91,3 +97,38 @@ def test_anonymous_user_views_an_exercise(anon_browser, live_server):
     # Then, he gets back to the home page,
     wait_for(lambda: browser.find_element_by_id('id_add_exercise'))
     assert_regex(browser.current_url, '.+/')
+
+
+def test_florian_deletes_an_exercise(browser, live_server, user):
+    # GIVEN an existing exercise
+    ex = ExerciseFactory.create(author=user)
+
+    # Florian goes to the home page and wants to delete this exercise
+    browser.get(live_server.url)
+
+    # and sees that it's there.
+    wait_for(lambda: browser.find_element_by_id(f'id_detail_{ex.id}'))
+
+    # He clicks the View button,
+    browser.find_element_by_id(f'id_detail_{ex.id}').click()
+
+    # and gets to the detail view
+    wait_for(lambda: browser.find_element_by_id(f'id_delete_{ex.id}'))
+    assert_regex(browser.current_url, f'.+/{ex.id}/')
+
+    # He clicks the "Delete" button
+    browser.find_element_by_id(f'id_delete_{ex.id}').click()
+    # let the modal pop up
+    time.sleep(0.5)
+
+    # And confirms the deletion
+    browser.find_element_by_id('submit-id-submit').click()
+
+
+    # Then, he gets back to the home page,
+    wait_for(lambda: browser.find_element_by_id('id_add_exercise'))
+    assert_regex(browser.current_url, '.+/')
+
+    # and the exercise is gone.
+    with pytest.raises(NoSuchElementException):
+        browser.find_element_by_id(f'id_detail_{ex.id}')
