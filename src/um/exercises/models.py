@@ -56,7 +56,7 @@ class Exercise(TimeStampedModel):
 
     def render_tex(self) -> None:
         """Render the raw Markdown/LaTeX `text` into LaTeX code."""
-        result = pypandoc.convert_text(self.text, 'tex', 'md')
+        result = pypandoc.convert_text(self.text, 'latex', 'markdown')
         self.text_tex = result
 
     def super_save(self, *args, **kwargs) -> None:
