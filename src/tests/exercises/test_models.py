@@ -1,5 +1,5 @@
 """Testing the models."""
-from um.exercises import factories
+from um.exercises import factories, models
 
 from mock import MagicMock
 
@@ -99,3 +99,18 @@ class TestExerciseModel:
         tex = '''\section{Title}'''
         assert ex.text_tex.startswith(tex)
         assert '\[ 2 - x = 5 \]' in ex.text_tex
+
+    def test_delete_doesnt_remove_from_database(self, db):
+        assert models.Exercise.objects.count() == 0
+
+        # GIVEN an exercise
+        ex = factories.ExerciseFactory.create()
+
+        # WHEN deleting the exercise
+        ex.delete()
+
+        # THEN it is still there
+        assert models.Exercise.objects.count() == 1
+
+        # BUT it is removed
+        assert ex.is_removed == True
