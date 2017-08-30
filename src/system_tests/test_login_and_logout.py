@@ -1,7 +1,7 @@
 """Functional test for login and logout pages."""
 import time
 
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import ElementNotVisibleException, NoSuchElementException
 
 import pytest
 
@@ -50,18 +50,22 @@ def test_logout_of_authenticated_user(browser, live_server):
 
     # On mobile, the menu is hidden
     if not browser.find_element_by_id('id_link_to_logout').is_displayed():
-        browser.find_element_by_class_name('navbar-toggler').click()
-        time.sleep(0.5)
+        try:
+            browser.find_element_by_class_name('navbar-toggler').click()
+            time.sleep(0.5)
+        except ElementNotVisibleException:
+            pass
 
-        wait_for_true(lambda: browser.find_element_by_id('id_link_to_logout').is_displayed())
+    # Open the Account dropdown.
+    browser.find_element_by_id('navbarDropdownAccountMenu').click()
+    time.sleep(0.5)
 
     # Go to the LOGOUT page,
-    # NEEDS CRISPY FORMS
-    # browser.find_element_by_id('id_link_to_logout').click()
-    # wait_for(lambda: browser.find_element_by_id('id_logout'))
+    browser.find_element_by_id('id_link_to_logout').click()
+    wait_for(lambda: browser.find_element_by_id('submit-id-submit'))
 
     # confirm the logout,
-#     browser.find_element_by_id('id_logout').click()
+    browser.find_element_by_id('submit-id-submit').click()
 
-#     # and wait for the login page
-#     wait_for(lambda: browser.find_element_by_id('id_login'))
+    # and wait for the login page
+    wait_for(lambda: browser.find_element_by_id('id_link_to_login'))

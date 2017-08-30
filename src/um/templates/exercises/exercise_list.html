@@ -2,8 +2,6 @@
 
 {% block content %}
 
-<a href="{% url 'exercises:create' %}" id="id_add_exercise" class="btn btn-primary">Neue Aufgabe</a>
-
 {% for exercise in exercises %}
         
 <div class="card" id="id_exercise_{{ exercise.id }}">
