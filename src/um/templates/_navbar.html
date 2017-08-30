@@ -32,15 +32,83 @@
           {{ user.name }}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" id="id_link_to_logout" href="{% url 'account_logout' %}">Logout</a>
+          <a class="dropdown-item" href="#" id="id_link_to_logout" data-toggle="modal" data-target="#confirmLogoutModal">Abmelden</a>
         </div>
       </li>
       {% else %}
       <li class="nav-item">
-        <a id="id_link_to_login" class="nav-link" href="{% url 'account_login' %}">Login</a>
+        <a class="nav-link" href="#" id="id_link_to_login" data-toggle="modal" data-target="#LoginModal">Anmelden</a>
       </li>
       {% endif %}
     </ul>
   </div>
 </div>
 </nav>
+
+
+{% if user.is_authenticated %}
+<!-- Confirm Logout Modal -->
+<div class="modal fade" id="confirmLogoutModal" tabindex="-1" role="dialog" aria-labelledby="confirmLogoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <h5 class="modal-title" id="confirmLogoutLabel"></h5> -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'account_logout' %}" method="post">{% csrf_token %}
+                <div class="modal-body">
+                    <p>Willst du dich abmelden?</p>
+                </div>
+                <div class="modal-footer">
+                    <input id="submit-id-confirm-logout" class="btn btn-primary btn-block" type="submit" value="Ja, bitte." />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+<!-- Login Modal -->
+<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="LoginLabel">Anmelden</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="login" method="POST" action="{% url 'account_login' %}">{% csrf_token %}
+                <div class="modal-body">
+                  <p>If you have not created an account yet, then please
+                  <a href="/accounts/signup/">sign up</a> first.</p>
+
+                    <p>Willst du dich abmelden?</p>
+
+                  <div class="form-group">
+                    <label for="id_login">E-mail:</label>
+                    <input type="email" class="form-control" name="login" placeholder="E-mail address" autofocus="autofocus" required id="id_login" />
+                  </div>
+                  <div class="form-group">
+                    <label for="id_password">Password:</label>
+                    <input type="password" class="form-control" name="password" placeholder="Password" required id="id_password" />
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label" for="id_remember">
+                      <input class="form-check-input" type="checkbox" name="remember" id="id_remember" />
+                      Remember me
+                    </label>
+                  </div>
+              
+                  <a class="btn btn-outline-secondary btn-sm" href="/accounts/password/reset/">Forgot Password?</a>
+                </div>
+                <div class="modal-footer">
+                    <input id="submit-id-login" class="btn btn-primary btn-block" type="submit" value="Bestätigen." />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+

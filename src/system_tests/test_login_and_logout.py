@@ -21,20 +21,20 @@ def test_login_of_anonymous_user(live_server, anon_browser, user):
     with pytest.raises(NoSuchElementException):
         browser.find_element_by_id('id_link_to_logout')
 
-    # go to the LOGIN page
+    # open the LOGIN modal
     browser.find_element_by_id('id_link_to_login').click()
-    wait_for(lambda: browser.find_element_by_id('id_login'))
+    time.sleep(0.5)
 
     # enter credentials
     browser.find_element_by_id('id_login').send_keys('test@example.com')
     browser.find_element_by_id('id_password').send_keys('password')
 
     # click "Go!"
-    # browser.find_element_by_id('submit-id-submit').click()
-    browser.find_element_by_class_name('primaryAction').click()
+    browser.find_element_by_id('submit-id-login').click()
 
     # and wait for the home page with the logout link
     wait_for(lambda: browser.find_element_by_id('id_link_to_logout'))
+
     # but no login
     with pytest.raises(NoSuchElementException):
         browser.find_element_by_id('id_link_to_login')
@@ -60,12 +60,12 @@ def test_logout_of_authenticated_user(browser, live_server):
     browser.find_element_by_id('navbarDropdownAccountMenu').click()
     time.sleep(0.5)
 
-    # Go to the LOGOUT page,
+    # Open the LOGOUT modal,
     browser.find_element_by_id('id_link_to_logout').click()
-    wait_for(lambda: browser.find_element_by_id('submit-id-submit'))
+    time.sleep(0.5)
 
     # confirm the logout,
-    browser.find_element_by_id('submit-id-submit').click()
+    browser.find_element_by_id('submit-id-confirm-logout').click()
 
     # and wait for the login page
     wait_for(lambda: browser.find_element_by_id('id_link_to_login'))
