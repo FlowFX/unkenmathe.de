@@ -18,7 +18,10 @@ def test_florian_adds_a_new_exercise(browser, live_server):
     # and sees that it's there.
     wait_for(lambda: browser.find_element_by_id('id_add_exercise'))
 
-    # He finds the "Add new exercise" button and clicks it.
+    # He finds the "Plus" navbar menu and clicks it.
+    browser.find_element_by_id('navbarDropdownPlusMenu').click()
+    time.sleep(0.5)
+    # There is the the "Add new exercise" button.
     browser.find_element_by_id('id_add_exercise').click()
 
     # Next, he is presented a form to create a new exercise
@@ -95,7 +98,6 @@ def test_anonymous_user_views_an_exercise(anon_browser, live_server):
     browser.find_element_by_id('back-id-back').click()
 
     # Then, he gets back to the home page,
-    wait_for(lambda: browser.find_element_by_id('id_add_exercise'))
     assert_regex(browser.current_url, '.+/')
 
 

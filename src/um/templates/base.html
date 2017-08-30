@@ -26,6 +26,9 @@
       body {
         padding-top: 5rem;
       }
+      .container {
+        max-width: 1600px;
+      }
       .card {
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
@@ -64,11 +67,10 @@
 
   </head>
   <body>
+
     {% include '_navbar.html' %}
 
-    <div class="container-fluid">
-      <a href="{% url 'index' %}"><h1>Unkenmathe</h1></a>
-
+    <div class="container">
       {% block content %}
       {% endblock content %}
     </div>
