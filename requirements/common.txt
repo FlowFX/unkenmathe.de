@@ -3,6 +3,7 @@
 django==1.11.4
 django-braces==1.11.0
 django-crispy-forms==1.6.1
+django-redis==4.8.0
 django-model-utils==3.0.0
 django-extensions==1.9.0
 django-webpack-loader==0.5.0
@@ -17,6 +18,7 @@ pypandoc==1.4
 
 # misc
 bpython==0.16
+redis==2.10.6
 rollbar==0.13.12
 
 # Auth
