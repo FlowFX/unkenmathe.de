@@ -146,6 +146,14 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'static'))
 
 
+# Caching
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+}
+
+
 # Webpack Loader
 WEBPACK_LOADER = {
     'DEFAULT': {
