@@ -124,7 +124,7 @@ class TestExerciseDeleteMethod:
             models.Exercise.objects.get(id=ex.id)
 
         # THEN it is still there
-        assert ex.is_removed == True
+        assert ex.is_removed
 
         # AND can be restored
         ex.is_removed = False

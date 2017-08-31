@@ -26,7 +26,6 @@ if not os.path.exists(node):  # pragma: no cover
     node = 'node'
 
 
-
 class Exercise(SoftDeletableModel):
     """The main exercise model."""
 
