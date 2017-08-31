@@ -31,10 +31,12 @@ def get_secret(setting, secrets=secrets):
 
 
 # Core
-ALLOWED_HOSTS = []
 DEBUG = False
-ROOT_URLCONF = 'config.urls'
 SECRET_KEY = get_secret('DJANGO_SECRET_KEY'),
+
+ALLOWED_HOSTS = []
+APPEND_SLASH = True
+ROOT_URLCONF = 'config.urls'
 SITE_ID = 1
 
 
@@ -121,6 +123,12 @@ AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
+
+# Sessions https://docs.djangoproject.com/en/1.11/topics/http/sessions/
+SESSION_CACHE_ALIAS = 'default'
+SESSION_COOKIE_AGE = 1209600  # (2 weeks, in seconds)
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 
 # Static files

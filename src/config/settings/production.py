@@ -2,10 +2,21 @@
 from .common import *
 
 # Core Settings
-ALLOWED_HOSTS = ['.unkenmathe.de']
+ALLOWED_HOSTS = ['www.unkenmathe.de']
 
 # Security
-SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE = True
+CSRF_USE_SESSIONS = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_SSL_REDIRECT = True  # Force HTTPS
+
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_SECONDS = 3600*24  # 24 hours
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 # Configure location of static files
 STATIC_ROOT = os.path.abspath('/var/www/static/unkenmathe.de')
