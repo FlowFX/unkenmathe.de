@@ -112,8 +112,9 @@ class TestExerciseRenderMethods:
 
 
 class TestExerciseDeleteMethod:
+    """No real need to test this, as the functionality is inherited."""
 
-    def test_delete_doesnt_remove_from_database(self, db):
+    def no_test_delete_doesnt_remove_from_database(self, db):
         # GIVEN an exercise
         ex = factories.ExerciseFactory.create()
 

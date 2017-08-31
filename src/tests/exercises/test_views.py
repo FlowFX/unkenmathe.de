@@ -44,7 +44,7 @@ class TestBasicViews:
         # THEN it's there
         assert response.status_code == 200
 
-    def test_home_page_shows_all_exercises(self, db, client, mocker, exercises):
+    def test_home_page_shows_all_exercises(self, client, mocker, exercises):
         # GIVEN a number of exercises
         mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
 
