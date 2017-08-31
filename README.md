@@ -1,6 +1,6 @@
 # Unkenmathe.de
 
-![Project Status](https://img.shields.io/badge/status-pre--alpha-orange.svg)
+![Project Status](https://img.shields.io/badge/status-alpha-yellow.svg)
 [![Build Status](https://travis-ci.org/FlowFX/unkenmathe.de.svg?branch=master)](https://travis-ci.org/FlowFX/unkenmathe.de)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![codecov](https://codecov.io/gh/FlowFX/unkenmathe.de/branch/master/graph/badge.svg)](https://codecov.io/gh/FlowFX/unkenmathe.de)
