@@ -34,6 +34,9 @@ CACHES = {
     },
 }
 
+# Compressor
+COMPRESS_OFFLINE = True
+
 # Use Rollbar in production
 MIDDLEWARE.append('rollbar.contrib.django.middleware.RollbarNotifierMiddleware')
 LOGGING['loggers']['']['handlers'].append('rollbar')

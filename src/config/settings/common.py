@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'compressor',
     'crispy_forms',
     'webpack_loader',
     'um.core',
@@ -136,6 +137,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 ]
 
 STATICFILES_DIRS = [
@@ -161,6 +163,15 @@ WEBPACK_LOADER = {
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
 }
+
+
+# Compressor
+COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_CACHE_BACKEND = 'default'
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.rCSSMinFilter',
+]
 
 
 # Crispy Forms

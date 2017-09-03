@@ -21,6 +21,11 @@ bpython==0.16
 redis==2.10.6
 rollbar==0.13.12
 
+# Compressor
+django-compressor-2.2
+rcssmin-1.0.6
+rjsmin-1.0.12
+
 # Auth
 django-authtools==1.6.0
 django-allauth==0.33.0
