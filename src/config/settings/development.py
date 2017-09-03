@@ -14,3 +14,5 @@ DATABASES = {
         'PORT': get_secret('DB_PORT'),
     }
 }
+
+COMPRESS_ENABLED = not DEBUG
