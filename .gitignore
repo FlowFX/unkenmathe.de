@@ -106,6 +106,7 @@ ENV/
 # Django
 db.sqlite3
 secrets.json
+src/static
 
 # node
 node_modules
