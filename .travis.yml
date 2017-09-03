@@ -36,7 +36,7 @@ install:
 script:
   - cd src/
   - echo "{}" > secrets.json
-  - python manage.py compress
+  - python manage.py compress --force
   - pytest system_tests
   - pytest --cov
   - codecov
