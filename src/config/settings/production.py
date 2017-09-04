@@ -35,7 +35,6 @@ CACHES = {
 }
 
 # Compressor
-COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
 
 # Use Rollbar in production

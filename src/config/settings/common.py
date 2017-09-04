@@ -167,7 +167,6 @@ WEBPACK_LOADER = {
 
 # Compressor
 COMPRESS_ENABLED = True
-COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_CACHE_BACKEND = 'default'
 COMPRESS_CSS_FILTERS = [
     'compressor.filters.css_default.CssAbsoluteFilter',
