@@ -6,7 +6,7 @@ ALLOWED_HOSTS = ['www.unkenmathe.de']
 
 # Security
 CSRF_COOKIE_SECURE = True
-CSRF_USE_SESSIONS = False  # could be True
+CSRF_USE_SESSIONS = True
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_SSL_REDIRECT = True  # Force HTTPS
 
