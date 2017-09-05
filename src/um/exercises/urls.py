@@ -5,6 +5,7 @@ from . import views
 
 
 urlpatterns = [
+    url(r'^howto$', views.HowtoView.as_view(), name='howto'),
     url(r'^new$', views.ExerciseCreateView.as_view(), name='create'),
     url(r'^(?P<pk>[-\w]+)/$', views.ExerciseDetailView.as_view(), name='detail'),
     url(r'^(?P<pk>[-\w]+)/edit$', views.ExerciseUpdateView.as_view(), name='update'),

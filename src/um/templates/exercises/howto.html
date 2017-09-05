@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for example in examples %}
+
+<hr>
+
+<h3>{{ example.title }}</h3>
+<p>
+{{ example.description }}
+<p>
+
+<div class="row">
+    <div class="col">
+        <p>
+            {{ example.exercise.text }}
+        </p>
+    </div>
+    <div class="col">
+        {{ example.exercise.text_html|safe }}
+    </div>
+</div>
+
+<a href="{% url 'exercises:create' %}?template={{ example.exercise.id }}" class="btn btn-primary btn-sm" role="button">Als Vorlage verwenden</a>
+
+{% endfor %}
+
+{% endblock content %}

@@ -4,12 +4,20 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from .forms import ExerciseForm
-from .models import Exercise
+from .models import Exercise, ExerciseExample
 
 from ..core.jinja2 import jinja2_latex_env
 from ..core.utils import pdflatex
 
 from django.http import HttpResponse
+
+
+class HowtoView(ListView):
+    """View a number of example exercises."""
+
+    model = ExerciseExample
+    context_object_name = 'examples'
+    template_name = 'exercises/howto.html'
 
 
 def exercise_pdf_view(request, pk):

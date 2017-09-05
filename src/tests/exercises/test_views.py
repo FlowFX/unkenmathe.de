@@ -57,6 +57,26 @@ class TestBasicViews:
             assert ex.text in response.content.decode()
 
 
+class TestExamplesViews:
+
+    def test_exercise_examples_howto_page(self, db, client):
+        # GIVEN a an exercise example
+        example = factories.ExerciseExampleFactory.create()
+
+        # WHEN opening the howto page
+        url = reverse('exercises:howto')
+        response = client.get(url)
+        html = response.content.decode()
+
+        # THEN it's there and it displays all exercise texts
+        assert response.status_code == 200
+        assert example.exercise.text in html
+
+        # AND the example description, too
+        assert example.title in html
+        assert example.description in html
+
+
 class TestExerciseCreateView:
 
     TESTPARAMS_CREATE_VIEW_GET = [

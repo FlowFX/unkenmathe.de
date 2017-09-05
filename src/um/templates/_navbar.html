@@ -13,6 +13,9 @@
         <a class="nav-link" href="#">Meine Aufgaben</a>
       </li>
       {% endif %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'exercises:howto' %}">Howto</a>
+      </li>
     </ul>
     <ul class="navbar-nav">
       {% if user.is_authenticated %}
