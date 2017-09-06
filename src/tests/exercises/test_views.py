@@ -134,11 +134,14 @@ class TestExerciseCreateView:
         assert response.status_code == 302
         assert response.url == '/'
 
-    def test_get_with_url_parameter_prepopulates_text(self, db, rf, users):
-        user = UserFactory.create()
-
+    def test_get_with_url_parameter_prepopulates_text(self, db, rf, mocker):
         # GIVEN an existing exercise
+        mocker.patch('um.exercises.factories.Exercise.render_html')
+        mocker.patch('um.exercises.factories.Exercise.render_tex')
         ex = factories.ExerciseFactory.create()
+
+        # AND a user
+        user = UserFactory.create()
 
         # WHEN making a GET request to the create view with the exercise id as url parameter
         url = reverse('exercises:create') + f'?template={ex.id}'

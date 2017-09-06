@@ -75,8 +75,7 @@ class ExerciseCreateView(LoginRequiredMixin, CreateView):
         """Add data to the template context."""
         context = super(ExerciseCreateView, self).get_context_data(**kwargs)
 
-
-        # When exercise template is given
+        # When exercise template is given on GET request
         if context['form']['text'].initial:
             context.update({
                 'exercise': {'text': context['form']['text'].initial},
