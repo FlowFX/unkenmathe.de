@@ -91,7 +91,7 @@ class ExerciseCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
     def get_initial(self):
-        """Returns the initial data to use for forms on this view."""
+        """Return initial data to use for forms on this view."""
         initial = self.initial.copy()
 
         template = self.request.GET.get('template')
