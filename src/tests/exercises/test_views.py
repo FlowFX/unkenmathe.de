@@ -134,6 +134,26 @@ class TestExerciseCreateView:
         assert response.status_code == 302
         assert response.url == '/'
 
+    def test_get_with_url_parameter_prepopulates_text(self, db, rf, users):
+        user = UserFactory.create()
+
+        # GIVEN an existing exercise
+        ex = factories.ExerciseFactory.create()
+
+        # WHEN making a GET request to the create view with the exercise id as url parameter
+        url = reverse('exercises:create') + f'?template={ex.id}'
+        request = rf.get(url)
+        request.user = user
+        response = views.ExerciseCreateView.as_view()(request, url)
+
+        # THEN it's there
+        assert response.status_code == 200
+
+        # AND the input field is pre-populated with the existing exercise's text
+        response.render()
+        html = response.content.decode()
+        assert ex.text in html
+
 
 class TestExerciseDetailView:
 

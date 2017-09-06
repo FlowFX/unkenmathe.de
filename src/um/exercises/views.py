@@ -71,11 +71,38 @@ class ExerciseCreateView(LoginRequiredMixin, CreateView):
 
         return super(ExerciseCreateView, self).form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        """Add data to the template context."""
+        context = super(ExerciseCreateView, self).get_context_data(**kwargs)
+
+
+        # When exercise template is given
+        if context['form']['text'].initial:
+            context.update({
+                'exercise': {'text': context['form']['text'].initial},
+            })
+
+        return context
+
     def get_form_kwargs(self):
         """Add user as keyword argument."""
         kwargs = super(ExerciseCreateView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
+
         return kwargs
+
+    def get_initial(self):
+        """Returns the initial data to use for forms on this view."""
+        initial = self.initial.copy()
+
+        template = self.request.GET.get('template')
+        if template:
+            template_exercise = Exercise.objects.get(id=int(template))
+            initial.update({
+                'text': template_exercise.text,
+            })
+
+        return initial
 
 
 class ExerciseDetailView(DetailView):
