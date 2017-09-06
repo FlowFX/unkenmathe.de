@@ -1,0 +1,64 @@
+{% if user.is_authenticated %}
+
+<!-- CONFIRM LOGOUT MODAL -->
+
+<div class="modal fade" id="confirmLogoutModal" tabindex="-1" role="dialog" aria-labelledby="confirmLogoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmLogoutLabel">Abmelden</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'account_logout' %}" method="post">{% csrf_token %}
+                <div class="modal-body">
+                    <p>Willst du dich abmelden?</p>
+                </div>
+                <div class="modal-footer">
+                    <input id="submit-id-confirm-logout" class="btn btn-danger btn-block" type="submit" value="Ja, bitte." />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<!-- LOGIN MODAL -->
+
+<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="LoginLabel">Anmelden</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="login" method="POST" action="{% url 'account_login' %}">{% csrf_token %}
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="id_login">E-Mail-Adresse:</label>
+                    <input type="email" class="form-control" name="login" autofocus="autofocus" required id="id_login" />
+                    <small id="loginHelp" class="form-text text-muted">
+                        Noch kein Konto? Dann <a href="/accounts/signup/">melde dich hier an</a>!
+                    </small>
+                  </div>
+                  <div class="form-group">
+                    <label for="id_password">Passwort:</label>
+                    <input type="password" class="form-control" name="password" required id="id_password" />
+                    <small id="passwordHelp" class="form-text text-muted">
+                        <a href="/accounts/password/reset/">Passwort vergessen?</a>
+                    </small>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                    <input id="submit-id-login" class="btn btn-primary btn-block" type="submit" value="Anmelden." />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endif %}
