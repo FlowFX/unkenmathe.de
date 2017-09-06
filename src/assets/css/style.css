@@ -11,6 +11,9 @@ body {
 .container {
     max-width: 1600px;
 }
+.container-small {
+    max-width: 600px;
+}
 .container.content {
     /* add space between main content and footer top-border */
     padding-bottom: 30px;
