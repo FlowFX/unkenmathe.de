@@ -46,6 +46,9 @@ class Exercise(SoftDeletableModel):
     text_html = models.TextField(verbose_name='Exercise text, rendered as HTML')
     text_tex = models.TextField(verbose_name='Exercise text, rendered as LaTeX')
 
+    def __str__(self):
+        return 'Aufgabe {}'.format(self.id)
+
     @property
     def license_url(self) -> str:
         """Return the URL to the chosen license."""
@@ -88,3 +91,6 @@ class ExerciseExample(models.Model):
         Exercise,
         on_delete=models.PROTECT,
     )
+
+    def __str__(self):
+        return 'Beispiel {}: {}'.format(self.id, self.title)
