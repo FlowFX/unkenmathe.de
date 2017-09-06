@@ -8,9 +8,6 @@
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
       {% if user.is_authenticated %}
-      <li class="nav-item">
-        <a class="nav-link" href="#">Meine Aufgaben</a>
-      </li>
       {% endif %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'exercises:howto' %}">Howto</a>
@@ -34,7 +31,8 @@
           {{ user.name }}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#" id="id_link_to_logout" data-toggle="modal" data-target="#confirmLogoutModal">Abmelden</a>
+          <a class="dropdown-item" href="#">Meine Aufgaben</a>
+          <a class="dropdown-item dropdown-item-bordered" href="#" id="id_link_to_logout" data-toggle="modal" data-target="#confirmLogoutModal">Abmelden</a>
         </div>
       </li>
       {% else %}
