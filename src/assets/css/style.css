@@ -19,6 +19,12 @@ body {
     padding-bottom: 30px;
 }
 
+/* Navbar */
+.dropdown-item-bordered {
+    margin-top: 1px;
+    border-top: 1px solid #ccc;
+}
+
 /* Exercise cards */
 .card {
     margin-top: 0.5rem;
@@ -37,6 +43,24 @@ td {
     border-width: 1px;
     border-color: gray;
     padding: 3px;
+}
+
+/* Howto page */
+.editor-input {
+    background-color: #fafafa;
+    font-family: 'Monaco', courier, monospace;
+    padding: 20px;
+}
+.editor-preview {
+    border: 1pt solid;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+@media (max-width: 768px) { 
+    .editor-preview {
+        /* Add vertical space between columns on small screens */
+        margin-top: 20px;
+    }
 }
 
 /* Sticky Footer */

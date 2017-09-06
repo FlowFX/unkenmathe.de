@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load markdown_filters %}
 
 {% block content %}
 
@@ -8,17 +9,20 @@
 
 <h3>{{ example.title }}</h3>
 <p>
-{{ example.description }}
+{{ example.description|markdownify|safe }}
 <p>
 
+
 <div class="row">
-    <div class="col">
-        <p>
-            {{ example.exercise.text }}
-        </p>
+    <div class="col-12 col-md-6">
+        <div class="editor-input textarea form-control">
+            {{ example.exercise.text|linebreaksbr }}
+        </div>
     </div>
-    <div class="col">
-        {{ example.exercise.text_html|safe }}
+    <div class="col-12 col-md-6">
+        <div class="editor-preview">
+            {{ example.exercise.text_html|safe }}
+        </div>
     </div>
 </div>
 
