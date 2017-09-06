@@ -57,6 +57,26 @@ class TestBasicViews:
             assert ex.text in response.content.decode()
 
 
+class TestExamplesViews:
+
+    def test_exercise_examples_howto_page(self, db, client):
+        # GIVEN a an exercise example
+        example = factories.ExerciseExampleFactory.create()
+
+        # WHEN opening the howto page
+        url = reverse('exercises:howto')
+        response = client.get(url)
+        html = response.content.decode()
+
+        # THEN it's there and it displays all exercise texts
+        assert response.status_code == 200
+        assert example.exercise.text in html
+
+        # AND the example description, too
+        assert example.title in html
+        assert example.description in html
+
+
 class TestExerciseCreateView:
 
     TESTPARAMS_CREATE_VIEW_GET = [
@@ -113,6 +133,29 @@ class TestExerciseCreateView:
         # THEN it redirects back to the home page
         assert response.status_code == 302
         assert response.url == '/'
+
+    def test_get_with_url_parameter_prepopulates_text(self, db, rf, mocker):
+        # GIVEN an existing exercise
+        mocker.patch('um.exercises.factories.Exercise.render_html')
+        mocker.patch('um.exercises.factories.Exercise.render_tex')
+        ex = factories.ExerciseFactory.create()
+
+        # AND a user
+        user = UserFactory.create()
+
+        # WHEN making a GET request to the create view with the exercise id as url parameter
+        url = reverse('exercises:create') + f'?template={ex.id}'
+        request = rf.get(url)
+        request.user = user
+        response = views.ExerciseCreateView.as_view()(request, url)
+
+        # THEN it's there
+        assert response.status_code == 200
+
+        # AND the input field is pre-populated with the existing exercise's text
+        response.render()
+        html = response.content.decode()
+        assert ex.text in html
 
 
 class TestExerciseDetailView:

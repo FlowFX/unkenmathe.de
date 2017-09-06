@@ -74,3 +74,17 @@ class Exercise(SoftDeletableModel):
         self.render_tex()
 
         self.super_save(*args, **kwargs)             # Call the "real" save() method.
+
+
+class ExerciseExample(models.Model):
+    """An exercise example with title and description.
+
+    For the Howto page.
+    """
+
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    exercise = models.ForeignKey(
+        Exercise,
+        on_delete=models.PROTECT,
+    )
