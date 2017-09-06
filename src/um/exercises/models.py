@@ -47,6 +47,7 @@ class Exercise(SoftDeletableModel):
     text_tex = models.TextField(verbose_name='Exercise text, rendered as LaTeX')
 
     def __str__(self):
+        """Format str(obj) response."""
         return 'Aufgabe {}'.format(self.id)
 
     @property
@@ -93,4 +94,5 @@ class ExerciseExample(models.Model):
     )
 
     def __str__(self):
+        """Format str(obj) response."""
         return 'Beispiel {}: {}'.format(self.id, self.title)

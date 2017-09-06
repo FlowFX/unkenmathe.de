@@ -10,6 +10,7 @@ def test_favicon(client):
     # THEN it gets redirected to the file
     assert response.status_code == 302
 
+
 def test_robots_txt(client):
     # GIVEN any state
     # WHEN a browser requests the robots.txt
