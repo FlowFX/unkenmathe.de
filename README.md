@@ -1,5 +1,7 @@
 # Unkenmathe.de
 
+[![Join the chat at https://gitter.im/unkenmathe-de/Lobby](https://badges.gitter.im/unkenmathe-de/Lobby.svg)](https://gitter.im/unkenmathe-de/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ![Project Status](https://img.shields.io/badge/status-alpha-yellow.svg)
 [![Build Status](https://travis-ci.org/FlowFX/unkenmathe.de.svg?branch=master)](https://travis-ci.org/FlowFX/unkenmathe.de)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
