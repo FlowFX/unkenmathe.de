@@ -15,14 +15,15 @@ def pdflatex(template):
     except AttributeError:
         encoded_template = template
 
-    with tempfile.TemporaryDirectory() as tempdir:
-        for _ in range(2):  # noqa: F402
-            process = Popen(
-                ['pdflatex', '-output-directory', tempdir],
-                stdin=PIPE,
-                stdout=PIPE,
-            )
-            process.communicate(encoded_template)
+    tempdir = tempfile.mkdtemp()
 
-        f = open(os.path.join(tempdir, 'texput.pdf'), 'rb')
-        return f
+    for _ in range(2):  # noqa: F402
+        process = Popen(
+            ['pdflatex', '-output-directory', tempdir],
+            stdin=PIPE,
+            stdout=PIPE,
+        )
+        process.communicate(encoded_template)
+
+    f = open(os.path.join(tempdir, 'texput.pdf'), 'rb')
+    return f
