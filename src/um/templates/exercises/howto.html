@@ -3,10 +3,28 @@
 
 {% block content %}
 
+{% if user.is_staff %}
+
+<a href="{% url 'admin:app_list' 'exercises' %}exerciseexample/" class="btn btn-primary" role="button" style="margin:30px;">Bearbeiten im Admin</a>
+
+{% endif %}
+
+
+<h1>Wie formatiere ich eine Aufgabe?</h1>
+
+<ol>
+{% for example in examples %}
+    <li><a href="#{{ example.title|slugify }}">{{ example.title }}</a></li>
+{% endfor %}
+</ol>
+
+
+
 {% for example in examples %}
 
 <hr>
 
+<a name="{{ example.title|slugify }}"></a>
 <h3>{{ example.title }}</h3>
 <p>
 {{ example.description|markdownify|safe }}
