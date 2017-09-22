@@ -59,7 +59,7 @@ class TestBasicViews:
 
 class TestExamplesViews:
 
-    def test_exercise_examples_howto_page(self, db, client):
+    def test_howto_view_returns_200(self, db, client):
         # GIVEN a an exercise example
         example = factories.ExerciseExampleFactory.create()
 
