@@ -1,3 +1,4 @@
+"""Markdown-related template filters."""
 from django import template
 import markdown
 
