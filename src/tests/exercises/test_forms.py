@@ -8,15 +8,23 @@ import pytest
 class TestExerciseForms:
 
     TESTPARAMS_EXERCISE = [
-        ('Dies ist eine einfach Aufgabe: $5x + 4 = 20$.', True),
+        ('$5x + 4 = 20$.', 'cc-by',    True),
+        ('$5x + 4 = 20$.', 'cc-by-sa', True),
+        ('$5x + 4 = 20$.', 'cc-by-nd', True),
+        ('',               'cc-by',    False),  # text is required
+        ('$5x + 4 = 20$.', '',         False),  # license is required
+        ('$5x + 4 = 20$.', 'cc-by-XX', False),  # license is one of cc-by|cc-by-sa|cc-by-na
     ]
 
-    @pytest.mark.parametrize('text, validity', TESTPARAMS_EXERCISE)
-    def test_exercise_form(self, text, validity):
+    @pytest.mark.parametrize('text, license, validity', TESTPARAMS_EXERCISE)
+    def test_exercise_form(self, text, license, validity):
         """Unit test the Exercise Form."""
         # WHEN submitting the form with data
         form = forms.ExerciseForm(
-            data={'text': text, 'license': 'cc-by'},
+            data={
+                'text': text,
+                'license': license,
+                },
             user=factories.UserFactory.build()
         )
 
