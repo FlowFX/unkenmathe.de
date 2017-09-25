@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags i18n static %}
 {% load render_bundle from webpack_loader %}
 
 
 {% block content %}
 <div id="app">
 
+    {% trans 'author' %}: 
+    {% if user == exercise.author %}
+    It's you!
+    {% else %}
+    {{ exercise.author.name }}
+    {% endif %}
+    {% trans 'exercise' %}: #{{ exercise.id }}
+
     {% crispy form %}
 
-    <div class="card">
+    <legend>{% trans 'preview' %}</legend>
+    <div class="card editor-preview">
         <div class="card-block">
             <div class="card-text" v-html="compiledMarkdown">
             </div>

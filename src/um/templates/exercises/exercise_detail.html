@@ -19,7 +19,12 @@
             </div>
         </div>
         <div class="card-footer text-muted">
-          Aufgabe von {{ exercise.author.name }} / <a href="{{ exercise.license_url }}"> {{ exercise.get_license_display }}</a>
+            {% if exercise.source %}
+            <!-- TODO: need a link to the author. this means source needs to be a User or whatever. -->
+            <a href="{{ exercise.source_url }}">Aufgabe</a> von {{ exercise.source }} / <a href="{{ exercise.license_url }}"> {{ exercise.get_license_display }}</a>
+            {% else %}
+            Aufgabe von {{ exercise.author.name }} / <a href="{{ exercise.license_url }}"> {{ exercise.get_license_display }}</a>
+            {% endif %}
         </div>
     </div>
 
