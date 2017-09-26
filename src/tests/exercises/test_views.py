@@ -20,16 +20,6 @@ exercise_data = {
 }
 
 
-@pytest.fixture(scope="module")
-def exercises():
-    exercises = factories.ExerciseFactory.build_batch(2)
-
-    for ex in exercises:
-        ex.render_html()
-
-    return exercises
-
-
 class TestBasicViews:
 
     def test_home_page_GET(self, mocker, rf, exercises):
