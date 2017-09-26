@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'um.core',
     'um.exercises',
+    'um.sheets',
 ]
 
 # Middleware
