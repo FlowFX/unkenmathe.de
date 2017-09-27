@@ -16,6 +16,9 @@
       {% if user.is_authenticated %}
       {% endif %}
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'exercises:index' %}">Alle Aufgaben</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'exercises:howto' %}">Howto</a>
       </li>
     </ul>
@@ -27,7 +30,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="{% url 'exercises:create' %}" id="id_add_exercise">Neue Aufgabe</a>
-          <a class="dropdown-item" href="#">Neues Aufgabenblatt</a>
+          <a class="dropdown-item" href="{% url 'sheets:create' %}">Neues Aufgabenblatt</a>
         </div>
       </li>
       {% endif %}

@@ -6,22 +6,23 @@
 {% block content %}
 <div id="app">
 
-    {% trans 'author' %}: 
-    {% if user == exercise.author %}
-    It's you!
-    {% else %}
-    {{ exercise.author.name }}
-    {% endif %}
     {% trans 'exercise' %}: #{{ exercise.id }}
 
-    {% crispy form %}
+    <div class="row">
 
-    <legend>{% trans 'preview' %}</legend>
-    <div class="card editor-preview">
-        <div class="card-block">
-            <div class="card-text" v-html="compiledMarkdown">
+        <div class="col-12 col-md-6">
+            {% crispy form %}
+        </div>
+
+        <div class="col-12 col-md-6">
+            <legend>{% trans 'preview' %}</legend>
+            <div class="card editor-preview">
+                <div class="card-block">
+                    <div class="card-text" v-html="compiledMarkdown"></div>
+                </div>
             </div>
         </div>
+
     </div>
 
 </div>
@@ -31,7 +32,8 @@
 
 {% block scripts %}
     <script>
-        var exercise_text = `{{ exercise.text|escapejs }}` ;
+        var exercise_text = `{{ exercise.text|escapejs }}`;
+        var exercise_is_original = {% if exercise.is_original %}true{% else %}false{% endif %};
     </script>
 
     {{ block.super }}

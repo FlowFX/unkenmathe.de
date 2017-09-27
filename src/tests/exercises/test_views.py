@@ -1,5 +1,6 @@
 """Unit tests."""
 import os
+
 from django.contrib.auth.models import AnonymousUser
 from django.urls import reverse
 
@@ -18,43 +19,6 @@ exercise_data = {
     'license': 'cc-by',
     'text': 'What is 5 + 4?',
 }
-
-
-@pytest.fixture(scope="module")
-def exercises():
-    exercises = factories.ExerciseFactory.build_batch(2)
-
-    for ex in exercises:
-        ex.render_html()
-
-    return exercises
-
-
-class TestBasicViews:
-
-    def test_home_page_GET(self, mocker, rf, exercises):
-        # GIVEN any state
-        mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
-
-        # WHEN calling the home page
-        url = reverse('index')
-        request = rf.get(url)
-        response = views.ExcerciseListView.as_view()(request)
-
-        # THEN it's there
-        assert response.status_code == 200
-
-    def test_home_page_shows_all_exercises(self, client, mocker, exercises):
-        # GIVEN a number of exercises
-        mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
-
-        # WHEN calling the home page
-        url = reverse('index')
-        response = client.get(url)
-
-        # # THEN all exercises are displayed with html text
-        for ex in exercises:
-            assert ex.text in response.content.decode()
 
 
 class TestExamplesViews:
@@ -98,7 +62,7 @@ class TestExerciseCreateView:
         # THEN it's there, or not
         assert response.status_code == status_code
 
-    def test_post_to_create_view_adds_author_to_object(self, db, rf, users, mocker):
+    def test_post_to_create_view_adds_author_to_object(self, db, rf, mocker):
         mocker.patch('um.exercises.views.Exercise.render_html')
         mocker.patch('um.exercises.views.Exercise.render_tex')
 
@@ -116,6 +80,27 @@ class TestExerciseCreateView:
         # THEN the user gets attached to the exercise as the author
         ex = models.Exercise.objects.last()
         assert ex.author == user
+
+    def test_creating_new_original_exercise_clears_source_information(self, db, rf, mocker):
+        mocker.patch('um.exercises.views.Exercise.render_html')
+        mocker.patch('um.exercises.views.Exercise.render_tex')
+
+        # GIVEN a user and extended exercise_data
+        user = UserFactory.create()
+        exercise_data['is_original'] = True
+        exercise_data['original_author'] = user.id
+        exercise_data['source_url'] = 'http://example.com'
+
+        # WHEN creating the new exercise
+        url = reverse('exercises:create')
+        request = rf.post(url, data=exercise_data)
+        request.user = user
+        views.ExerciseCreateView.as_view()(request)
+
+        # THEN the source information is wiped
+        ex = models.Exercise.objects.last()
+        assert not ex.original_author
+        assert not ex.source_url
 
     def test_post_to_create_view_redirects_to_home_page(self, db, rf, users, mocker):
         mocker.patch('um.exercises.views.Exercise.render_html')
@@ -258,6 +243,8 @@ class TestExerciseUpdateView:
         user = UserFactory.create()
         ex = factories.ExerciseFactory.create(author=user)
 
+        exercise_data['author'] = user.id
+
         # WHEN making a post request to the create view
         url = reverse('exercises:update', kwargs={'pk': ex.id})
         request = rf.post(url, data=exercise_data)
@@ -323,3 +310,30 @@ class TestExercisePDFView:
         # THEN the response is a PDF document
         assert response.status_code == 200
         assert magic.from_buffer(response.content, mime=True) == 'application/pdf'
+
+
+class TestExerciseListViews:
+
+    def test_home_page_GET(self, mocker, rf, exercises):
+        # GIVEN any state
+        mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
+
+        # WHEN calling the home page
+        url = reverse('exercises:index')
+        request = rf.get(url)
+        response = views.ExcerciseListView.as_view()(request)
+
+        # THEN it's there
+        assert response.status_code == 200
+
+    def test_home_page_shows_all_exercises(self, client, mocker, exercises):
+        # GIVEN a number of exercises
+        mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
+
+        # WHEN calling the home page
+        url = reverse('exercises:index')
+        response = client.get(url)
+
+        # # THEN all exercises are displayed with html text
+        for ex in exercises:
+            assert ex.text in response.content.decode()

@@ -137,6 +137,13 @@ class ExerciseUpdateView(UserPassesTestMixin, UpdateView):
 
         return self.request.user == obj.author or self.request.user.is_staff
 
+    def get_form_kwargs(self):
+        """Add user as keyword argument."""
+        kwargs = super(ExerciseUpdateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+
+        return kwargs
+
 
 class ExerciseDeleteView(UserPassesTestMixin, DeleteView):
     """Delete view for an exercise."""

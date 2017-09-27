@@ -43,9 +43,10 @@ class Exercise(SoftDeletableModel):
         related_name='author',
         on_delete=models.PROTECT,
     )
-    source = models.ForeignKey(
+    is_original = models.BooleanField(default=True)
+    original_author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        related_name='source',
+        related_name='+',
         on_delete=models.SET_NULL,
         null=True,
     )

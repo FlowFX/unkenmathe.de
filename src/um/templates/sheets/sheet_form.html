@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags i18n static %}
+{% load render_bundle from webpack_loader %}
+
+
+{% block content %}
+<div id="app">
+
+    {% crispy form %}
+
+</div>
+
+{% endblock content %}
