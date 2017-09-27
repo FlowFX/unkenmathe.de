@@ -19,7 +19,7 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
             'text',
             'license',
             'author',
-            'source',
+            'original_author',
             'source_url',
             ]
 
@@ -49,13 +49,13 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
                 ),
                 'license',
                 'author',
-                'source',
+                'original_author',
                 'source_url',
             ),
         )
         self.fields['text'].label = False
         self.fields['author'].required = False
-        self.fields['source'].required = False
+        self.fields['original_author'].required = False
         self.fields['source_url'].required = False
 
         if self.user and not self.user.is_staff:
@@ -64,10 +64,10 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(ExerciseForm, self).clean()
-        source = cleaned_data.get('source')
+        original_author = cleaned_data.get('original_author')
         source_url = cleaned_data.get('source_url')
 
-        if source and source_url == '':
+        if original_author and source_url == '':
             # If source is given, then a source URL is required.
             raise forms.ValidationError(
                 _('Please provide a URL for the source.')
