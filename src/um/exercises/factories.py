@@ -15,6 +15,8 @@ class ExerciseFactory(DjangoModelFactory):
         model = Exercise
 
     author = SubFactory(UserFactory)
+    source = SubFactory(UserFactory)
+
     text = faker('sentence')
     text_html = ''
     text_tex = ''

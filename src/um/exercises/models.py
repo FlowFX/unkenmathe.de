@@ -40,8 +40,17 @@ class Exercise(SoftDeletableModel):
     )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
+        related_name='author',
         on_delete=models.PROTECT,
     )
+    source = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='source',
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+    source_url = models.URLField(blank=True)
+
     text = models.TextField(verbose_name='Exercise text, Markdown/LaTeX')
     text_html = models.TextField(verbose_name='Exercise text, rendered as HTML')
     text_tex = models.TextField(verbose_name='Exercise text, rendered as LaTeX')
