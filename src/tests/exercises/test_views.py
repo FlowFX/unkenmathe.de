@@ -1,5 +1,8 @@
 """Unit tests."""
 import os
+
+from authtools.models import User
+
 from django.contrib.auth.models import AnonymousUser
 from django.urls import reverse
 
@@ -9,6 +12,7 @@ from um.core.factories import UserFactory
 from um.exercises import factories, models, views
 
 import pytest
+
 
 
 TEST_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -63,7 +67,7 @@ class TestExerciseCreateView:
         # THEN it's there, or not
         assert response.status_code == status_code
 
-    def test_post_to_create_view_adds_author_to_object(self, db, rf, users, mocker):
+    def test_post_to_create_view_adds_author_to_object(self, db, rf, mocker):
         mocker.patch('um.exercises.views.Exercise.render_html')
         mocker.patch('um.exercises.views.Exercise.render_tex')
 
@@ -81,6 +85,27 @@ class TestExerciseCreateView:
         # THEN the user gets attached to the exercise as the author
         ex = models.Exercise.objects.last()
         assert ex.author == user
+
+    def test_creating_new_original_exercise_clears_source_information(self, db, rf, mocker):
+        mocker.patch('um.exercises.views.Exercise.render_html')
+        mocker.patch('um.exercises.views.Exercise.render_tex')
+
+        # GIVEN a user and extended exercise_data
+        user = UserFactory.create()
+        exercise_data['is_original'] = True
+        exercise_data['original_author'] = user.id
+        exercise_data['source_url'] = 'http://example.com'
+
+        # WHEN creating the new exercise
+        url = reverse('exercises:create')
+        request = rf.post(url, data=exercise_data)
+        request.user = user
+        views.ExerciseCreateView.as_view()(request)
+
+        # THEN the source information is wiped
+        ex = models.Exercise.objects.last()
+        assert ex.original_author == None
+        assert ex.source_url == ''
 
     def test_post_to_create_view_redirects_to_home_page(self, db, rf, users, mocker):
         mocker.patch('um.exercises.views.Exercise.render_html')

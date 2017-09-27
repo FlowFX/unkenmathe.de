@@ -43,18 +43,13 @@ class Exercise(SoftDeletableModel):
         related_name='author',
         on_delete=models.PROTECT,
     )
+    is_original = models.BooleanField(default=True)
     original_author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='+',
         on_delete=models.SET_NULL,
         null=True,
     )
-    # source = models.ForeignKey(
-    #     settings.AUTH_USER_MODEL,
-    #     related_name='source',
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    # )
     source_url = models.URLField(blank=True)
 
     text = models.TextField(verbose_name='Exercise text, Markdown/LaTeX')

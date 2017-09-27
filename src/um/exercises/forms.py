@@ -19,6 +19,7 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
             'text',
             'license',
             'author',
+            'is_original',
             'original_author',
             'source_url',
             ]
@@ -49,6 +50,7 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
                 ),
                 'license',
                 'author',
+                'is_original',
                 'original_author',
                 'source_url',
             ),
@@ -72,3 +74,23 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
             raise forms.ValidationError(
                 _('Please provide a URL for the source.')
             )
+
+    def clean_original_author(self):
+        """If exercise is an original, wipe all source information."""
+        original_author = self.cleaned_data['original_author']
+        is_original = self.cleaned_data['is_original']
+
+        if is_original:
+            return None
+
+        return original_author
+
+    def clean_source_url(self):
+        """If exercise is an original, wipe all source information."""
+        source_url = self.cleaned_data['source_url']
+        is_original = self.cleaned_data['is_original']
+
+        if is_original:
+            return ''
+
+        return source_url

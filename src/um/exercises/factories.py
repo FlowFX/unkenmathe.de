@@ -21,6 +21,8 @@ class ExerciseFactory(DjangoModelFactory):
     text_html = ''
     text_tex = ''
 
+    is_original = True
+
 
 class ExerciseExampleFactory(DjangoModelFactory):
     """Model factory for Exercise examples."""
