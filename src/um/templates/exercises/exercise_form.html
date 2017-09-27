@@ -32,7 +32,8 @@
 
 {% block scripts %}
     <script>
-        var exercise_text = `{{ exercise.text|escapejs }}` ;
+        var exercise_text = `{{ exercise.text|escapejs }}`;
+        var exercise_is_original = {% if exercise.is_original %}true{% else %}false{% endif %};
     </script>
 
     {{ block.super }}

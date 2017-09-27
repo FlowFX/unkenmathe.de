@@ -15,6 +15,7 @@ let app = new Vue({
   el: '#app',
   data: {
     input: exercise_text,
+    is_original: exercise_is_original,
   },
   computed: {
     compiledMarkdown: function () {

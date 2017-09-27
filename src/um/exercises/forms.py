@@ -50,9 +50,15 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
                 ),
                 'license',
                 'author',
-                'is_original',
-                'original_author',
-                'source_url',
+                Field(
+                    'is_original',
+                    v_model='is_original',
+                ),
+                Div(
+                    'original_author',
+                    'source_url',
+                    v_if='is_original == false'
+                ),
             ),
         )
         self.fields['text'].label = False
