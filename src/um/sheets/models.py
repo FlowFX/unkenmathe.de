@@ -14,3 +14,5 @@ class Sheet(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     exercises = models.ManyToManyField('exercises.Exercise')
+
+    # TODO: add get_absolute_url()

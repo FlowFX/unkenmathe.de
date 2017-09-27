@@ -20,31 +20,6 @@ exercise_data = {
 }
 
 
-class TestBasicViews:
-
-    def test_home_page_GET(self, mocker, rf, exercises):
-        # GIVEN any state
-        mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
-
-        # WHEN calling the home page
-        url = reverse('index')
-        request = rf.get(url)
-        response = views.ExcerciseListView.as_view()(request)
-
-        # THEN it's there
-        assert response.status_code == 200
-
-    def test_home_page_shows_all_exercises(self, client, mocker, exercises):
-        # GIVEN a number of exercises
-        mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
-
-        # WHEN calling the home page
-        url = reverse('index')
-        response = client.get(url)
-
-        # # THEN all exercises are displayed with html text
-        for ex in exercises:
-            assert ex.text in response.content.decode()
 
 
 class TestExamplesViews:
@@ -248,6 +223,8 @@ class TestExerciseUpdateView:
         user = UserFactory.create()
         ex = factories.ExerciseFactory.create(author=user)
 
+        exercise_data['author'] = user.id
+
         # WHEN making a post request to the create view
         url = reverse('exercises:update', kwargs={'pk': ex.id})
         request = rf.post(url, data=exercise_data)
@@ -313,3 +290,30 @@ class TestExercisePDFView:
         # THEN the response is a PDF document
         assert response.status_code == 200
         assert magic.from_buffer(response.content, mime=True) == 'application/pdf'
+
+
+class TestExerciseListViews:
+
+    def test_home_page_GET(self, mocker, rf, exercises):
+        # GIVEN any state
+        mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
+
+        # WHEN calling the home page
+        url = reverse('exercises:index')
+        request = rf.get(url)
+        response = views.ExcerciseListView.as_view()(request)
+
+        # THEN it's there
+        assert response.status_code == 200
+
+    def test_home_page_shows_all_exercises(self, client, mocker, exercises):
+        # GIVEN a number of exercises
+        mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
+
+        # WHEN calling the home page
+        url = reverse('exercises:index')
+        response = client.get(url)
+
+        # # THEN all exercises are displayed with html text
+        for ex in exercises:
+            assert ex.text in response.content.decode()

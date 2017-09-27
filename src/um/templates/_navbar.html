@@ -16,6 +16,9 @@
       {% if user.is_authenticated %}
       {% endif %}
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'exercises:index' %}">Alle Aufgaben</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'exercises:howto' %}">Howto</a>
       </li>
     </ul>

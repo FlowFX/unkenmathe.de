@@ -18,12 +18,13 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
         fields = [
             'text',
             'license',
+            'author',
             'source',
             'source_url',
             ]
 
         labels = {
-            'text': 'Aufgabentext',
+            'text': None,
         }
         help_texts = {
             'text': 'Markdown und LaTeX mit $ und $$.',
@@ -40,26 +41,31 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
 
         self.helper.layout = Layout(
             Fieldset(
-                _('exercise form'),
+                _('exercise text'),
                 Field(
                     'text',
                     v_model='input',
                     css_class='editor-input',
                 ),
                 'license',
+                'author',
                 'source',
                 'source_url',
             ),
         )
+        self.fields['text'].label = False
+        self.fields['author'].required = False
         self.fields['source'].required = False
         self.fields['source_url'].required = False
+
+        if self.user and not self.user.is_staff:
+            # don't let normal users change the author field
+            self.fields['author'].widget = forms.HiddenInput()
 
     def clean(self):
         cleaned_data = super(ExerciseForm, self).clean()
         source = cleaned_data.get('source')
         source_url = cleaned_data.get('source_url')
-
-        print(source)
 
         if source and source_url == '':
             # If source is given, then a source URL is required.
