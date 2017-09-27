@@ -4,8 +4,6 @@ from um.exercises import forms
 
 import pytest
 
-from authtools.models import User
-
 
 class TestExerciseForms:
 

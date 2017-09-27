@@ -3,17 +3,9 @@
 # from django.contrib.auth.models import AnonymousUser
 from django.urls import reverse
 
-# import magic
-
-# from um.core.factories import UserFactory
-from um.sheets import models, views
+from um.sheets import views
 
 import pytest
-
-
-# TEST_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
 
 
 class TestSheetCreateView:

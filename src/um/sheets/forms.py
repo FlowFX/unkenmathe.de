@@ -2,7 +2,7 @@
 from braces.forms import UserKwargModelFormMixin
 
 from crispy_forms.helper import FormHelper, Layout
-from crispy_forms.layout import Div, Field, Fieldset, HTML, Submit
+from crispy_forms.layout import Fieldset, Submit
 
 from django import forms
 from django.utils.translation import gettext_lazy as _
@@ -15,9 +15,7 @@ class SheetForm(UserKwargModelFormMixin, forms.ModelForm):
 
     class Meta:  # noqa: D101
         model = Sheet
-        fields = [
-            'exercises',
-            ]
+        fields = ['exercises']
 
     def __init__(self, *args, **kwargs):
         """Add crispy-forms helper and layout to form."""

@@ -3,9 +3,6 @@ from django.urls import reverse
 
 from um.exercises import views as exercises_views
 
-import pytest
-
-
 
 def test_favicon(client):
     # GIVEN any state

@@ -2,9 +2,6 @@
 
 from django.db import models
 
-from um.exercises.models import Exercise
-
-
 
 class Sheet(models.Model):
     """The exercise sheet model."""

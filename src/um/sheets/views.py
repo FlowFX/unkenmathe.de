@@ -1,10 +1,9 @@
 """Views for sheets app."""
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin  # , UserPassesTestMixin
+from django.views.generic import CreateView  # , DeleteView, DetailView, ListView, UpdateView
 
 from .forms import SheetForm
 from .models import Sheet
-
 
 
 class SheetCreateView(LoginRequiredMixin, CreateView):

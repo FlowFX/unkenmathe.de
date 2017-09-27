@@ -2,7 +2,7 @@
 from braces.forms import UserKwargModelFormMixin
 
 from crispy_forms.helper import FormHelper, Layout
-from crispy_forms.layout import Div, Field, Fieldset, HTML, Submit
+from crispy_forms.layout import Div, Field, Fieldset, Submit
 
 from django import forms
 from django.utils.translation import gettext_lazy as _
@@ -21,8 +21,7 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
             'author',
             'is_original',
             'original_author',
-            'source_url',
-            ]
+            'source_url']
 
         labels = {
             'text': None,

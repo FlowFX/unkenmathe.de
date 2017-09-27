@@ -1,8 +1,6 @@
 """Unit tests."""
 import os
 
-from authtools.models import User
-
 from django.contrib.auth.models import AnonymousUser
 from django.urls import reverse
 
@@ -14,7 +12,6 @@ from um.exercises import factories, models, views
 import pytest
 
 
-
 TEST_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -22,8 +19,6 @@ exercise_data = {
     'license': 'cc-by',
     'text': 'What is 5 + 4?',
 }
-
-
 
 
 class TestExamplesViews:
@@ -104,8 +99,8 @@ class TestExerciseCreateView:
 
         # THEN the source information is wiped
         ex = models.Exercise.objects.last()
-        assert ex.original_author == None
-        assert ex.source_url == ''
+        assert not ex.original_author
+        assert not ex.source_url
 
     def test_post_to_create_view_redirects_to_home_page(self, db, rf, users, mocker):
         mocker.patch('um.exercises.views.Exercise.render_html')
