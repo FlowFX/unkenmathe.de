@@ -65,6 +65,7 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
         )
         self.fields['text'].label = False
         self.fields['author'].required = False
+        self.fields['is_original'].default = True
         self.fields['original_author'].required = False
         self.fields['source_url'].required = False
         self.fields['changes'].required = False

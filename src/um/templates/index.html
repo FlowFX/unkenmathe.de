@@ -2,6 +2,16 @@
 
 {% block content %}
 
-Hallo
+
+<h3>Hallo.</h3>
+<ul>
+    {% if not user.is_authenticated %}
+    <li><a href="{% url 'account_login' %}">Melde dich an</a></li>
+    {% endif %}
+    <li><a href="{% url 'exercises:create' %}">Erstelle eine neue Aufgabe</a></li>
+    <li><a href="mailto:florian@unkenmathe.de">Schick mir dein Aufgabenblatt</a></li>
+</ul>
+
+
 
 {% endblock content %}
