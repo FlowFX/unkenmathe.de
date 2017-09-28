@@ -315,11 +315,11 @@ class TestExercisePDFView:
 
 class TestExerciseListViews:
 
-    def test_home_page_GET(self, mocker, rf, exercises):
+    def test_exercises_index_GET(self, mocker, rf, exercises):
         # GIVEN any state
         mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
 
-        # WHEN calling the home page
+        # WHEN calling exercises index page
         url = reverse('exercises:index')
         request = rf.get(url)
         response = views.ExcerciseListView.as_view()(request)
@@ -327,7 +327,7 @@ class TestExerciseListViews:
         # THEN it's there
         assert response.status_code == 200
 
-    def test_home_page_shows_all_exercises(self, client, mocker, exercises):
+    def test_exercises_index_shows_all_exercises(self, client, mocker, exercises):
         # GIVEN a number of exercises
         mocker.patch.object(views.ExcerciseListView, 'get_queryset', return_value=exercises)
 
