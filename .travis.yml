@@ -37,7 +37,7 @@ script:
   - cd src/
   - echo "{}" > secrets.json
   - python manage.py compress --force
-  - pytest system_tests
+  # - pytest system_tests
   - pytest --cov
   - codecov
 after_success:

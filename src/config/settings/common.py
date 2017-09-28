@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'anymail',
     'compressor',
     'crispy_forms',
     'webpack_loader',
@@ -104,6 +105,16 @@ TEMPLATES = [
         },
     },
 ]
+
+
+# Email
+DEFAULT_FROM_EMAIL = "admin@unkenmathe.de"
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+ANYMAIL = {
+    "MAILGUN_API_KEY": get_secret('MAILGUN_API_KEY'),
+    "MAILGUN_SENDER_DOMAIN": 'mg.unkenmathe.de',
+}
+SERVER_EMAIL = "django@unkenmathe.de"  # for error messages
 
 
 # User authentication
