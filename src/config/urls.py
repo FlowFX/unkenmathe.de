@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^robots\.txt$', core_views.robots_txt_view),  # serve the robots.txt
     url(r'^$', exercises_views.ExcerciseListView.as_view(), name='index'),
     url(r'^root/', admin.site.urls),
-    url(r'^konto/', include('allauth.urls')),
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^aufgaben/', include(exercises_urls, namespace='exercises')),
     url(r'^aufgabenblaetter/', include(sheets_urls, namespace='sheets')),
 ]
