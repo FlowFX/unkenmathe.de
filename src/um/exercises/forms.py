@@ -21,7 +21,9 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
             'author',
             'is_original',
             'original_author',
-            'source_url']
+            'source_url',
+            'changes',
+        ]
 
         labels = {
             'text': None,
@@ -56,6 +58,7 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
                 Div(
                     'original_author',
                     'source_url',
+                    'changes',
                     v_if='is_original == false'
                 ),
             ),
@@ -64,6 +67,7 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
         self.fields['author'].required = False
         self.fields['original_author'].required = False
         self.fields['source_url'].required = False
+        self.fields['changes'].required = False
 
         if self.user and not self.user.is_staff:
             # don't let normal users change the author field
@@ -73,11 +77,18 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
         cleaned_data = super(ExerciseForm, self).clean()
         original_author = cleaned_data.get('original_author')
         source_url = cleaned_data.get('source_url')
+        changes = cleaned_data.get('changes')
 
         if original_author and source_url == '':
             # If source is given, then a source URL is required.
             raise forms.ValidationError(
                 _('Please provide a URL for the source.')
+            )
+
+        if original_author and changes == '':
+            # If source is given, then info about changes to the exercise is required.
+            raise forms.ValidationError(
+                _('Please describe the changes made to the exercise.')
             )
 
     def clean_original_author(self):

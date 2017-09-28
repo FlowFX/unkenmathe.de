@@ -1,0 +1,15 @@
+<div class="card" id="id_exercise_{{ exercise.id }}">
+    <div class="card-body">
+        <h4 class="h6 card-title float-right"><a href="{{ exercise.url }}">#{{ exercise.id }}</a></h4>
+        <div class="card-text">
+        {{ exercise.text_html|safe }}
+        </div>
+    </div>
+    <div class="card-footer text-muted text-sm">
+        {% if exercise.is_original %}
+        Aufgabe von {{ exercise.author.name }} / <a href="{{ exercise.license_url }}"> {{ exercise.get_license_display }}</a>
+        {% elif exercise.changes == 'none' %}
+        <a href="{{ exercise.source_url }}">Aufgabe</a> von {{ exercise.original_author.name }} / <a href="{{ exercise.license_url }}"> {{ exercise.get_license_display }}</a>
+        {% endif %}
+    </div>
+</div>

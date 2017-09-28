@@ -115,9 +115,10 @@ class TestExerciseCreateView:
         request.user = user
         response = views.ExerciseCreateView.as_view()(request, url)
 
-        # THEN it redirects back to the home page
+        # THEN it redirects to the detail view
+        ex = models.Exercise.objects.last()
         assert response.status_code == 302
-        assert response.url == '/'
+        assert response.url == ex.url
 
     def test_get_with_url_parameter_prepopulates_text(self, db, rf, mocker):
         # GIVEN an existing exercise
@@ -251,9 +252,9 @@ class TestExerciseUpdateView:
         request.user = user
         response = views.ExerciseUpdateView.as_view()(request, pk=ex.id)
 
-        # THEN it redirects back to the home page
+        # THEN it redirects to the detail view
         assert response.status_code == 302
-        assert response.url == '/'
+        assert response.url == ex.url
 
 
 class TestExerciseDeleteView:

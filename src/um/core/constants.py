@@ -1,4 +1,6 @@
 """Constants."""
+from django.utils.translation import gettext_lazy as _
+
 
 CC_BY = 'cc-by'
 CC_BY_SA = 'cc-by-sa'
@@ -15,3 +17,7 @@ LICENCE_URLS = {
     CC_BY_SA: 'https://creativecommons.org/licenses/by-sa/4.0/',
     # CC_BY_ND: 'https://creativecommons.org/licenses/by-nd/4.0/'
 }
+
+CHANGE_OPTIONS = (
+    ('none', _('no changes')),
+)

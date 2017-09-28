@@ -3,10 +3,11 @@ import os
 import subprocess
 
 from django.conf import settings
+from django.shortcuts import reverse
 
 from model_utils.models import SoftDeletableModel
 
-from um.core.constants import LICENCE_CHOICES, LICENCE_URLS
+from um.core.constants import CHANGE_OPTIONS, LICENCE_CHOICES, LICENCE_URLS
 
 # https://docs.python.org/3.6/library/shlex.html#shlex.quote
 from shlex import quote
@@ -51,6 +52,11 @@ class Exercise(SoftDeletableModel):
         null=True,
     )
     source_url = models.URLField(blank=True)
+    changes = models.CharField(
+        max_length=15,
+        choices=CHANGE_OPTIONS,
+        default='none',
+    )
 
     text = models.TextField(verbose_name='Exercise text, Markdown/LaTeX')
     text_html = models.TextField(verbose_name='Exercise text, rendered as HTML')
@@ -64,6 +70,15 @@ class Exercise(SoftDeletableModel):
     def license_url(self) -> str:
         """Return the URL to the chosen license."""
         return LICENCE_URLS[self.license]
+
+    @property
+    def url(self) -> str:
+        """Return canonical URL for this exercise."""
+        return self.get_absolute_url()
+
+    def get_absolute_url(self) -> str:
+        """Return URL of the exercise's DetailView."""
+        return reverse('exercises:detail', kwargs={'pk': self.id})
 
     def render_html(self) -> None:
         """Render the raw Markdown/LaTeX `text` into HTML."""

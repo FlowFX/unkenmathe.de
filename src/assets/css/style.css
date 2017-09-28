@@ -33,6 +33,12 @@ body {
 .card-block {
     padding: 1rem;
 }
+.card-footer {
+    padding: .50rem 1.0rem;
+}
+.text-sm {
+    font-size: 80%;
+}
 
 /* HTML previews */
 table {

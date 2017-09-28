@@ -60,7 +60,7 @@ class ExerciseCreateView(LoginRequiredMixin, CreateView):
 
     model = Exercise
     form_class = ExerciseForm
-    success_url = reverse_lazy('index')
+    # success_url = reverse_lazy('index')
     context_object_name = 'exercise'
 
     def form_valid(self, form):
@@ -128,7 +128,7 @@ class ExerciseUpdateView(UserPassesTestMixin, UpdateView):
 
     model = Exercise
     form_class = ExerciseForm
-    success_url = reverse_lazy('index')
+    # success_url = reverse_lazy('index')
     context_object_name = 'exercise'
 
     def test_func(self):
