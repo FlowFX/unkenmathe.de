@@ -25,6 +25,7 @@ class TestExerciseForms:
             'is_original': True,
             'original_author': None,
             'source_url': '',
+            'changes': '',
         }
 
         # WHEN submitting the form as the original author
@@ -37,12 +38,14 @@ class TestExerciseForms:
         assert form.is_valid() is validity
 
     TESTPARAMS_IS_SOURCED = [
-        ('https://de.serlo.org/mathe/xxx', True),
-        ('', False),  # if original_author exists, source URL is required
+        ('https://de.serlo.org/mathe/xxx', 'none', True),
+        ('', 'none', False),  # if original_author exists, source URL is required
+        ('https://de.serlo.org/mathe/xxx', '', False),  # info about changes is required
+        ('https://de.serlo.org/mathe/xxx', 'xyz', False),  # only one of 'none'|???   is allowed
     ]
 
-    @pytest.mark.parametrize('source_url, validity', TESTPARAMS_IS_SOURCED)
-    def test_exercise_form_if_sourced(self, db, source_url, validity):
+    @pytest.mark.parametrize('source_url, changes, validity', TESTPARAMS_IS_SOURCED)
+    def test_exercise_form_if_sourced(self, db, source_url, changes, validity):
         """Unit test the Exercise Form."""
         # GIVEN a user and form data
         users = factories.UserFactory.create_batch(2)
@@ -53,6 +56,7 @@ class TestExerciseForms:
             'is_original': False,
             'original_author': users[0].id,
             'source_url': source_url,
+            'changes': changes,
         }
 
         # WHEN submitting the form as the original author
