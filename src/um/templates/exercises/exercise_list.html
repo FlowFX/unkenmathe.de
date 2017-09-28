@@ -2,20 +2,14 @@
 
 {% block content %}
 
+
+<div class="d-flex flex-wrap">
 {% for exercise in exercises %}
         
-<div class="card" id="id_exercise_{{ exercise.id }}">
-  <div class="card-block">
-    <div class="card-text">
-      {{ exercise.text_html|safe }}
-    </div>
-    <a href="{% url 'exercises:detail' exercise.id %}" id="id_detail_{{ exercise.id }}" class="btn btn-primary btn-sm" role="button">Ansehen</a>
-    {% if user.is_authenticated %}
-    <a href="{% url 'exercises:update' exercise.id %}" id="id_edit_{{ exercise.id }}" class="btn btn-primary btn-sm" role="button">Bearbeiten</a>
-    {% endif %}
-  </div>
-</div>
+  {% include 'exercises/_exercise_card.html' %}
 
 {% endfor %}
+</div>
+
 
 {% endblock content %}

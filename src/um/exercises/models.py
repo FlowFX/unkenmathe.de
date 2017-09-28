@@ -3,6 +3,7 @@ import os
 import subprocess
 
 from django.conf import settings
+from django.shortcuts import reverse
 
 from model_utils.models import SoftDeletableModel
 
@@ -64,6 +65,15 @@ class Exercise(SoftDeletableModel):
     def license_url(self) -> str:
         """Return the URL to the chosen license."""
         return LICENCE_URLS[self.license]
+
+    @property
+    def url(self) -> str:
+        """Return canonical URL for this exercise."""
+        return self.get_absolute_url()
+
+    def get_absolute_url(self) -> str:
+        """Return URL of the exercise's DetailView."""
+        return reverse('exercises:detail', kwargs={'pk': self.id})
 
     def render_html(self) -> None:
         """Render the raw Markdown/LaTeX `text` into HTML."""

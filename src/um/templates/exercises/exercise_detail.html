@@ -12,20 +12,7 @@
     <a href="{% url 'exercises:pdf' exercise.id %}" class="btn btn-outline-info btn-sm" role="button">Vorschau als PDF</a>
     {% endif %}
 
-    <div class="card" id="id_text">
-        <div class="card-block">
-            <div class="card-text">
-            {{ exercise.text_html|safe }}
-            </div>
-        </div>
-        <div class="card-footer text-muted">
-            {% if exercise.is_original %}
-            Aufgabe von {{ exercise.author.name }} / <a href="{{ exercise.license_url }}"> {{ exercise.get_license_display }}</a>
-            {% else %}
-            <a href="{{ exercise.source_url }}">Aufgabe</a> von {{ exercise.original_author.name }} / <a href="{{ exercise.license_url }}"> {{ exercise.get_license_display }}</a>
-            {% endif %}
-        </div>
-    </div>
+    {% include 'exercises/_exercise_card.html' %}
 
 </div>
 
