@@ -31,7 +31,7 @@ if not os.path.exists(node):  # pragma: no cover
 class Exercise(SoftDeletableModel):
     """The main exercise model."""
 
-    uuid = models.UUIDField(unique=True, default=uuid.uuid4)
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True)
 
     # TimeStampedModel
     created = models.DateTimeField(auto_now_add=True)
