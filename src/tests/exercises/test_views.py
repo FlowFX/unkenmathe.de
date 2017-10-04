@@ -130,7 +130,7 @@ class TestExerciseCreateView:
         user = UserFactory.create()
 
         # WHEN making a GET request to the create view with the exercise id as url parameter
-        url = reverse('exercises:create') + f'?template={ex.id}'
+        url = reverse('exercises:create') + f'?template={ex.pk}'
         request = rf.get(url)
         request.user = user
         response = views.ExerciseCreateView.as_view()(request, url)
@@ -152,10 +152,10 @@ class TestExerciseDetailView:
         mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise detail view
-        url = reverse('exercises:detail', kwargs={'pk': ex.id})
+        url = reverse('exercises:detail', kwargs={'pk': ex.pk})
         request = rf.get(url)
         request.user = AnonymousUser()
-        response = views.ExerciseDetailView.as_view()(request, pk=ex.id)
+        response = views.ExerciseDetailView.as_view()(request, pk=ex.pk)
 
         # THEN it's there
         assert response.status_code == 200
@@ -178,10 +178,10 @@ class TestExerciseDetailView:
         mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise detail view
-        url = reverse('exercises:detail', kwargs={'pk': ex.id})
+        url = reverse('exercises:detail', kwargs={'pk': ex.pk})
         request = rf.get(url)
         request.user = user
-        response = views.ExerciseDetailView.as_view()(request, pk=ex.id)
+        response = views.ExerciseDetailView.as_view()(request, pk=ex.pk)
 
         # THEN the response includes the context variable `can_edit`
         assert response.context_data.get('can_edit') == can_edit
@@ -207,10 +207,10 @@ class TestExerciseUpdateView:
         mocker.patch.object(views.ExerciseUpdateView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise update view
-        url = reverse('exercises:update', kwargs={'pk': ex.id})
+        url = reverse('exercises:update', kwargs={'pk': ex.pk})
         request = rf.get(url)
         request.user = user
-        response = views.ExerciseUpdateView.as_view()(request, pk=ex.id)
+        response = views.ExerciseUpdateView.as_view()(request, pk=ex.pk)
 
         # THEN it's there
         assert response.status_code == status_code
@@ -227,13 +227,13 @@ class TestExerciseUpdateView:
         assert user != original_author
 
         # WHEN making a post request to the create view
-        url = reverse('exercises:update', kwargs={'pk': ex.id})
+        url = reverse('exercises:update', kwargs={'pk': ex.pk})
         request = rf.post(url, data=exercise_data)
         request.user = UserFactory.create()
-        views.ExerciseUpdateView.as_view()(request, pk=ex.id)
+        views.ExerciseUpdateView.as_view()(request, pk=ex.pk)
 
         # THEN the author is preserved
-        updated_ex = models.Exercise.objects.get(id=ex.id)
+        updated_ex = models.Exercise.objects.get(pk=ex.pk)
         assert updated_ex.author == original_author
 
     def test_post_to_update_view_redirects_to_home_page(self, db, rf, mocker):
@@ -247,10 +247,10 @@ class TestExerciseUpdateView:
         exercise_data['author'] = user.id
 
         # WHEN making a post request to the create view
-        url = reverse('exercises:update', kwargs={'pk': ex.id})
+        url = reverse('exercises:update', kwargs={'pk': ex.pk})
         request = rf.post(url, data=exercise_data)
         request.user = user
-        response = views.ExerciseUpdateView.as_view()(request, pk=ex.id)
+        response = views.ExerciseUpdateView.as_view()(request, pk=ex.pk)
 
         # THEN it redirects to the detail view
         assert response.status_code == 302
@@ -277,10 +277,10 @@ class TestExerciseDeleteView:
         mocker.patch.object(views.ExerciseDeleteView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise delete view
-        url = reverse('exercises:delete', kwargs={'pk': ex.id})
+        url = reverse('exercises:delete', kwargs={'pk': ex.pk})
         request = rf.get(url)
         request.user = user
-        response = views.ExerciseDeleteView.as_view()(request, pk=ex.id)
+        response = views.ExerciseDeleteView.as_view()(request, pk=ex.pk)
 
         # THEN it's there
         assert response.status_code == status_code
@@ -304,9 +304,9 @@ class TestExercisePDFView:
         mocker.patch('um.exercises.views.pdflatex', return_value=f)
 
         # WHEN calling the PDF view
-        url = reverse('exercises:pdf', kwargs={'pk': ex.id})
+        url = reverse('exercises:pdf', kwargs={'pk': ex.pk})
         request = rf.get(url)
-        response = views.exercise_pdf_view(request, pk=ex.id)
+        response = views.exercise_pdf_view(request, pk=ex.pk)
 
         # THEN the response is a PDF document
         assert response.status_code == 200

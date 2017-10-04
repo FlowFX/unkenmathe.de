@@ -96,7 +96,7 @@ class ExerciseCreateView(LoginRequiredMixin, CreateView):
 
         template = self.request.GET.get('template')
         if template:
-            template_exercise = Exercise.objects.get(id=int(template))
+            template_exercise = Exercise.objects.get(pk=template)
             initial.update({
                 'text': template_exercise.text,
             })

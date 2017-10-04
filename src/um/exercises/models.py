@@ -1,6 +1,7 @@
 """Exercise models."""
 import os
 import subprocess
+import uuid
 
 from django.conf import settings
 from django.shortcuts import reverse
@@ -29,6 +30,8 @@ if not os.path.exists(node):  # pragma: no cover
 
 class Exercise(SoftDeletableModel):
     """The main exercise model."""
+
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True)
 
     # TimeStampedModel
     created = models.DateTimeField(auto_now_add=True)
@@ -78,7 +81,7 @@ class Exercise(SoftDeletableModel):
 
     def get_absolute_url(self) -> str:
         """Return URL of the exercise's DetailView."""
-        return reverse('exercises:detail', kwargs={'pk': self.id})
+        return reverse('exercises:detail', kwargs={'pk': self.pk})
 
     def render_html(self) -> None:
         """Render the raw Markdown/LaTeX `text` into HTML."""
