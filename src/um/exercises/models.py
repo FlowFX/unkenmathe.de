@@ -1,6 +1,7 @@
 """Exercise models."""
 import os
 import subprocess
+import uuid
 
 from django.conf import settings
 from django.shortcuts import reverse
@@ -29,6 +30,8 @@ if not os.path.exists(node):  # pragma: no cover
 
 class Exercise(SoftDeletableModel):
     """The main exercise model."""
+
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
 
     # TimeStampedModel
     created = models.DateTimeField(auto_now_add=True)
