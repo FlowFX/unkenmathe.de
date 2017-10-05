@@ -14,6 +14,8 @@ class ExerciseFactory(DjangoModelFactory):
     class Meta:  # noqa: D101
         model = Exercise
 
+    slug = faker('password', length=5, special_chars=False, digits=True, upper_case=False, lower_case=False)
+
     author = SubFactory(UserFactory)
     original_author = SubFactory(UserFactory)
 

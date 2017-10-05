@@ -7,9 +7,9 @@
 
     <a href="{% url 'index' %}" id="back-id-back" class="btn btn-primary" role="button">Back</a>
     {% if can_edit %}
-    <a href="{% url 'exercises:update' exercise.id %}" id="id_edit_{{ exercise.id }}" class="btn btn-outline-primary btn-sm" role="button">Bearbeiten</a>
-    <button id="id_delete_{{ exercise.id }}" type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal">Löschen</button>
-    <a href="{% url 'exercises:pdf' exercise.id %}" class="btn btn-outline-info btn-sm" role="button">Vorschau als PDF</a>
+    <a href="{% url 'exercises:update' exercise.slug %}" id="id_edit_{{ exercise.slug }}" class="btn btn-outline-primary btn-sm" role="button">Bearbeiten</a>
+    <button id="id_delete_{{ exercise.slug }}" type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal">Löschen</button>
+    <a href="{% url 'exercises:pdf' exercise.slug %}" class="btn btn-outline-info btn-sm" role="button">Vorschau als PDF</a>
     {% endif %}
 
     {% include 'exercises/_exercise_card.html' %}
@@ -27,7 +27,7 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{% url 'exercises:delete' exercise.id %}" method="post">{% csrf_token %}
+            <form action="{% url 'exercises:delete' exercise.slug %}" method="post">{% csrf_token %}
                 <div class="modal-body">
                     <p>Bist du sicher, dass du die Aufgabe löschen möchtest?</p>
                 </div>
