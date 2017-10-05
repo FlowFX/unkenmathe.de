@@ -10,6 +10,7 @@ from .models import Exercise, ExerciseExample
 
 from ..core.jinja2 import jinja2_latex_env
 from ..core.utils import pdflatex
+from ..core.views import UserCanEditMixin, UserFormKwargsMixin, SaveAndContinueMixin, TestFuncMixin
 
 from django.http import HttpResponse
 
@@ -57,20 +58,18 @@ class ExcerciseListView(ListView):
     template_name = 'exercises/exercise_list.html'
 
 
-class ExerciseCreateView(LoginRequiredMixin, CreateView):
+class ExerciseCreateView(LoginRequiredMixin, UserFormKwargsMixin, CreateView):
     """Create view for a new exercise."""
 
     model = Exercise
     form_class = ExerciseForm
-    # success_url = reverse_lazy('index')
     context_object_name = 'exercise'
 
     def form_valid(self, form):
-        """Add the current user as the original author of the exercise."""
+        """Add the current user as the author of object."""
         self.object = form.save(commit=False)
         self.object.author = self.get_form_kwargs()['user']
         self.object.save()
-
         return super(ExerciseCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -84,13 +83,6 @@ class ExerciseCreateView(LoginRequiredMixin, CreateView):
             })
 
         return context
-
-    def get_form_kwargs(self):
-        """Add user as keyword argument."""
-        kwargs = super(ExerciseCreateView, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-
-        return kwargs
 
     def get_initial(self):
         """Return initial data to use for forms on this view."""
@@ -106,69 +98,27 @@ class ExerciseCreateView(LoginRequiredMixin, CreateView):
         return initial
 
 
-class ExerciseDetailView(DetailView):
+class ExerciseDetailView(UserCanEditMixin, DetailView):
     """Detail view for an exercise."""
 
     model = Exercise
     success_url = reverse_lazy('index')
     context_object_name = 'exercise'
 
-    def get_context_data(self, **kwargs):
-        """Add data to the template context."""
-        context = super(ExerciseDetailView, self).get_context_data(**kwargs)
 
-        # Determine whether or not the user gets shown the edit and delete buttons
-        obj = self.get_object()
-        user = self.request.user
-        context['can_edit'] = True if user == obj.author or user.is_staff else False
-
-        return context
-
-
-class ExerciseUpdateView(UserPassesTestMixin, UpdateView):
+class ExerciseUpdateView(TestFuncMixin, UserPassesTestMixin, SaveAndContinueMixin, UserFormKwargsMixin, UpdateView):
     """Update view for an exercise."""
 
     model = Exercise
     form_class = ExerciseForm
-    # success_url = reverse_lazy('index')
     context_object_name = 'exercise'
 
-    def test_func(self):
-        """Test if user is staff or author of the exercise."""
-        obj = self.get_object()
-
-        return self.request.user == obj.author or self.request.user.is_staff
-
-    def get_form_kwargs(self):
-        """Add user as keyword argument."""
-        kwargs = super(ExerciseUpdateView, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-
-        return kwargs
-
-    def form_valid(self, form):
-        """If the form is valid, save the associated model.
-        
-        The redirect to the success url or return to the update view.
-        """
-        self.object = form.save()
-
-        if 'continue' in self.request.POST:
-            url = reverse('exercises:update', kwargs={'slug': self.object.slug})
-            return redirect(url)
-        
-        return HttpResponseRedirect(self.get_success_url())
+    def get_update_url(self):
+        return reverse('exercises:update', kwargs={'slug': self.object.slug})
 
 
-
-class ExerciseDeleteView(UserPassesTestMixin, DeleteView):
+class ExerciseDeleteView(TestFuncMixin, UserPassesTestMixin, DeleteView):
     """Delete view for an exercise."""
 
     model = Exercise
     success_url = reverse_lazy('index')
-
-    def test_func(self):
-        """Test if user is staff or author of the exercise."""
-        obj = self.get_object()
-
-        return self.request.user == obj.author or self.request.user.is_staff
