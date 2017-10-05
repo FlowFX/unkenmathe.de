@@ -102,7 +102,7 @@ class TestExerciseCreateView:
         assert not ex.original_author
         assert not ex.source_url
 
-    def test_post_to_create_view_redirects_to_home_page(self, db, rf, users, mocker):
+    def test_post_to_create_view_redirects_to_detail_view(self, db, rf, users, mocker):
         mocker.patch('um.exercises.views.Exercise.render_html')
         mocker.patch('um.exercises.views.Exercise.render_tex')
 
@@ -146,12 +146,9 @@ class TestExerciseCreateView:
 
 class TestExerciseDetailView:
 
-    def test_get_detail_view(self, db, rf, mocker):
-        mocker.patch('um.exercises.factories.Exercise.render_html')
-        mocker.patch('um.exercises.factories.Exercise.render_tex')
-
+    def test_get_detail_view(self, rf, mocker):
         # GIVEN an existing exercise
-        ex = factories.ExerciseFactory.create()
+        ex = factories.ExerciseFactory.build()
         mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise detail view
@@ -170,15 +167,12 @@ class TestExerciseDetailView:
         ('staff', True)]
 
     @pytest.mark.parametrize('user_status, can_edit', TESTPARAMS_CAN_EDIT)
-    def test_context_includes_variable_can_edit(self, db, rf, users, mocker, user_status, can_edit):
-        mocker.patch('um.exercises.factories.Exercise.render_html')
-        mocker.patch('um.exercises.factories.Exercise.render_tex')
-
+    def test_context_includes_variable_can_edit(self, rf, users, mocker, user_status, can_edit):
         # GIVEN a user
         user = users[user_status]
 
         # AND an existing exercise
-        ex = factories.ExerciseFactory.create()
+        ex = factories.ExerciseFactory.build()
         if user_status == 'author':
             ex.author = user
         mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
@@ -202,15 +196,12 @@ class TestExerciseUpdateView:
         ('staff', 200)]
 
     @pytest.mark.parametrize('user_status, status_code', TESTPARAMS_UPDATE_VIEW_GET)
-    def test_update_view_requires_staff_or_author(self, db, rf, users, mocker, user_status, status_code):
-        mocker.patch('um.exercises.views.Exercise.render_html')
-        mocker.patch('um.exercises.views.Exercise.render_tex')
+    def test_update_view_requires_staff_or_author(self, rf, users, mocker, user_status, status_code):
         # GIVEN a user
-
         user = users[user_status]
 
         # AND an existing exercise
-        ex = factories.ExerciseFactory.create()
+        ex = factories.ExerciseFactory.build()
         if user_status == 'author':
             ex.author = user
         mocker.patch.object(views.ExerciseUpdateView, 'get_object', return_value=ex)
@@ -245,7 +236,7 @@ class TestExerciseUpdateView:
         updated_ex = models.Exercise.objects.get(slug=ex.slug)
         assert updated_ex.author == original_author
 
-    def test_post_to_update_view_redirects_to_home_page(self, db, rf, mocker):
+    def test_post_to_update_view_redirects_to_detail_view(self, db, rf, mocker):
         mocker.patch('um.exercises.views.Exercise.render_html')
         mocker.patch('um.exercises.views.Exercise.render_tex')
 

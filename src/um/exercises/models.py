@@ -82,13 +82,7 @@ class Exercise(SoftDeletableModel):
 
     def get_absolute_url(self) -> str:
         """Return URL of the exercise's DetailView."""
-        try:
-            url = reverse('exercises:detail', kwargs={'slug': self.slug})
-        except:
-            # If the exercise is not saved yet, it doesn't have a URL. This confuses some tests.
-            url = ''
-
-        return url
+        return reverse('exercises:detail', kwargs={'slug': self.slug})
 
     def render_html(self) -> None:
         """Render the raw Markdown/LaTeX `text` into HTML."""
