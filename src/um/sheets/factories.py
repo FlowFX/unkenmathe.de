@@ -1,13 +1,10 @@
 """ModelFactory for Sheets."""
 from factory.django import DjangoModelFactory
+from factory import post_generation, SubFactory
 
 from um.core.factories import UserFactory
-from um.exercises.factories import ExerciseFactory
-from .models import Sheet
 
-from factory import Faker as faker
-from factory import SubFactory
-from factory import post_generation
+from .models import Sheet
 
 
 
