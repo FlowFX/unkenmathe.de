@@ -86,31 +86,32 @@ class TestSheetDetailView:
         html = response.content.decode()
         assert str(sheet.id) in html
 
-#     TESTPARAMS_CAN_EDIT = [
-#         ('anonymous', False),
-#         ('authenticated', False),
-#         ('author', True),
-#         ('staff', True)]
+    TESTPARAMS_CAN_EDIT = [
+        ('anonymous', False),
+        ('authenticated', False),
+        ('author', True),
+        ('staff', True)]
 
-#     @pytest.mark.parametrize('user_status, can_edit', TESTPARAMS_CAN_EDIT)
-#     def test_context_includes_variable_can_edit(self, rf, users, mocker, user_status, can_edit):
-#         # GIVEN a user
-#         user = users[user_status]
+    @pytest.mark.parametrize('user_status, can_edit', TESTPARAMS_CAN_EDIT)
+    def test_context_includes_variable_can_edit(self, rf, users, mocker, user_status, can_edit):
+        # GIVEN a user
+        user = users[user_status]
 
-#         # AND an existing exercise
-#         ex = factories.ExerciseFactory.build()
-#         if user_status == 'author':
-#             ex.author = user
-#         mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
+        # AND an exercise sheet
+        sheet = factories.SheetFactory.build()
 
-#         # WHEN calling the exercise detail view
-#         url = reverse('exercises:detail', kwargs={'pk': ex.id})
-#         request = rf.get(url)
-#         request.user = user
-#         response = views.ExerciseDetailView.as_view()(request, pk=ex.id)
+        if user_status == 'author':
+            sheet.author = user
+        mocker.patch.object(views.SheetDetailView, 'get_object', return_value=sheet)
 
-#         # THEN the response includes the context variable `can_edit`
-#         assert response.context_data.get('can_edit') == can_edit
+        # WHEN calling the sheet detail view
+        url = reverse('sheets:detail', kwargs={'pk': sheet.pk})
+        request = rf.get(url)
+        request.user = user
+        response = views.SheetDetailView.as_view()(request, pk=sheet.pk)
+
+        # THEN the response includes the context variable `can_edit`
+        assert response.context_data.get('can_edit') == can_edit
 
 
 # class TestExerciseUpdateView:
