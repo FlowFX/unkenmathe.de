@@ -40,7 +40,8 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
         # add Crispy Forms foo
         self.helper = FormHelper()
         self.helper.form_id = 'id-ExerciseForm'
-        self.helper.add_input(Submit('submit', 'Submit'))
+        self.helper.add_input(Submit('continue', 'Save & continue editing'))
+        self.helper.add_input(Submit('save', 'Save'))
 
         self.helper.layout = Layout(
             Fieldset(
