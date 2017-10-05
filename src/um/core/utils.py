@@ -12,7 +12,7 @@ def pdflatex(template):
     """
     try:
         encoded_template = template.encode('utf-8')
-    except AttributeError:
+    except AttributeError:  # pragma: no cover
         encoded_template = template
 
     tempdir = tempfile.mkdtemp()
