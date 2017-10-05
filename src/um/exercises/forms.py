@@ -7,6 +7,7 @@ from crispy_forms.layout import Div, Field, Fieldset, Submit
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+from um.core.constants import LICENCE_CHOICES_LONG
 from .models import Exercise
 
 
@@ -65,6 +66,7 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
         )
         self.fields['text'].label = False
         self.fields['author'].required = False
+        self.fields['license'].choices = LICENCE_CHOICES_LONG
         self.fields['is_original'].default = True
         self.fields['original_author'].required = False
         self.fields['source_url'].required = False
