@@ -1,9 +1,10 @@
 """Unit tests."""
-# import os
-# from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.models import AnonymousUser
 from django.urls import reverse
 
-from um.sheets import views
+from um.core.factories import UserFactory
+from um.exercises.factories import ExerciseFactory
+from um.sheets import factories, models, views
 
 import pytest
 
@@ -29,81 +30,61 @@ class TestSheetCreateView:
         # THEN it's there, or not
         assert response.status_code == status_code
 
-    # def test_post_to_create_view_adds_author_to_object(self, db, rf, users, mocker):
-#         mocker.patch('um.exercises.views.Exercise.render_html')
-#         mocker.patch('um.exercises.views.Exercise.render_tex')
+    def test_post_to_create_view_adds_author_to_object(self, db, rf, users, mocker):
+        # GIVEN an existing exercise AND a user
+        ex = ExerciseFactory.create()
+        user = UserFactory.create()
 
-        # GIVEN an empty database
-        # assert models.Sheet.objects.count() == 0
-#         # AND a user
-#         user = UserFactory.create()
+        # WHEN making a post request to the create view
+        url = reverse('sheets:create')
+        request = rf.post(url, data={'exercises': ex.id})
+        request.user = user
+        views.SheetCreateView.as_view()(request)
 
-#         # WHEN making a post request to the create view
-#         url = reverse('exercises:create')
-#         request = rf.post(url, data=exercise_data)
-#         request.user = user
-#         views.ExerciseCreateView.as_view()(request)
+        # THEN the user gets attached to the sheet as the author
+        sheet = models.Sheet.objects.last()
+        assert sheet.author == user
 
-#         # THEN the user gets attached to the exercise as the author
-#         ex = models.Exercise.objects.last()
-#         assert ex.author == user
+    def test_post_to_create_view_redirects_to_detail_view(self, db, rf, users, mocker):
+        # GIVEN an existing exercise AND a user
+        ex = ExerciseFactory.create()
+        user = UserFactory.create()
 
-#     def test_post_to_create_view_redirects_to_home_page(self, db, rf, users, mocker):
-#         mocker.patch('um.exercises.views.Exercise.render_html')
-#         mocker.patch('um.exercises.views.Exercise.render_tex')
+        # WHEN making a post request to the create view
+        url = reverse('sheets:create')
+        request = rf.post(url, data={'exercises': ex.id})
+        request.user = user
+        response = views.SheetCreateView.as_view()(request, url)
 
-#         # GIVEN any state and a user
-#         user = UserFactory.create()
-
-#         # WHEN making a post request to the create view
-#         url = reverse('exercises:create')
-#         request = rf.post(url, data=exercise_data)
-#         request.user = user
-#         response = views.ExerciseCreateView.as_view()(request, url)
-
-#         # THEN it redirects back to the home page
-#         assert response.status_code == 302
-#         assert response.url == '/'
-
-#     def test_get_with_url_parameter_prepopulates_text(self, db, rf, mocker):
-#         # GIVEN an existing exercise
-#         mocker.patch('um.exercises.factories.Exercise.render_html')
-#         mocker.patch('um.exercises.factories.Exercise.render_tex')
-#         ex = factories.ExerciseFactory.create()
-
-#         # AND a user
-#         user = UserFactory.create()
-
-#         # WHEN making a GET request to the create view with the exercise id as url parameter
-#         url = reverse('exercises:create') + f'?template={ex.id}'
-#         request = rf.get(url)
-#         request.user = user
-#         response = views.ExerciseCreateView.as_view()(request, url)
-
-#         # THEN it's there
-#         assert response.status_code == 200
-
-#         # AND the input field is pre-populated with the existing exercise's text
-#         response.render()
-#         html = response.content.decode()
-#         assert ex.text in html
+        # THEN it redirects to the detail view
+        sheet = models.Sheet.objects.last()
+        assert response.status_code == 302
+        assert response.url == sheet.url
 
 
-# class TestExerciseDetailView:
+class TestSheetDetailView:
 
-#     def test_get_detail_view(self, rf, mocker):
-#         # GIVEN an existing exercise
-#         ex = factories.ExerciseFactory.build()
-#         mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
+    def test_get_detail_view(self, db, rf, mocker):
+        # GIVEN an existing exercise sheet
+        exs = ExerciseFactory.create_batch(2)
+        sheet = factories.SheetFactory.create(exercises=(exs[0].id, exs[1].id))
+        mocker.patch.object(views.SheetDetailView, 'get_object', return_value=sheet)
 
-#         # WHEN calling the exercise detail view
-#         url = reverse('exercises:detail', kwargs={'pk': ex.id})
-#         request = rf.get(url)
-#         request.user = AnonymousUser()
-#         response = views.ExerciseDetailView.as_view()(request, pk=ex.id)
+        # WHEN calling the sheet detail view
+        url = reverse('sheets:detail', kwargs={'pk': sheet.pk})
+        request = rf.get(url)
+        request.user = AnonymousUser()
+        response = views.SheetDetailView.as_view()(request, pk=sheet.pk)
 
-#         # THEN it's there
-#         assert response.status_code == 200
+        # THEN it's there
+        assert response.status_code == 200
+
+        # AND it can be rendered
+        response.render()
+
+        # AND it shows some basic informtion
+        html = response.content.decode()
+        assert str(sheet.id) in html
 
 #     TESTPARAMS_CAN_EDIT = [
 #         ('anonymous', False),
