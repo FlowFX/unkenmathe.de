@@ -1,6 +1,6 @@
-<div class="card" id="id_exercise_{{ exercise.id }}">
+<div class="card" id="id_exercise_{{ exercise.slug }}">
     <div class="card-body">
-        <h4 class="h6 card-title float-right"><a href="{{ exercise.url }}">#{{ exercise.id }}</a></h4>
+        <h4 class="h6 card-title float-right"><a href="{{ exercise.url }}">#{{ exercise.slug }}</a></h4>
         <div class="card-text">
         {{ exercise.text_html|safe }}
         </div>

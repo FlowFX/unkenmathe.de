@@ -45,8 +45,29 @@ class TestExerciseAttributes:
         # AND a license URL
         assert ex.license_url
 
-    def test_exercise_has_timestamps(self, db):
+    def test_exercise_has_uuid(self):
         # GIVEN an exercise
+        ex = factories.ExerciseFactory.build()
+
+        # THEN it has a UUID
+        assert ex.uuid
+
+    def test_exercise_has_slug(self, db, mocker):
+        mocker.patch('um.exercises.factories.Exercise.render_html')
+        mocker.patch('um.exercises.factories.Exercise.render_tex')
+
+        # GIVEN a saved exercise
+        ex = factories.ExerciseFactory.build()
+
+        # THEN it has a 5-digit slug
+        assert ex.slug
+        assert len(ex.slug) == 5
+
+    def test_exercise_has_timestamps(self, db, mocker):
+        mocker.patch('um.exercises.factories.Exercise.render_html')
+        mocker.patch('um.exercises.factories.Exercise.render_tex')
+
+        # GIVEN a saved exercise
         ex = factories.ExerciseFactory.create()
 
         # THEN it has time stamps
@@ -114,7 +135,10 @@ class TestExerciseRenderMethods:
 class TestExerciseDeleteMethod:
     """No real need to test this, as the functionality is inherited."""
 
-    def no_test_delete_doesnt_remove_from_database(self, db):
+    def no_test_delete_doesnt_remove_from_database(self, db, mocker):
+        mocker.patch('um.exercises.factories.Exercise.render_html')
+        mocker.patch('um.exercises.factories.Exercise.render_tex')
+
         # GIVEN an exercise
         ex = factories.ExerciseFactory.create()
 

@@ -102,7 +102,7 @@ class TestExerciseCreateView:
         assert not ex.original_author
         assert not ex.source_url
 
-    def test_post_to_create_view_redirects_to_home_page(self, db, rf, users, mocker):
+    def test_post_to_create_view_redirects_to_detail_view(self, db, rf, users, mocker):
         mocker.patch('um.exercises.views.Exercise.render_html')
         mocker.patch('um.exercises.views.Exercise.render_tex')
 
@@ -130,7 +130,7 @@ class TestExerciseCreateView:
         user = UserFactory.create()
 
         # WHEN making a GET request to the create view with the exercise id as url parameter
-        url = reverse('exercises:create') + f'?template={ex.pk}'
+        url = reverse('exercises:create') + f'?template={ex.slug}'
         request = rf.get(url)
         request.user = user
         response = views.ExerciseCreateView.as_view()(request, url)
@@ -152,10 +152,10 @@ class TestExerciseDetailView:
         mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise detail view
-        url = reverse('exercises:detail', kwargs={'pk': ex.pk})
+        url = reverse('exercises:detail', kwargs={'slug': ex.slug})
         request = rf.get(url)
         request.user = AnonymousUser()
-        response = views.ExerciseDetailView.as_view()(request, pk=ex.pk)
+        response = views.ExerciseDetailView.as_view()(request, slug=ex.slug)
 
         # THEN it's there
         assert response.status_code == 200
@@ -178,10 +178,10 @@ class TestExerciseDetailView:
         mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise detail view
-        url = reverse('exercises:detail', kwargs={'pk': ex.pk})
+        url = reverse('exercises:detail', kwargs={'slug': ex.slug})
         request = rf.get(url)
         request.user = user
-        response = views.ExerciseDetailView.as_view()(request, pk=ex.pk)
+        response = views.ExerciseDetailView.as_view()(request, slug=ex.slug)
 
         # THEN the response includes the context variable `can_edit`
         assert response.context_data.get('can_edit') == can_edit
@@ -207,10 +207,10 @@ class TestExerciseUpdateView:
         mocker.patch.object(views.ExerciseUpdateView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise update view
-        url = reverse('exercises:update', kwargs={'pk': ex.pk})
+        url = reverse('exercises:update', kwargs={'slug': ex.slug})
         request = rf.get(url)
         request.user = user
-        response = views.ExerciseUpdateView.as_view()(request, pk=ex.pk)
+        response = views.ExerciseUpdateView.as_view()(request, slug=ex.slug)
 
         # THEN it's there
         assert response.status_code == status_code
@@ -227,16 +227,16 @@ class TestExerciseUpdateView:
         assert user != original_author
 
         # WHEN making a post request to the create view
-        url = reverse('exercises:update', kwargs={'pk': ex.pk})
+        url = reverse('exercises:update', kwargs={'slug': ex.slug})
         request = rf.post(url, data=exercise_data)
         request.user = UserFactory.create()
-        views.ExerciseUpdateView.as_view()(request, pk=ex.pk)
+        views.ExerciseUpdateView.as_view()(request, slug=ex.slug)
 
         # THEN the author is preserved
-        updated_ex = models.Exercise.objects.get(pk=ex.pk)
+        updated_ex = models.Exercise.objects.get(slug=ex.slug)
         assert updated_ex.author == original_author
 
-    def test_post_to_update_view_redirects_to_home_page(self, db, rf, mocker):
+    def test_post_to_update_view_redirects_to_detail_view(self, db, rf, mocker):
         mocker.patch('um.exercises.views.Exercise.render_html')
         mocker.patch('um.exercises.views.Exercise.render_tex')
 
@@ -247,10 +247,10 @@ class TestExerciseUpdateView:
         exercise_data['author'] = user.id
 
         # WHEN making a post request to the create view
-        url = reverse('exercises:update', kwargs={'pk': ex.pk})
+        url = reverse('exercises:update', kwargs={'slug': ex.slug})
         request = rf.post(url, data=exercise_data)
         request.user = user
-        response = views.ExerciseUpdateView.as_view()(request, pk=ex.pk)
+        response = views.ExerciseUpdateView.as_view()(request, slug=ex.slug)
 
         # THEN it redirects to the detail view
         assert response.status_code == 302
@@ -277,10 +277,10 @@ class TestExerciseDeleteView:
         mocker.patch.object(views.ExerciseDeleteView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise delete view
-        url = reverse('exercises:delete', kwargs={'pk': ex.pk})
+        url = reverse('exercises:delete', kwargs={'slug': ex.slug})
         request = rf.get(url)
         request.user = user
-        response = views.ExerciseDeleteView.as_view()(request, pk=ex.pk)
+        response = views.ExerciseDeleteView.as_view()(request, slug=ex.slug)
 
         # THEN it's there
         assert response.status_code == status_code
@@ -304,9 +304,9 @@ class TestExercisePDFView:
         mocker.patch('um.exercises.views.pdflatex', return_value=f)
 
         # WHEN calling the PDF view
-        url = reverse('exercises:pdf', kwargs={'pk': ex.pk})
+        url = reverse('exercises:pdf', kwargs={'slug': ex.slug})
         request = rf.get(url)
-        response = views.exercise_pdf_view(request, pk=ex.pk)
+        response = views.exercise_pdf_view(request, slug=ex.slug)
 
         # THEN the response is a PDF document
         assert response.status_code == 200

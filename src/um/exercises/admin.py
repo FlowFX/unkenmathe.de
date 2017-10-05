@@ -9,7 +9,7 @@ class ExerciseAdmin(admin.ModelAdmin):
     fields = ('author', 'text', 'text_html', 'text_tex')
     readonly_fields = ('text_html', 'text_tex')
 
-    list_display = ('pk', 'text', 'author', 'license', 'created')
+    list_display = ('slug', 'text', 'author', 'license', 'created')
     list_filter = ('author', 'license')
 
 

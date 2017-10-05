@@ -20,9 +20,9 @@ class HowtoView(ListView):
     template_name = 'exercises/howto.html'
 
 
-def exercise_pdf_view(request, pk):
+def exercise_pdf_view(request, slug):
     """Return PDF version of the single exercise."""
-    obj = Exercise.objects.get(pk=pk)
+    obj = Exercise.objects.get(slug=slug)
 
     if not obj.text_tex:  # pragma: no cover
         obj.render_tex()
@@ -96,7 +96,7 @@ class ExerciseCreateView(LoginRequiredMixin, CreateView):
 
         template = self.request.GET.get('template')
         if template:
-            template_exercise = Exercise.objects.get(pk=template)
+            template_exercise = Exercise.objects.get(slug=template)
             initial.update({
                 'text': template_exercise.text,
             })
