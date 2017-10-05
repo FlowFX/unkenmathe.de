@@ -1,5 +1,7 @@
 """Views for exercise app."""
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
@@ -143,6 +145,20 @@ class ExerciseUpdateView(UserPassesTestMixin, UpdateView):
         kwargs['user'] = self.request.user
 
         return kwargs
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model.
+        
+        The redirect to the success url or return to the update view.
+        """
+        self.object = form.save()
+
+        if 'continue' in self.request.POST:
+            url = reverse('exercises:update', kwargs={'slug': self.object.slug})
+            return redirect(url)
+        
+        return HttpResponseRedirect(self.get_success_url())
+
 
 
 class ExerciseDeleteView(UserPassesTestMixin, DeleteView):

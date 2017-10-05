@@ -256,6 +256,27 @@ class TestExerciseUpdateView:
         assert response.status_code == 302
         assert response.url == ex.url
 
+    def test_post_request_with_continue_parameter_returns_to_update_view(self, db, rf, mocker):
+        mocker.patch('um.exercises.views.Exercise.render_html')
+        mocker.patch('um.exercises.views.Exercise.render_tex')
+
+        # GIVEN an existing exercise
+        user = UserFactory.create()
+        ex = factories.ExerciseFactory.create(author=user)
+
+        exercise_data['author'] = user.id
+        exercise_data['continue'] = 'continue'
+
+        # WHEN making a post request to the create view
+        url = reverse('exercises:update', kwargs={'slug': ex.slug})
+        request = rf.post(url, data=exercise_data, name='continue')
+        request.user = user
+        response = views.ExerciseUpdateView.as_view()(request, slug=ex.slug)
+
+        # THEN it returns to the update view
+        assert response.status_code == 302
+        assert response.url == url
+
 
 class TestExerciseDeleteView:
 

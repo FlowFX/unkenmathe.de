@@ -24,7 +24,8 @@ class SheetForm(UserKwargModelFormMixin, forms.ModelForm):
         # add Crispy Forms foo
         self.helper = FormHelper()
         self.helper.form_id = 'id-SheetForm'
-        self.helper.add_input(Submit('submit', 'Submit'))
+        self.helper.add_input(Submit('continue', 'Save & continue editing'))
+        self.helper.add_input(Submit('submit', 'Save'))
 
         self.helper.layout = Layout(
             Fieldset(

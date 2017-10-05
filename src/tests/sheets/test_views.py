@@ -114,72 +114,90 @@ class TestSheetDetailView:
         assert response.context_data.get('can_edit') == can_edit
 
 
-# class TestExerciseUpdateView:
+class TestSheetUpdateView:
 
-#     TESTPARAMS_UPDATE_VIEW_GET = [
-#         ('anonymous', 302),
-#         ('authenticated', 302),
-#         ('author', 200),
-#         ('staff', 200)]
+    TESTPARAMS_UPDATE_VIEW_GET = [
+        ('anonymous', 302),
+        ('authenticated', 302),
+        ('author', 200),
+        ('staff', 200)]
 
-#     @pytest.mark.parametrize('user_status, status_code', TESTPARAMS_UPDATE_VIEW_GET)
-#     def test_update_view_requires_staff_or_author(self, rf, users, mocker, user_status, status_code):
-#         # GIVEN a user
-#         user = users[user_status]
+    @pytest.mark.parametrize('user_status, status_code', TESTPARAMS_UPDATE_VIEW_GET)
+    def test_update_view_requires_staff_or_author(self, rf, users, mocker, user_status, status_code):
+        # GIVEN a user
+        user = users[user_status]
 
-#         # AND an existing exercise
-#         ex = factories.ExerciseFactory.build()
-#         if user_status == 'author':
-#             ex.author = user
-#         mocker.patch.object(views.ExerciseUpdateView, 'get_object', return_value=ex)
+        # AND an existing exercise sheet
+        sheet = factories.SheetFactory.build()
+        if user_status == 'author':
+            sheet.author = user
+        mocker.patch.object(views.SheetUpdateView, 'get_object', return_value=sheet)
 
-#         # WHEN calling the exercise update view
-#         url = reverse('exercises:update', kwargs={'pk': ex.id})
-#         request = rf.get(url)
-#         request.user = user
-#         response = views.ExerciseUpdateView.as_view()(request, pk=ex.id)
+        # WHEN calling the sheet update view
+        url = reverse('sheets:update', kwargs={'pk': sheet.pk})
+        request = rf.get(url)
+        request.user = user
+        response = views.SheetUpdateView.as_view()(request, pk=sheet.pk)
 
-#         # THEN it's there
-#         assert response.status_code == status_code
+        # THEN it's there
+        assert response.status_code == status_code
 
-#     def test_post_to_update_view_preserves_the_original_author(self, db, rf, mocker):
-#         mocker.patch('um.exercises.views.Exercise.render_html')
-#         mocker.patch('um.exercises.views.Exercise.render_tex')
+    # def test_post_to_update_view_preserves_the_original_author(self, db, rf, mocker):
+    #     # GIVEN an existing exercise sheet
+    #     exs = ExerciseFactory.create_batch(2)
+    #     sheet = factories.SheetFactory.create(exercises=(exs[0], exs[1]))
+    #     original_author = sheet.author
 
-#         # GIVEN an existing exercise
-#         user = UserFactory.create()
-#         ex = factories.ExerciseFactory.create()
+    #     # AND a different user
+    #     user = UserFactory.create()
+    #     assert user != original_author
 
-#         original_author = ex.author
-#         assert user != original_author
+    #     # WHEN making a post request to the create view
+    #     url = reverse('sheets:update', kwargs={'pk': sheet.id})
+    #     request = rf.post(url, data={'exercises': (exs[0], exs[1])})
+    #     request.user = user
+    #     views.SheetUpdateView.as_view()(request, pk=sheet.pk)
 
-#         # WHEN making a post request to the create view
-#         url = reverse('exercises:update', kwargs={'pk': ex.id})
-#         request = rf.post(url, data=exercise_data)
-#         request.user = UserFactory.create()
-#         views.ExerciseUpdateView.as_view()(request, pk=ex.id)
+    #     # THEN the author is preserved
+    #     updated_sheet = models.Sheet.objects.get(pk=sheet.pk)
+    #     assert updated_sheet.author == original_author
 
-#         # THEN the author is preserved
-#         updated_ex = models.Exercise.objects.get(id=ex.id)
-#         assert updated_ex.author == original_author
+    # def test_post_to_update_view_redirects_to_detail_view(self, db, rf, mocker):
+    #     # GIVEN an existing exercise sheet
+    #     user = UserFactory.create()
+    #     exs = ExerciseFactory.create_batch(2)
+    #     sheet = factories.SheetFactory.create(author=user, exercises=(exs[0], exs[1]))
 
-#     def test_post_to_update_view_redirects_to_home_page(self, db, rf, mocker):
-#         mocker.patch('um.exercises.views.Exercise.render_html')
-#         mocker.patch('um.exercises.views.Exercise.render_tex')
+    #     # WHEN making a post request to the update view
+    #     url = reverse('sheets:update', kwargs={'pk': sheet.pk})
+    #     request = rf.post(url, data={'exercises': (exs[0], exs[1])})
+    #     request.user = user
+    #     response = views.SheetUpdateView.as_view()(request, pk=sheet.pk)
 
-#         # GIVEN an existing exercise
-#         user = UserFactory.create()
-#         ex = factories.ExerciseFactory.create(author=user)
+    #     # THEN it redirects to the detail view
+    #     assert response.status_code == 302
+    #     assert response.url == sheet.url
 
-#         # WHEN making a post request to the create view
-#         url = reverse('exercises:update', kwargs={'pk': ex.id})
-#         request = rf.post(url, data=exercise_data)
-#         request.user = user
-#         response = views.ExerciseUpdateView.as_view()(request, pk=ex.id)
+    # def test_post_request_with_continue_parameter_returns_to_update_view(self, db, rf, mocker):
+    #     mocker.patch('um.exercises.views.Exercise.render_html')
+    #     mocker.patch('um.exercises.views.Exercise.render_tex')
 
-#         # THEN it redirects back to the home page
-#         assert response.status_code == 302
-#         assert response.url == '/'
+    #     # GIVEN an existing exercise
+    #     user = UserFactory.create()
+    #     ex = factories.ExerciseFactory.create(author=user)
+
+    #     exercise_data['author'] = user.id
+    #     exercise_data['continue'] = 'continue'
+
+    #     # WHEN making a post request to the create view
+    #     url = reverse('exercises:update', kwargs={'slug': ex.slug})
+    #     request = rf.post(url, data=exercise_data, name='continue')
+    #     request.user = user
+    #     response = views.ExerciseUpdateView.as_view()(request, slug=ex.slug)
+
+    #     # THEN it returns to the update view
+    #     assert response.status_code == 302
+    #     assert response.url == url
 
 
 # class TestExerciseDeleteView:
