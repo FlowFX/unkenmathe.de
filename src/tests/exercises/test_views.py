@@ -146,16 +146,19 @@ class TestExerciseCreateView:
 
 class TestExerciseDetailView:
 
-    def test_get_detail_view(self, rf, mocker):
+    def test_get_detail_view(self, db, rf, mocker):
+        mocker.patch('um.exercises.factories.Exercise.render_html')
+        mocker.patch('um.exercises.factories.Exercise.render_tex')
+
         # GIVEN an existing exercise
-        ex = factories.ExerciseFactory.build()
+        ex = factories.ExerciseFactory.create()
         mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise detail view
-        url = reverse('exercises:detail', kwargs={'pk': ex.pk})
+        url = reverse('exercises:detail', kwargs={'slug': ex.slug})
         request = rf.get(url)
         request.user = AnonymousUser()
-        response = views.ExerciseDetailView.as_view()(request, pk=ex.pk)
+        response = views.ExerciseDetailView.as_view()(request, slug=ex.slug)
 
         # THEN it's there
         assert response.status_code == 200
@@ -167,21 +170,24 @@ class TestExerciseDetailView:
         ('staff', True)]
 
     @pytest.mark.parametrize('user_status, can_edit', TESTPARAMS_CAN_EDIT)
-    def test_context_includes_variable_can_edit(self, rf, users, mocker, user_status, can_edit):
+    def test_context_includes_variable_can_edit(self, db, rf, users, mocker, user_status, can_edit):
+        mocker.patch('um.exercises.factories.Exercise.render_html')
+        mocker.patch('um.exercises.factories.Exercise.render_tex')
+
         # GIVEN a user
         user = users[user_status]
 
         # AND an existing exercise
-        ex = factories.ExerciseFactory.build()
+        ex = factories.ExerciseFactory.create()
         if user_status == 'author':
             ex.author = user
         mocker.patch.object(views.ExerciseDetailView, 'get_object', return_value=ex)
 
         # WHEN calling the exercise detail view
-        url = reverse('exercises:detail', kwargs={'pk': ex.pk})
+        url = reverse('exercises:detail', kwargs={'slug': ex.slug})
         request = rf.get(url)
         request.user = user
-        response = views.ExerciseDetailView.as_view()(request, pk=ex.pk)
+        response = views.ExerciseDetailView.as_view()(request, slug=ex.slug)
 
         # THEN the response includes the context variable `can_edit`
         assert response.context_data.get('can_edit') == can_edit

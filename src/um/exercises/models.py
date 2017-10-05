@@ -32,6 +32,7 @@ class Exercise(SoftDeletableModel):
     """The main exercise model."""
 
     uuid = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True)
+    slug = models.SlugField(max_length=5)
 
     # TimeStampedModel
     created = models.DateTimeField(auto_now_add=True)
@@ -81,7 +82,13 @@ class Exercise(SoftDeletableModel):
 
     def get_absolute_url(self) -> str:
         """Return URL of the exercise's DetailView."""
-        return reverse('exercises:detail', kwargs={'pk': self.pk})
+        try:
+            url = reverse('exercises:detail', kwargs={'slug': self.slug})
+        except:
+            # If the exercise is not saved yet, it doesn't have a URL. This confuses some tests.
+            url = ''
+
+        return url
 
     def render_html(self) -> None:
         """Render the raw Markdown/LaTeX `text` into HTML."""
@@ -99,6 +106,10 @@ class Exercise(SoftDeletableModel):
     def super_save(self, *args, **kwargs) -> None:
         """Call the 'real' save() method."""
         super(Exercise, self).save(*args, **kwargs)
+
+        if not self.slug:
+            self.slug = str(self.id + 10000)
+            self.save()
 
     def save(self, *args, **kwargs) -> None:
         """Do stuff when saving the Exercise."""

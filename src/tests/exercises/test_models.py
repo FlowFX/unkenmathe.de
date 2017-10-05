@@ -45,8 +45,28 @@ class TestExerciseAttributes:
         # AND a license URL
         assert ex.license_url
 
-    def test_exercise_has_timestamps(self, db):
+    def test_exercise_has_uuid(self):
         # GIVEN an exercise
+        ex = factories.ExerciseFactory.build()
+
+        # THEN it has a UUID
+        assert ex.uuid
+
+    def test_exercise_has_slug(self, db, mocker):
+        mocker.patch('um.exercises.factories.Exercise.render_html')
+        mocker.patch('um.exercises.factories.Exercise.render_tex')
+
+        # GIVEN a saved exercise
+        ex = factories.ExerciseFactory.create()
+
+        # THEN it has a 5-digit slug
+        assert ex.slug
+
+    def test_exercise_has_timestamps(self, db, mocker):
+        mocker.patch('um.exercises.factories.Exercise.render_html')
+        mocker.patch('um.exercises.factories.Exercise.render_tex')
+
+        # GIVEN a saved exercise
         ex = factories.ExerciseFactory.create()
 
         # THEN it has time stamps
