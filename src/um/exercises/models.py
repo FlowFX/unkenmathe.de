@@ -68,7 +68,7 @@ class Exercise(SoftDeletableModel):
 
     def __str__(self):
         """Format str(obj) response."""
-        return 'Aufgabe {}'.format(self.id)
+        return '#{}'.format(self.slug)
 
     @property
     def license_url(self) -> str:
