@@ -22,7 +22,7 @@ class SheetFactory(DjangoModelFactory):
             # Simple build, do nothing.
             return
 
-        if extracted:
+        if extracted:  # pragma: no branch
             # A list of groups were passed in, use them
             for exercise in extracted:
                 self.exercises.add(exercise)
