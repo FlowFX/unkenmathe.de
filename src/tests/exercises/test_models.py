@@ -52,6 +52,13 @@ class TestExerciseAttributes:
         # THEN it has a UUID
         assert ex.uuid
 
+    def test_exercise_has_string_representation(self):
+        # GIVEN an exercise
+        ex = factories.ExerciseFactory.build()
+
+        # THEN it has a reasonable string representation
+        assert ex.slug in ex.__str__()
+
     def test_exercise_has_slug(self, db, mocker):
         mocker.patch('um.exercises.factories.Exercise.render_html')
         mocker.patch('um.exercises.factories.Exercise.render_tex')
@@ -156,3 +163,13 @@ class TestExerciseDeleteMethod:
         ex.save()
 
         assert models.Exercise.objects.get(id=ex.id)
+
+
+class TestExerciseExample:
+
+    def test_exercise_example_has_string_representation(self):
+        # GIVEN an exercise example
+        example = factories.ExerciseExampleFactory.build()
+
+        # THEN it has a reasonable string representation
+        assert example.title in example.__str__()
