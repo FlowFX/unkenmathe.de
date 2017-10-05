@@ -8,7 +8,7 @@ from django.shortcuts import reverse
 
 from model_utils.models import SoftDeletableModel
 
-from um.core.constants import CHANGE_OPTIONS, LICENCE_CHOICES, LICENCE_URLS
+from um.core.constants import CHANGE_OPTIONS, LICENCE_CHOICES, LICENCE_NAMES_LONG, LICENCE_URLS
 
 # https://docs.python.org/3.6/library/shlex.html#shlex.quote
 from shlex import quote
@@ -74,6 +74,11 @@ class Exercise(SoftDeletableModel):
     def license_url(self) -> str:
         """Return the URL to the chosen license."""
         return LICENCE_URLS[self.license]
+
+    @property
+    def license_name_long(self) -> str:
+        """Return the long form title of the chosen license."""
+        return LICENCE_NAMES_LONG[self.license]
 
     @property
     def url(self) -> str:
