@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/FlowFX/unkenmathe.de.svg?branch=master)](https://travis-ci.org/FlowFX/unkenmathe.de)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![codecov](https://codecov.io/gh/FlowFX/unkenmathe.de/branch/master/graph/badge.svg)](https://codecov.io/gh/FlowFX/unkenmathe.de)
+[![Waffle.io - Issues in progress](https://badge.waffle.io/FlowFX/unkenmathe.de.png?label=in%20progress&title=In%20Progress)](http://waffle.io/FlowFX/unkenmathe.de)
 
 Check [unkenmathe.de](https://www.unkenmathe.de/)
 
