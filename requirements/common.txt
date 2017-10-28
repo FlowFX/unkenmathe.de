@@ -18,7 +18,7 @@ pypandoc==1.4
 markdown==2.6.9
 
 # misc
-django-anymail==1.0
+django-anymail==1.1
 bpython==0.16
 redis==2.10.6
 rollbar==0.13.13
