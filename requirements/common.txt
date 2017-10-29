@@ -30,7 +30,7 @@ rjsmin==1.0.12
 
 # Auth
 django-authtools==1.6.0
-django-allauth==0.33.0
+django-allauth==0.34.0
 defusedxml==0.5.0
 oauthlib==2.0.4
 python3-openid==3.1.0
