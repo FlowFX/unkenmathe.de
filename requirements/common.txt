@@ -12,7 +12,7 @@ requests==2.18.4
 urllib3==1.22
 
 # Markdown & LaTeX
-jinja2==2.9.6
+jinja2==2.10
 MarkupSafe==1.0
 pypandoc==1.4
 markdown==2.6.9
