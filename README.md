@@ -8,6 +8,10 @@
 
 Check [unkenmathe.de](https://www.unkenmathe.de/)
 
+## Examples
+
+![Preview exercise as PDF](doc/um_preview_exercise_pdf.gif)
+
 ## pandoc exercise.md -o exercise.tex
 Using [Pandoc](http://pandoc.org/) to convert Markdown/KaTeX entries to pure LaTeX works well.
 
