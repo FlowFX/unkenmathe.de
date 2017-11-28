@@ -13,6 +13,13 @@ PASSWORD_HASHERS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:'
+        'NAME': ':memory:',
+        'TEST': {}
     }
 }
+
+import sys
+if not 'create-db' in sys.argv:
+    # and this allows you to use --reuse-db to skip re-creating the db,
+    # even faster!
+    DATABASES['default']['TEST']['NAME'] = '/Volumes/RAMDisk/unkenmathe.test.db.sqlite3'
