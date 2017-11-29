@@ -37,6 +37,7 @@ class Exercise(SoftDeletableModel):
     # TimeStampedModel
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    published = models.BooleanField(default=False)
 
     license = models.CharField(
         max_length=15,

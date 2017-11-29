@@ -15,6 +15,7 @@ class ExerciseFactory(DjangoModelFactory):
         model = Exercise
 
     slug = faker('password', length=5, special_chars=False, digits=True, upper_case=False, lower_case=False)
+    published = False
 
     author = SubFactory(UserFactory)
     original_author = SubFactory(UserFactory)

@@ -24,6 +24,7 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
             'original_author',
             'source_url',
             'changes',
+            'published',
         ]
 
         labels = {
@@ -63,6 +64,7 @@ class ExerciseForm(UserKwargModelFormMixin, forms.ModelForm):
                     'changes',
                     v_if='is_original == false'
                 ),
+                'published',
             ),
         )
         self.fields['text'].label = False

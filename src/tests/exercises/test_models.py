@@ -81,6 +81,13 @@ class TestExerciseAttributes:
         assert ex.created.date() == datetime.date.today()
         assert ex.modified.date() == datetime.date.today()
 
+    def test_exercise_has_attribute_published(self, mocker):
+        # GIVEN a fresh exercise
+        ex = factories.ExerciseFactory.build()
+
+        # THEN it is not published, yet
+        assert not ex.published
+
 
 class TestExerciseSaveMethod:
 

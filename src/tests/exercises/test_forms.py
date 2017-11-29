@@ -15,8 +15,15 @@ class TestExerciseForms:
         ('$5x + 4 = 20$.', 'cc-by-XX', False),  # license is one of cc-by|cc-by-sa
     ]
 
-    @pytest.mark.parametrize('text, license, validity', TESTPARAMS_IS_ORIGINAL)
-    def test_exercise_form_if_is_original(self, db, text, license, validity):
+    @pytest.mark.parametrize('text, license, valid_a', TESTPARAMS_IS_ORIGINAL)
+    @pytest.mark.parametrize(
+        'published, valid_b',
+        [
+            (True, True),
+            (False, True),
+        ]
+    )
+    def test_exercise_form_if_is_original(self, db, text, license, valid_a, published, valid_b):
         """Unit test the Exercise Form."""
         # GIVEN a user and form data
         data={
@@ -26,6 +33,7 @@ class TestExerciseForms:
             'original_author': None,
             'source_url': '',
             'changes': '',
+            'published': published,
         }
 
         # WHEN submitting the form as the original author
@@ -35,7 +43,7 @@ class TestExerciseForms:
         )
 
         # THEN it validates -- or not
-        assert form.is_valid() is validity
+        assert form.is_valid() is (valid_a and valid_b)
 
     TESTPARAMS_IS_SOURCED = [
         ('https://de.serlo.org/mathe/xxx', 'none', True),
