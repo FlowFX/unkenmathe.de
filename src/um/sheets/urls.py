@@ -4,6 +4,7 @@ from django.conf.urls import url
 from . import views
 
 
+app_name = 'sheets'
 urlpatterns = [
     url(r'^neu$', views.SheetCreateView.as_view(), name='create'),
     url(r'^(?P<pk>[-\w]+)/$', views.SheetDetailView.as_view(), name='detail'),
