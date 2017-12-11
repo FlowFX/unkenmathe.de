@@ -26,49 +26,7 @@ Mathematische Ausdrücke wie $x=5$ können auch im Text stehen. Es geht aber auc
 $$ \\int_\{0\}^{\infty} dx x^2 = 99 $$'''
 
 
-class TestExerciseAttributes:
-
-    def test_exercise_has_author(self):
-        # GIVEN an exercise
-        ex = factories.ExerciseFactory.build()
-
-        # THEN it has an associated author
-        assert ex.author
-
-    def test_exercise_has_license(self):
-        # GIVEN an exercise
-        ex = factories.ExerciseFactory.build()
-
-        # THEN it states a license
-        assert ex.license
-
-        # AND a license URL
-        assert ex.license_url
-
-    def test_exercise_has_uuid(self):
-        # GIVEN an exercise
-        ex = factories.ExerciseFactory.build()
-
-        # THEN it has a UUID
-        assert ex.uuid
-
-    def test_exercise_has_string_representation(self):
-        # GIVEN an exercise
-        ex = factories.ExerciseFactory.build()
-
-        # THEN it has a reasonable string representation
-        assert ex.slug in ex.__str__()
-
-    def test_exercise_has_slug(self, db, mocker):
-        mocker.patch('um.exercises.factories.Exercise.render_html')
-        mocker.patch('um.exercises.factories.Exercise.render_tex')
-
-        # GIVEN a saved exercise
-        ex = factories.ExerciseFactory.build()
-
-        # THEN it has a 5-digit slug
-        assert ex.slug
-        assert len(ex.slug) == 5
+class TestExerciseTimestampAttributes:
 
     def test_exercise_has_timestamps(self, db, mocker):
         mocker.patch('um.exercises.factories.Exercise.render_html')
