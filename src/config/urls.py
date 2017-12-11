@@ -1,6 +1,5 @@
 """URL configuration."""
-from django.urls import path
-from django.conf.urls import include, url
+from django.urls import include, path
 from django.contrib import admin
 
 from um.core import views as core_views
@@ -10,11 +9,11 @@ from um.sheets import urls as sheets_urls
 
 
 urlpatterns = [
-    url(r'^favicon\.ico$', core_views.favicon_view),  # redirect stupid browser looking for /favicon.ico
-    url(r'^robots\.txt$', core_views.robots_txt_view),  # serve the robots.txt
-    url(r'^$', core_views.IndexView.as_view(), name='index'),
-    url(r'^root/', admin.site.urls),
-    url(r'^accounts/', include('allauth.urls')),
-    url(r'^aufgaben/', include(exercises_urls, namespace='exercises')),
-    url(r'^aufgabenblaetter/', include(sheets_urls, namespace='sheets')),
+    path('favicon.ico', core_views.favicon_view),  # redirect stupid browser looking for /favicon.ico
+    path('robots.txt', core_views.robots_txt_view),  # serve the robots.txt
+    path('', core_views.IndexView.as_view(), name='index'),
+    path('root/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+    path('aufgaben/', include(exercises_urls, namespace='exercises')),
+    path('aufgabenblaetter/', include(sheets_urls, namespace='sheets')),
 ]
