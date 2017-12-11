@@ -1,9 +1,11 @@
 """URL configuration for exercises app."""
+from django.urls import path
 from django.conf.urls import url
 
 from . import views
 
 
+app_name='exercises'
 urlpatterns = [
     url(r'^$', views.ExcerciseListView.as_view(), name='index'),
     url(r'^howto$', views.HowtoView.as_view(), name='howto'),
