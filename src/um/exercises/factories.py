@@ -9,7 +9,16 @@ from factory import SubFactory
 
 
 class ExerciseFactory(DjangoModelFactory):
-    """Model factory for the Exercise model."""
+    """Model factory for the Exercise model.
+    
+    >>> ex = ExerciseFactory.build()
+    >>> assert ex.author
+    >>> assert ex.slug
+    >>> assert ex.license
+    >>> assert ex.license_url
+    >>> assert ex.uuid
+    >>> assert ex.slug in ex.__str__()
+    """
 
     class Meta:  # noqa: D101
         model = Exercise
