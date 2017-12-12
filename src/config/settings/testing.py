@@ -18,6 +18,10 @@ DATABASES = {
     }
 }
 
+# Disable logging
+import logging
+logging.disable(logging.CRITICAL)
+
 env = get_secret("ENVIRONMENT")
 
 import sys
