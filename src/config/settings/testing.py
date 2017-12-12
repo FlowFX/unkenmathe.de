@@ -9,6 +9,18 @@ PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher',
 )
 
+# Fake out migrations to speed up tests
+# cf. https://mastodon.social/@webology/99162173318389992
+class DisableMigrations(object):
+
+    def __contains__(self, item):
+        return True
+
+    def __getitem__(self, item):
+        return None
+
+MIGRATION_MODULES = DisableMigrations()
+
 # Database
 DATABASES = {
     'default': {
