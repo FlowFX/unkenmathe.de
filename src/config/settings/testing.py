@@ -21,7 +21,8 @@ DATABASES = {
 env = get_secret("ENVIRONMENT")
 
 import sys
-if not env == 'ci' and not 'create-db' in sys.argv:
+
+if os.path.isdir('/Volumes/RAMDisk') and not env == 'ci' and not 'create-db' in sys.argv:
     # and this allows you to use --reuse-db to skip re-creating the db,
     # even faster!
     DATABASES['default']['TEST']['NAME'] = '/Volumes/RAMDisk/unkenmathe.test.db.sqlite3'
