@@ -23,9 +23,11 @@ exercise_data = {
 
 class TestExamplesViews:
 
-    def test_howto_view_returns_200(self, db, client):
+    def test_howto_view_returns_200(self, client, mocker):
         # GIVEN a an exercise example
-        example = factories.ExerciseExampleFactory.create()
+        examples = factories.ExerciseExampleFactory.build_batch(3)
+
+        mocker.patch.object(views.HowtoView, 'get_queryset', return_value=examples)
 
         # WHEN opening the howto page
         url = reverse('exercises:howto')
@@ -34,11 +36,11 @@ class TestExamplesViews:
 
         # THEN it's there and it displays all exercise texts
         assert response.status_code == 200
-        assert example.exercise.text in html
+        assert examples[0].exercise.text in html
 
         # AND the example description, too
-        assert example.title in html
-        assert example.description in html
+        assert examples[0].title in html
+        assert examples[0].description in html
 
 
 class TestExerciseCreateView:
