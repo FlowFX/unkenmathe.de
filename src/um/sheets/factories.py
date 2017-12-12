@@ -9,7 +9,12 @@ from .models import Sheet
 
 
 class SheetFactory(DjangoModelFactory):
-    """Model factory for the Sheet model."""
+    """Model factory for the Sheet model.
+    
+    >>> s = SheetFactory.build()
+    >>> assert s.author
+    >>> assert s.url
+    """
 
     class Meta:  # noqa: D101
         model = Sheet
