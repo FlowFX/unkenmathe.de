@@ -15,7 +15,7 @@ urllib3==1.22
 jinja2==2.10
 MarkupSafe==1.0
 pypandoc==1.4
-markdown==2.6.10
+markdown==2.6.11
 
 # misc
 django-anymail==1.2
