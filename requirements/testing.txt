@@ -22,7 +22,7 @@ pytest-flake8==0.9.1
 
 # Coverage
 coverage==4.4.2
-codecov==2.0.10
+codecov==2.0.13
 pytest-cov==2.5.1
 
 # Utils
