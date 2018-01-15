@@ -19,7 +19,7 @@ markdown==2.6.10
 
 # misc
 django-anymail==1.2
-bpython==0.16
+bpython==0.17
 redis==2.10.6
 rollbar==0.13.17
 
