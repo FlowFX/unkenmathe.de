@@ -1,7 +1,7 @@
 # Testing and CI requirements
 -r common.txt
 
-factory_boy==2.9.2
+factory_boy==2.10.0
 Faker==0.8.10
 mock==2.0.0
 pytest==3.3.1
