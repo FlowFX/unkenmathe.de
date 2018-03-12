@@ -10,7 +10,7 @@ pytest-mock==1.6.3
 pytest-stepwise==0.4
 pytest-xdist==1.22.2
 python-magic==0.4.13
-selenium==3.8.1
+selenium==3.11.0
 
 # Linting
 flake8==3.5.0
