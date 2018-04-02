@@ -122,3 +122,6 @@ deploy_key
 *.j2.out
 *.j2.pdf
 *.j2.synctex.gz
+
+# Backups
+*.dump
