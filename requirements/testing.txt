@@ -2,7 +2,7 @@
 -r common.txt
 
 factory_boy==2.10.0
-Faker==0.8.10
+Faker==0.8.12
 mock==2.0.0
 pytest==3.4.0
 pytest-django==3.1.2
