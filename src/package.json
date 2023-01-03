@@ -14,7 +14,7 @@
   "devDependencies": {
     "css-loader": "^0.28.4",
     "style-loader": "^0.18.2",
-    "webpack": "^3.5.2",
+    "webpack": "^5.75.0",
     "webpack-bundle-tracker": "^0.2.0"
   },
   "dependencies": {
